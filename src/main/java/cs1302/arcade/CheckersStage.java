@@ -9,17 +9,13 @@ import javafx.scene.text.Text;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
-import javafx.scene.shape.Rectangle;
-import javafx.event.EventHandler;
-import javafx.scene.input.KeyEvent;
 
-
-public class TetrisStage extends Stage{
+public class CheckersStage extends Stage{
 
     Group layout;
     MenuBar menuBar;
-        
-    public TetrisStage(){
+
+    public CheckersStage(){
         super();
         layout = new Group();
         this.setMenuBar();
@@ -46,5 +42,5 @@ public class TetrisStage extends Stage{
         menuBar.getMenus().addAll(file, help);
         menuBar.prefWidthProperty().bind(this.widthProperty());
     }
-  
+
 }

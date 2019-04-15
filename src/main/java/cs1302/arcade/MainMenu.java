@@ -14,6 +14,7 @@ import javafx.scene.control.Separator;
 import javafx.geometry.Orientation;
 import javafx.scene.text.Text;
 import cs1302.arcade.TetrisStage;
+import cs1302.arcade.CheckersStage;
 
 public class MainMenu extends VBox{
 
@@ -64,7 +65,10 @@ public class MainMenu extends VBox{
                     });
         b1.setMaxSize(200, 1000);
         Button b2 = new Button("Play: Checkers");
-        
+        b2.setOnAction(e -> {
+                CheckersStage checkers = new CheckersStage();
+                checkers.showAndWait();
+            });
         b2.setMaxSize(200, 1000);
         Separator sep1 = new Separator(Orientation.HORIZONTAL);
         Separator sep2 = new Separator(Orientation.HORIZONTAL);
