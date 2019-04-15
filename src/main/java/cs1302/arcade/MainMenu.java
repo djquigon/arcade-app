@@ -13,6 +13,7 @@ import javafx.geometry.Insets;
 import javafx.scene.control.Separator;
 import javafx.geometry.Orientation;
 import javafx.scene.text.Text;
+import cs1302.arcade.TetrisStage;
 
 public class MainMenu extends VBox{
 
@@ -56,9 +57,14 @@ public class MainMenu extends VBox{
         Image i2 = new Image("http://cobweb.cs.uga.edu/~mec/cs1302/gui/pikachu.png");
         iv1.setImage(i1);
         iv2.setImage(i2);
-        Button b1 = new Button("Play: (insert game)");
+        Button b1 = new Button("Play: Tetris");
+        b1.setOnAction(e -> {
+                TetrisStage tetris = new TetrisStage();
+                tetris.showAndWait();
+                    });
         b1.setMaxSize(200, 1000);
-        Button b2 = new Button("Play: (insert game)");
+        Button b2 = new Button("Play: Checkers");
+        
         b2.setMaxSize(200, 1000);
         Separator sep1 = new Separator(Orientation.HORIZONTAL);
         Separator sep2 = new Separator(Orientation.HORIZONTAL);
