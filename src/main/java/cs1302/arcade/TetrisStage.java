@@ -1,5 +1,6 @@
 package cs1302.arcade;
 
+//import javafx.scene.canvas.*;
 import javafx.stage.Stage;
 import javafx.stage.Modality;
 import javafx.scene.Group;
@@ -16,6 +17,7 @@ import javafx.scene.input.KeyEvent;
 
 public class TetrisStage extends Stage{
 
+    
     Group layout;
     MenuBar menuBar;
         
