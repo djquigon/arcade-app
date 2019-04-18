@@ -14,6 +14,7 @@ import javafx.event.EventHandler;
 import javafx.scene.input.KeyEvent;
 import cs1302.arcade.*;
 //
+import javafx.geometry.Insets;
 import javafx.scene.layout.*;
 import javafx.scene.canvas.*;
 import javafx.scene.paint.Color;
@@ -51,7 +52,7 @@ public class TetrisStage extends Stage{
         for (int i = 0; i < HEIGHT; i++) {
             hb = new HBox();
             for (int j = 0; j < WIDTH; j++) {
-                rect[i][j] = new Rectangle(35.0,35.0, Color.TRANSPARENT);
+                rect[i][j] = new Rectangle(25.0,25.0, Color.TRANSPARENT);
                 rect[i][j].setStroke(Color.BLACK);
                 hb.getChildren().add(rect[i][j]);
             }
@@ -69,12 +70,16 @@ public class TetrisStage extends Stage{
 
             }*/
        
-         //
-         layout = new Group();
+        //
+        // layout = new Group();
          //drawBoard(gc);
          this.setMenuBar();
+         //This fixes menubar
+         vb2.getChildren().addAll(menuBar, vb);
+         vb2.setMargin(vb, new Insets(20,0,0,50));
+         
          //layout.getChildren().addAll(menuBar,vb);
-         Scene window = new Scene(vb, 800, 680);
+         Scene window = new Scene(vb2, 800, 680);
          this.initModality(Modality.APPLICATION_MODAL);
          this.setTitle("T e t r i s");
          this.setMinWidth(800);
