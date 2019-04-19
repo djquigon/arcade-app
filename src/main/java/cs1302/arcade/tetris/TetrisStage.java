@@ -1,5 +1,6 @@
 package cs1302.arcade;
 
+import javafx.application.Platform;
 import javafx.stage.Stage;
 import javafx.stage.Modality;
 import javafx.scene.Group;
@@ -10,54 +11,48 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.shape.Rectangle;
-import javafx.event.EventHandler;
-import javafx.scene.input.KeyEvent;
 import cs1302.arcade.*;
 //
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.event.EventHandler;
+import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.scene.layout.*;
-import javafx.scene.canvas.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.*;
+import javafx.util.Duration;
 //
 
 public class TetrisStage extends Stage{
 
-    
-    Group layout;
-    MenuBar menuBar;
-
     public final int HEIGHT = 20;
     public final int WIDTH = 10;
-    private final Color[] colors = {Color.WHITE, Color.ORANGE, Color.GREEN, Color.CYAN, Color.MAGENTA, Color.BLUE, Color.YELLOW, Color.RED};
-    //private static final int X_OFFSET = 20, Y_OFFSET = 20;
-    /* private static final int X_OFFSET = 20, Y_OFFSET = 20, NEXTPIECEX = 360, NEXTPIECEY = 40;
-    private static final int HEIGHT = 680, WIDTH = 640, BLOCK_SIZE = 32;
-    private static int level = 1;
-    private static double score;
-    private static int lines;
-    Canvas canvas = new Canvas(WIDTH, HEIGHT);
-    GraphicsContext gc = canvas.getGraphicsContext2D();
-    */    
-
+    
+    EventHandler<ActionEvent> handler;
+    Group layout;
+    MenuBar menuBar;
+    KeyFrame keyFrame;
+    Timeline timeline;
+    int iteration = 1;
     HBox hb = new HBox();
     VBox vb = new VBox();
     VBox vb2 = new VBox();
+    Rectangle[][] rect;
     
-    //TetrisBoard board = new TetrisBoard();
     public TetrisStage(){
         super();
         //This should go in board class just experimenting here
-        Rectangle[][] rect = new Rectangle[HEIGHT][WIDTH];
+        rect = new Rectangle[HEIGHT][WIDTH];
         for (int i = 0; i < HEIGHT; i++) {
             hb = new HBox();
             for (int j = 0; j < WIDTH; j++) {
-                rect[i][j] = new Rectangle(25.0,25.0, Color.TRANSPARENT);
+                rect[i][j] = new Rectangle(30.0,30.0, Color.TRANSPARENT);
                 rect[i][j].setStroke(Color.BLACK);
                 hb.getChildren().add(rect[i][j]);
             }
             vb.getChildren().add(hb);
-        }
+        }    
 
         //Gonna need this so seperate to call multiple times
         
@@ -70,15 +65,11 @@ public class TetrisStage extends Stage{
 
             }*/
        
-        //
-        // layout = new Group();
-         //drawBoard(gc);
          this.setMenuBar();
          //This fixes menubar
          vb2.getChildren().addAll(menuBar, vb);
-         vb2.setMargin(vb, new Insets(20,0,0,50));
+         vb2.setMargin(vb, new Insets(10,0,0,75));
          
-         //layout.getChildren().addAll(menuBar,vb);
          Scene window = new Scene(vb2, 800, 680);
          this.initModality(Modality.APPLICATION_MODAL);
          this.setTitle("T e t r i s");
@@ -87,8 +78,51 @@ public class TetrisStage extends Stage{
          this.setResizable(false);
          this.sizeToScene();
          this.setScene(window);
+         this.blockMove();
     }
 
+     public void blockMove(){
+         handler = new EventHandler<ActionEvent>(){
+                 @Override
+                 public void handle(ActionEvent event){
+                     if(iteration > HEIGHT - 1){
+                         iteration = 0;
+                     }
+                     for(int i = iteration; i < i+1; i++){
+                         //Filling
+                         
+                         for(int j = 4; j< 7; j++){
+                             if(j == 4){
+                                 rect[i-1][j].setFill(Color.RED);
+                             }
+                             rect[i][j].setFill(Color.RED);
+                         }//for j
+
+                         //Animation
+                         for(int w = 6; w > 3; w--){
+                             //Moving down
+                             rect[i+1][w].setFill(Color.RED);
+                             if(w == 4){
+                                 //rect[i-1][w].setFill(Color.TRANSPARENT);
+                                 //Preserving 2 value
+                                 break;
+                             }
+                                //Removing above
+                             //rect[i][w].setFill(Color.TRANSPARENT);
+                         }//for white
+                         iteration++;
+                     }//for i
+                 }//handle
+             };//EventHandler
+         
+         //Intializes KeyFrame with animation being done every 2 seconds         
+         keyFrame = new KeyFrame(Duration.millis(2500), handler);
+         timeline = new Timeline();
+         timeline.setCycleCount(Timeline.INDEFINITE);
+         timeline.getKeyFrames().add(keyFrame);
+         timeline.play();
+     }
+    
     public void setMenuBar(){
         menuBar = new MenuBar();
         Menu file = new Menu("File");
@@ -101,22 +135,4 @@ public class TetrisStage extends Stage{
         menuBar.getMenus().addAll(file, help);
         menuBar.prefWidthProperty().bind(this.widthProperty());
     }
-    
-    /*private void drawBoard(GraphicsContext g2d) {
-        // g2d.setFont(new Font("Comic Sans MS", 20));
-        g2d.setFill(Color.GRAY);
-        g2d.fillRect(0, 0, WIDTH, HEIGHT);
-        g2d.setFill(Color.WHITE);
-        // g2d.fillText("Next Piece:", NEXTPIECEX, NEXTPIECEY-10);
-        g2d.fillText("Score: "+(int)score, NEXTPIECEX, 390);
-        g2d.fillText("Lines: "+lines, NEXTPIECEX, 430);
-        g2d.fillText("Level: "+level, NEXTPIECEX, 470);
-        for(int j=0; j<board.HEIGHT; j++)
-            for(int i=0; i<board.WIDTH; i++) {
-                g2d.setFill(colors[board.getBlock(i, j)]);
-                g2d.fillRect(X_OFFSET+i*BLOCK_SIZE, Y_OFFSET+j*BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
-            }
-            }// drawBoard*/
-    
-    
 }

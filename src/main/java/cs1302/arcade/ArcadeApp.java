@@ -71,6 +71,7 @@ public class ArcadeApp extends Application {
         r.setOnMouseClicked(createMouseHandler()); // clicks on the rectangle move it randomly
         group.setOnKeyPressed(createKeyHandler()); // left-right key presses move the rectangle
         */
+        
         mainMenu = new MainMenu();
         Scene scene = new Scene(mainMenu, 800, 680);
         stage.setResizable(false);
