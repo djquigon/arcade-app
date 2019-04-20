@@ -25,6 +25,7 @@ import javafx.util.Duration;
 import javafx.scene.control.Separator;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
+import javafx.scene.control.Button;
 //
 
 public class TetrisStage extends Stage{
@@ -36,7 +37,7 @@ public class TetrisStage extends Stage{
     Scene scene;
     MenuBar menuBar;
     KeyFrame keyFrame;
-    Timeline timeline;
+    Timeline bmTimeline;
     int iteration = 1;
     int scoreTotal;
     Text score;
@@ -44,6 +45,7 @@ public class TetrisStage extends Stage{
     VBox board;
     VBox window;
     VBox info;
+    Button pauseStart;
     Separator sep;
     Rectangle[][] rect;
     
@@ -75,38 +77,38 @@ public class TetrisStage extends Stage{
             }*/
         window = new VBox();
         main = new HBox();
-        //board
+        //declare board here when class is made
         sep = new Separator(Orientation.VERTICAL);
         scoreTotal = 0;
         score = new Text("Score: " + scoreTotal);
         score.setFont(new Font(30));
-        info = new VBox();
-        info.setAlignment(Pos.TOP_CENTER);
-        info.getChildren().addAll(score);
+        pauseStart = new Button("Pause Game");
+        pauseStart.setOnAction(e -> {
+                if(pauseStart.getText().equals("Pause Game")){
+                    pauseStart.setText("Unpause Game");
+                    bmTimeline.stop();
+                }
+                else{
+                    pauseStart.setText("Pause Game");
+                    bmTimeline.play();
+                }
+            });
+        info = new VBox(25);
+        info.setMargin(score, new Insets(0, 100, 0, 100));
+        info.setMargin(pauseStart, new Insets(0, 100, 0, 110));
+        info.getChildren().addAll(score, pauseStart);
         main.getChildren().addAll(board, sep, info);
         window.getChildren().addAll(menuBar, main);
         main.setMargin(board, new Insets(10,75,0,75));
-        /*
-         window = new VBox();
-         window.getChildren().addAll(menuBar, board);
-         window.setMargin(vb, new Insets(10,50,0,75));
-         sep = new Separator(Orientation.VERTICAL);
-         scoreTotal = 0;
-         score = new Text("Score: " + scoreTotal);
-         main = new HBox();
-         VBox info = new VBox();
-         info.getChildren().addAll(score);
-         main.getChildren().addAll(window, sep, info);
-        */
-         scene = new Scene(window, 800, 680);
-         this.initModality(Modality.APPLICATION_MODAL);
-         this.setTitle("T e t r i s");
-         this.setMinWidth(800);
-         this.setMinHeight(680);
-         this.setResizable(false);
-         this.sizeToScene();
-         this.setScene(scene);
-         this.blockMove();
+        scene = new Scene(window, 800, 680);
+        this.initModality(Modality.APPLICATION_MODAL);
+        this.setTitle("T e t r i s");
+        this.setMinWidth(800);
+        this.setMinHeight(680);
+        this.setResizable(false);
+        this.sizeToScene();
+        this.setScene(scene);
+        this.blockMove();
     }
 
      public void blockMove(){
@@ -144,11 +146,10 @@ public class TetrisStage extends Stage{
              };//EventHandler
          //Intializes KeyFrame with animation being done every 2 seconds         
          keyFrame = new KeyFrame(Duration.millis(1500), handler);
-         timeline = new Timeline();
-         timeline.setCycleCount(Timeline.INDEFINITE);
-         
-         timeline.getKeyFrames().add(keyFrame);
-         timeline.play();
+         bmTimeline = new Timeline();
+         bmTimeline.setCycleCount(Timeline.INDEFINITE);
+         bmTimeline.getKeyFrames().add(keyFrame);
+         bmTimeline.play();
      }
     
     public void setMenuBar(){
@@ -157,7 +158,7 @@ public class TetrisStage extends Stage{
         MenuItem exit = new MenuItem("Exit to Main Menu");
         exit.setOnAction(e -> {
                 this.close();
-                timeline.stop();
+                bmTimeline.stop();
             });
         file.getItems().add(exit);
         Menu help = new Menu("Help");
