@@ -1,49 +1,113 @@
 package cs1302.arcade;
 
+import cs1302.arcade.*;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.paint.Color;
+import javafx.scene.layout.VBox;
+import javafx.scene.layout.HBox;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.event.EventHandler;
+import javafx.event.ActionEvent;
+import javafx.util.Duration;
 
+public class TetrisBoard extends VBox{
 
-//Commented out everything for now to test functionality
-public class TetrisBoard{
+    public static final int HEIGHT = 20; //the height of the board
+    public static final int WIDTH = 10; //the width of the board
 
-    //public final int HEIGHT = 20;
-    //public final int WIDTH = 10;
-    //public int[][] matrix;
+    private KeyFrame bmKeyFrame; //boardMove keyframe
+    private Timeline bmTimeline; //boardMove Timeline
+    private int iteration = 1; //blockMove iteration
+    private Rectangle[][] rect; //board grid
     
-/*    public TetrisBoard(){
-        Rectangle[][] arr = new Rectangle[HEIGHT][WIDTH];
-        for(int i = 0; i < HEIGHT; i++){
-            for(int j = 0; j < WIDTH; j++){
-                Rectangle r = new Rectangle(7,7,Color.BLACK);
-                arr[i][j] = r;
-                
-            }
-        }
-        }*/
     /**
-     *Creates a 2D array representing the tiles of the tetris board.
+     * Creates a VBox containing a 2D array representing the tiles of the tetris board.
      */
-    /* public TetrisBoard() {
-        matrix = new int[HEIGHT][WIDTH];
-        for (int i = 0; i< HEIGHT; i++){
-            for (int j = 0; j < WIDTH; j++){
-                matrix[i][j] = 0;
-            }//for
-        }//for
-        }//Board*/
-    
-    /*public int getBlock(int x, int y) {
-        return matrix[y][x];
-        }//Block*/
-
-    /*public int getHeight(){
-        return this.HEIGHT;
-    }//Height
-
-    public int getWidth(){
-        return this.WIDTH;
-    }//Width
+    public TetrisBoard(){
+        super();
+        rect = new Rectangle[HEIGHT][WIDTH];
+        for (int i = 0; i < HEIGHT; i++) {
+            HBox row = new HBox();
+            for (int j = 0; j < WIDTH; j++) {
+                rect[i][j] = new Rectangle(30.0,30.0, Color.TRANSPARENT);
+                rect[i][j].setStroke(Color.BLACK);
+                row.getChildren().add(rect[i][j]);
+            }
+            this.getChildren().add(row);
+        }
+    }
+    //Gonna need this so seperate to call multiple times
+    /*for (int i = 0; i < rect.length; i++) {
+      hBox = new HBox();
+      for (int j = 0; j < rect[0].length; j++) {
+      hBox.getChildren().add(rect[i][j]);
+      }
+      vBox.getChildren().add(hBox);
+      }
     */
-    
+
+    /**
+     * Returns the rectangle at the specificed indexes in {@code rect}
+     *
+     * @param y the column
+     * @param x the row
+     * @return the rectangle at the given indexes
+     */
+    public Rectangle getBlock(int y, int x) {
+      return rect[x][y];
+    }
+
+    /**
+     * This moves the block. (changing this)
+     */
+    public void blockMove(){
+       EventHandler<ActionEvent> handler = new EventHandler<ActionEvent>(){
+                @Override
+                public void handle(ActionEvent event){
+                    if(iteration == HEIGHT - 1){
+                        iteration = 1;
+                        return;
+                    }
+                    int currIteration = iteration;
+                    for(int i = iteration; i < currIteration+1; i++){
+                        //Filling
+                        for(int j = 4; j< 7; j++){
+                            if(j == 4){
+                                rect[i-1][j].setFill(Color.RED);
+                            }
+                            rect[i][j].setFill(Color.RED);
+                        }//for j
+                         //Animation
+                        for(int w = 6; w > 3; w--){
+                            //Moving down
+                            rect[i+1][w].setFill(Color.RED);
+                            if(w == 4){
+                                rect[i-1][w].setFill(Color.TRANSPARENT);
+                                //Preserving 2 value
+                                break;
+                            }
+                            //Removing above
+                            rect[i][w].setFill(Color.TRANSPARENT);
+                        }//for white
+                        iteration++;
+                    }//for i
+                }//handle
+            };//EventHandler
+        //Intializes KeyFrame with animation being done every 2 seconds
+        bmKeyFrame = new KeyFrame(Duration.millis(1500), handler);
+        bmTimeline = new Timeline();
+        bmTimeline.setCycleCount(Timeline.INDEFINITE);
+        bmTimeline.getKeyFrames().add(bmKeyFrame);
+        bmTimeline.play();
+    }
+
+    /**
+     * Returns the {@code blockMove} Timeline
+     *
+     * @return the blockMove Timeline
+     */
+    public Timeline getBmTimeline(){
+        return bmTimeline;
+    }
 }

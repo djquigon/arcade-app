@@ -2,7 +2,7 @@ package cs1302.arcade;
 
 import javafx.scene.paint.Color;
 
-public class Blocks{
+public class TetrisBlocks{
     private Color[] color = {
         Color.RED, Color.YELLOW, Color.MAGENTA, Color.PINK,
         Color.CYAN, Color.GREEN, Color.ORANGE
