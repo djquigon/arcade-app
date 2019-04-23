@@ -1,9 +1,11 @@
 package cs1302.arcade;
 
 import cs1302.arcade.*;
+import javafx.scene.layout.StackPane;
 
 public class CheckersPiece extends StackPane{
-    
+
+    /*
     public enum Piece{
         
         BLACK(1), //1 represents moving down
@@ -17,5 +19,5 @@ public class CheckersPiece extends StackPane{
     } //Piece
 
     //private 
-
+    */
 }
