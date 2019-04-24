@@ -14,3 +14,15 @@
 3. **PROB:** At first we were having a hard time conceptualizing what class
     higherarchy we should have for Tetris, but after some research we think we
     have a better idea.
+
+
+## PARTIAL SUBMISSION 2 // TUE 2019-04-23 @ 11:55 PM EST
+
+1. **DONE:** Board and layout of scene for Tetris made. L block movement and key actions tested.
+    Checkers board and scene made. Began working on pieces to insert onto board.    
+
+2. **TODO:** Most tetris pieces functioning on the board. Have checkers nearly complete.
+
+3. **PROB:** Our approach for Tetris has encountered a few difficulties, specifically
+    regarding our blocks and how they move through our 2d rectangle array. Will
+    possibly consider other approaches.

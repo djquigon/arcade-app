@@ -56,6 +56,7 @@ public class TetrisStage extends Stage{
         this.setResizable(false);
         this.sizeToScene();
         this.setScene(scene);
+        board.handleMove();
         board.blockMove();
     }
 
@@ -100,5 +101,9 @@ public class TetrisStage extends Stage{
         help.getItems().add(about);
         menuBar.getMenus().addAll(file, help);
         menuBar.prefWidthProperty().bind(this.widthProperty());
+    }
+
+    public Scene getTetrisScene(){
+        return scene;
     }
 }
