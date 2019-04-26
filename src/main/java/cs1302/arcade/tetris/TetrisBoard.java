@@ -23,6 +23,7 @@ public class TetrisBoard extends VBox{
     private int iteration = 1; //blockMove iteration
     private int current = 4;
     private int moved = 0;
+    int shift = 0;
     private Rectangle[][] rect; //board grid
     private boolean flag = false;
     
@@ -68,7 +69,7 @@ public class TetrisBoard extends VBox{
      */
     public void blockMove(){
        EventHandler<ActionEvent> handler = new EventHandler<ActionEvent>(){
-               @Override
+               /*   @Override
                 public void handle(ActionEvent event){
                     if(iteration == HEIGHT - 1){
                         iteration = 1;
@@ -104,8 +105,8 @@ public class TetrisBoard extends VBox{
         bmTimeline = new Timeline();
         bmTimeline.setCycleCount(Timeline.INDEFINITE);
         bmTimeline.getKeyFrames().add(bmKeyFrame);
-        bmTimeline.play();
-               /*
+        bmTimeline.play();*/
+               
                @Override
                 public void handle(ActionEvent event){
                     if(iteration == HEIGHT - 1){
@@ -116,23 +117,34 @@ public class TetrisBoard extends VBox{
                     for(int i = iteration; i < currIteration+1; i++){
                         //Filling
                         for(int j = current; j < current+3; j++){
-                            if(flag){
-                                i--;
-                                //flag = false;
-                                bmTimeline.stop();
+                            if(j == current){
+                                rect[i-1][j].setFill(Color.RED);
                             }
-                            else{
-                                if(j == current){
-                                    rect[i-1][j].setFill(Color.RED);
-                                }
-                                rect[i][j].setFill(Color.RED);
-                            }
+                            rect[i][j].setFill(Color.RED);
                         }//for j
+                        if(flag){
+                            //shift = i;
+                            /*int rem = 10 - current - 3;
+                            for(int j = current; j < rem; j++){
+                                rect[i-1][j+1].setFill(Color.TRANSPARENT);
+                                rect[i][j+3].setFill(Color.TRANSPARENT);
+                                }*/
+                            /*for(int j = current; j < current+1; j++){
+                                rect[i-1][j+1].setFill(Color.TRANSPARENT);
+                                rect[i][j+3].setFill(Color.TRANSPARENT);
+                                }*/
+                            // shift = 4;
+                            flag = false;
+                            continue;
+                        }
+                        
                          //Animation
-                        bmTimeline.play();
-                        flag = false;
+                        
+                        //else{
+                        //if(flag == false) {
                         for(int w = current + 2; w > current-3; w--){
                             //Moving down
+                           
                             rect[i+1][w].setFill(Color.RED);
                             if(w == current){
                                 rect[i-1][w].setFill(Color.TRANSPARENT);
@@ -142,19 +154,27 @@ public class TetrisBoard extends VBox{
                             //Removing above
                             rect[i][w].setFill(Color.TRANSPARENT);
                         }//for white
+                        
+                        //}
+                        //else{
+                        //flag = false;
+                        // }
+                        //}
+        
                         iteration++;
+                        if(iteration == 19)
+                            current = 4;
                     }//for i
                 }//handle
             };//EventHandler
         //Intializes KeyFrame with animation being done every 2 seconds
-        bmKeyFrame = new KeyFrame(Duration.millis(1500), handler);
+        bmKeyFrame = new KeyFrame(Duration.millis(1000), handler);
         bmTimeline = new Timeline();
         bmTimeline.setCycleCount(Timeline.INDEFINITE);
         bmTimeline.getKeyFrames().add(bmKeyFrame);
         bmTimeline.play();
     }
-               */
-    }
+              
     /**
      * Returns the {@code blockMove} Timeline
      *
@@ -173,6 +193,11 @@ public class TetrisBoard extends VBox{
                         return;
                     }
                     current--;
+                    //shift++;
+                     for(int j = current; j < current+1; j++){
+                         rect[iteration-1][j+1].setFill(Color.TRANSPARENT);
+                         rect[iteration][j+3].setFill(Color.TRANSPARENT);
+                     }
                 }
                 if(e.getCode() == KeyCode.RIGHT){
                     current++;
