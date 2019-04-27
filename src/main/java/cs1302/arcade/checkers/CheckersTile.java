@@ -9,7 +9,7 @@ public class CheckersTile extends Rectangle{
     public static final int TILE_WIDTH = 82;
     public static final int TILE_HEIGHT = 82;
 
-    //private Piece piece;
+    private CheckersPiece piece;
 
     public CheckersTile(boolean isWhite, int x, int y){
         super();
@@ -22,5 +22,9 @@ public class CheckersTile extends Rectangle{
         else{
             this.setFill(Color.BLACK);
         }
+    }
+
+    public void setPiece(CheckersPiece piece){
+        this.piece = piece;
     }
 }
