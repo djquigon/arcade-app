@@ -27,4 +27,12 @@ public class CheckersTile extends Rectangle{
     public void setPiece(CheckersPiece piece){
         this.piece = piece;
     }
+
+    public CheckersPiece getPiece(){
+        return piece;
+    }
+
+    public boolean isOpen(){
+        return this.getPiece() == null;
+    }
 }

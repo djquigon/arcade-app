@@ -11,6 +11,8 @@ import javafx.scene.text.Text;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
+import javafx.scene.text.Font;
+import javafx.geometry.Insets;
 
 public class CheckersStage extends Stage{
 
@@ -19,6 +21,7 @@ public class CheckersStage extends Stage{
     HBox main;
     MenuBar menuBar;
     CheckersBoard board;
+    VBox info;
 
     public CheckersStage(){
         super();
@@ -27,7 +30,8 @@ public class CheckersStage extends Stage{
         this.setMenuBar();
         main = new HBox();
         board = new CheckersBoard();
-        main.getChildren().addAll(board); //info
+        this.setInfo();
+        main.getChildren().addAll(board, info);
         window.getChildren().addAll(menuBar, main);
         scene = new Scene(window, 800, 680);
         this.initModality(Modality.APPLICATION_MODAL);
@@ -50,5 +54,16 @@ public class CheckersStage extends Stage{
         menuBar.getMenus().addAll(file, help);
         menuBar.prefWidthProperty().bind(this.widthProperty());
     }
-
+        
+    /**
+     * Sets the contents of the {@code info} VBox.
+     */
+    public void setInfo(){
+        String whoseTurn = "";
+        Text turn = new Text("Turn: " + whoseTurn);
+        turn.setFont(new Font(20));
+        info = new VBox(25);
+        info.setMargin(turn, new Insets(0, 100, 0, 50));
+        info.getChildren().addAll(turn);
+    }   
 }
