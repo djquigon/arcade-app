@@ -3,6 +3,7 @@ package cs1302.arcade;
 import javafx.scene.Scene;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.HBox;
+import javafx.scene.Group;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
@@ -13,24 +14,33 @@ import javafx.geometry.Insets;
 import javafx.scene.control.Separator;
 import javafx.geometry.Orientation;
 import javafx.scene.text.Text;
-import cs1302.arcade.TetrisStage;
-import cs1302.arcade.CheckersStage;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundSize;
+import javafx.scene.layout.Background;
+import cs1302.arcade.*;
 
 public class MainMenu extends VBox{
 
     MenuBar menuBar;
-    HBox games;
+    Group games;
     HBox bottomBar;
 
     public MainMenu(){
         super();
-        
+        BackgroundImage bi= new BackgroundImage(new Image("background_menu.png",800,680,false,true),
+                                                  BackgroundRepeat.NO_REPEAT,
+                                                  BackgroundRepeat.NO_REPEAT,
+                                                  BackgroundPosition.DEFAULT,
+                                                  BackgroundSize.DEFAULT);
+        this.setBackground(new Background(bi));
         //create menuBar
         menuBar = new MenuBar();
         this.setMenuBar(menuBar);
         
         //create games
-        games = new HBox();
+        games = new Group();
         this.setGames(games);
         
         //create bottomBar
@@ -49,15 +59,9 @@ public class MainMenu extends VBox{
         menuBar.getMenus().addAll(file);
     }
     
-    public void setGames(HBox games){
-        VBox game1 = new VBox();
-        VBox game2 = new VBox();
-        ImageView iv1 = new ImageView();
-        ImageView iv2 = new ImageView(); 
-        Image i1 = new Image("http://cobweb.cs.uga.edu/~mec/cs1302/gui/pikachu.png");
-        Image i2 = new Image("http://cobweb.cs.uga.edu/~mec/cs1302/gui/pikachu.png");
-        iv1.setImage(i1);
-        iv2.setImage(i2);
+    public void setGames(Group games){
+        ImageView iv1 = new ImageView(new Image("Checkers.png", 115, 115, false, true));
+        ImageView iv2 = new ImageView(new Image("Checkers.png", 115, 115, false, true)); 
         Button b1 = new Button("Play: Tetris");
         b1.setOnAction(e -> {
                 TetrisStage tetris = new TetrisStage();
@@ -69,16 +73,16 @@ public class MainMenu extends VBox{
                 CheckersStage checkers = new CheckersStage();
                 checkers.showAndWait();
             });
+        games.getChildren().addAll(iv1, b1, iv2, b2);
         b2.setMaxSize(200, 1000);
-        Separator sep1 = new Separator(Orientation.HORIZONTAL);
-        Separator sep2 = new Separator(Orientation.HORIZONTAL);
-        game1.getChildren().addAll(iv1, b1, sep1);
-        game2.getChildren().addAll(iv2, b2, sep2);
-        game1.setMargin(iv1, new Insets(50));
-        game1.setMargin(b1, new Insets(0, 0, 50, 100));
-        game2.setMargin(iv2, new Insets(50));
-        game2.setMargin(b2, new Insets(0, 0, 50, 100));
-        games.getChildren().addAll(game1, game2);
+        iv1.setTranslateX(400);
+        b1.setTranslateX(400);
+        iv2.setTranslateX(400);
+        b2.setTranslateX(400);
+        iv1.setTranslateY(400);
+        b1.setTranslateY(400);
+        iv2.setTranslateY(400);
+        b2.setTranslateY(400);
     }
 
     public void setBottomBar(HBox bottomBar){

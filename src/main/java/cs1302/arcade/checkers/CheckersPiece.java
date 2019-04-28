@@ -81,31 +81,76 @@ public class CheckersPiece extends StackPane{
 
     public void moveBlue(){
         if(currentX == 0){
-            currentX++;
-            currentY++;
-            if(currentY == 7){
-                this.setToKing();
+            CheckersTile option1 = board.getBoardIndex(currentX+1, currentY+1);
+            if(option1.isOpen()){
+                option1.setStrokeWidth(3);
+                option1.setOnMousePressed(e-> {        
+                        currentX++;
+                        currentY++;
+                        if(currentY == 7){
+                            this.setToKing();
+                        }
+                        this.relocate((currentX) *  CheckersTile.TILE_WIDTH,
+                                      (currentY) *  CheckersTile.TILE_HEIGHT);
+                        board.getBoardIndex(currentX, currentY).setPiece(this);
+                        board.getBoardIndex(currentX-1, currentY-1).setPiece(null);
+                        option1.setStrokeWidth(0);
+                    });
             }
-            this.relocate((currentX) *  CheckersTile.TILE_WIDTH,
-                          (currentY) *  CheckersTile.TILE_HEIGHT);
         }
         else if(currentX == 7){
-            currentX--;
-            currentY++;
-            if(currentY == 7){
-                this.setToKing();
+            CheckersTile option1 = board.getBoardIndex(currentX-1, currentY+1);
+            if(option1.isOpen()){
+                option1.setStrokeWidth(3);
+                option1.setOnMousePressed(e-> {        
+                        currentX--;
+                        currentY++;
+                        if(currentY == 7){
+                            this.setToKing();
+                        }
+                        this.relocate((currentX) *  CheckersTile.TILE_WIDTH,
+                                      (currentY) *  CheckersTile.TILE_HEIGHT);
+                        board.getBoardIndex(currentX, currentY).setPiece(this);
+                        board.getBoardIndex(currentX+1, currentY-1).setPiece(null);
+                        option1.setStrokeWidth(0);
+                    });
             }
-            this.relocate((currentX) *  CheckersTile.TILE_WIDTH,
-                          (currentY) *  CheckersTile.TILE_HEIGHT);
         }
         else{
-            currentX++;
-            currentY++;
-            if(currentY == 7){
-                this.setToKing();
+            CheckersTile option1 = board.getBoardIndex(currentX+1, currentY+1);
+            CheckersTile option2 = board.getBoardIndex(currentX-1, currentY+1);
+            if(option1.isOpen()){
+                option1.setStrokeWidth(3);
+                option1.setOnMousePressed(e-> {        
+                        currentX++;
+                        currentY++;
+                        if(currentY == 7){
+                            this.setToKing();
+                        }
+                        this.relocate((currentX) *  CheckersTile.TILE_WIDTH,
+                                      (currentY) *  CheckersTile.TILE_HEIGHT);
+                        board.getBoardIndex(currentX, currentY).setPiece(this);
+                        board.getBoardIndex(currentX-1, currentY-1).setPiece(null);
+                        option1.setStrokeWidth(0);
+                        option2.setStrokeWidth(0);
+                    });
             }
-            this.relocate((currentX) *  CheckersTile.TILE_WIDTH,
-                          (currentY) *  CheckersTile.TILE_HEIGHT);
+            if(option2.isOpen()){
+                option2.setStrokeWidth(3);
+                option2.setOnMousePressed(e-> {        
+                        currentX--;
+                        currentY++;
+                        if(currentY == 7){
+                            this.setToKing();
+                        }
+                        this.relocate((currentX) *  CheckersTile.TILE_WIDTH,
+                                      (currentY) *  CheckersTile.TILE_HEIGHT);
+                        board.getBoardIndex(currentX, currentY).setPiece(this);
+                        board.getBoardIndex(currentX+1, currentY-1).setPiece(null);
+                        option1.setStrokeWidth(0);
+                        option2.setStrokeWidth(0);
+                    });
+            }
         }
     }
 
