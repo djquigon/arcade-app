@@ -24,7 +24,8 @@ import cs1302.arcade.*;
 public class MainMenu extends VBox{
 
     MenuBar menuBar;
-    Group games;
+    Group game1;
+    Group game2;
     HBox bottomBar;
 
     public MainMenu(){
@@ -40,15 +41,16 @@ public class MainMenu extends VBox{
         this.setMenuBar(menuBar);
         
         //create games
-        games = new Group();
-        this.setGames(games);
+        game1 = new Group();
+        game2 = new Group();
+        this.setGames(game1, game2);
         
         //create bottomBar
         //bottomBar = new HBox();
         //this.setBottomBar(bottomBar);
         
         //add all components to layout
-        this.getChildren().addAll(menuBar, games); //bottombar
+        this.getChildren().addAll(menuBar, game1, game2); //bottombar
     }
 
     public void setMenuBar(MenuBar menuBar){
@@ -59,30 +61,27 @@ public class MainMenu extends VBox{
         menuBar.getMenus().addAll(file);
     }
     
-    public void setGames(Group games){
+    public void setGames(Group game1, Group game2){
+        game1.setTranslateX(345);
+        game1.setTranslateY(145);
+        game2.setTranslateX(345);
+        game2.setTranslateY(200);
         ImageView iv1 = new ImageView(new Image("Checkers.png", 115, 115, false, true));
         ImageView iv2 = new ImageView(new Image("Checkers.png", 115, 115, false, true)); 
-        Button b1 = new Button("Play: Tetris");
+        Button b1 = new Button("Space Invaders");
         b1.setOnAction(e -> {
                 TetrisStage tetris = new TetrisStage();
                 tetris.showAndWait();
                     });
-        b1.setMaxSize(200, 1000);
-        Button b2 = new Button("Play: Checkers");
+        b1.setMinSize(50, 50);
+        Button b2 = new Button("Checkers");
         b2.setOnAction(e -> {
                 CheckersStage checkers = new CheckersStage();
                 checkers.showAndWait();
             });
-        games.getChildren().addAll(iv1, b1, iv2, b2);
-        b2.setMaxSize(200, 1000);
-        iv1.setTranslateX(400);
-        b1.setTranslateX(400);
-        iv2.setTranslateX(400);
-        b2.setTranslateX(400);
-        iv1.setTranslateY(400);
-        b1.setTranslateY(400);
-        iv2.setTranslateY(400);
-        b2.setTranslateY(400);
+        b2.setMinSize(50, 50);
+        game1.getChildren().addAll(iv1, b1);
+        game2.getChildren().addAll(iv2, b2);
     }
 
     public void setBottomBar(HBox bottomBar){
