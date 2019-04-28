@@ -122,11 +122,10 @@ public class CheckersPiece extends StackPane{
                         }
                         this.relocate((currentX) *  CheckersTile.TILE_WIDTH,
                                       (currentY) *  CheckersTile.TILE_HEIGHT);
+                        board.getBoardIndex(currentX, currentY).setPiece(this);
+                        board.getBoardIndex(currentX-1, currentY+1).setPiece(null);
+                        option1.setStrokeWidth(0);
                     });
-                board.getBoardIndex(currentX, currentY).setPiece(this);
-                System.out.println(currentX);
-                board.getBoardIndex(currentX-1, currentY+1).setPiece(null);
-                option1.setStrokeWidth(0);
             }
         }
         else if(currentX == 7){
@@ -141,10 +140,10 @@ public class CheckersPiece extends StackPane{
                         }
                         this.relocate((currentX) *  CheckersTile.TILE_WIDTH,
                                       (currentY) *  CheckersTile.TILE_HEIGHT);
+                        board.getBoardIndex(currentX, currentY).setPiece(this);
+                        board.getBoardIndex(currentX+1, currentY+1).setPiece(null);
+                        option1.setStrokeWidth(0);
                     });
-                board.getBoardIndex(currentX, currentY).setPiece(this);
-                board.getBoardIndex(currentX+1, currentY+1).setPiece(null);
-                option1.setStrokeWidth(0);
             }
         }
         else{
