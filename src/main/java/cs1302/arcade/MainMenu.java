@@ -24,8 +24,10 @@ import cs1302.arcade.*;
 public class MainMenu extends VBox{
 
     MenuBar menuBar;
-    Group game1;
-    Group game2;
+    ImageView iv1;
+    Button b1;
+    ImageView iv2;
+    Button b2;
     HBox bottomBar;
 
     public MainMenu(){
@@ -37,57 +39,45 @@ public class MainMenu extends VBox{
                                                   BackgroundSize.DEFAULT);
         this.setBackground(new Background(bi));
         //create menuBar
-        menuBar = new MenuBar();
-        this.setMenuBar(menuBar);
-        
+        this.setMenuBar();
         //create games
-        game1 = new Group();
-        game2 = new Group();
-        this.setGames(game1, game2);
-        
-        //create bottomBar
-        //bottomBar = new HBox();
-        //this.setBottomBar(bottomBar);
-        
-        //add all components to layout
-        this.getChildren().addAll(menuBar, game1, game2); //bottombar
+        this.setGames();
     }
 
-    public void setMenuBar(MenuBar menuBar){
+    public void setMenuBar(){
+        menuBar = new MenuBar();
         Menu file = new Menu("File");
         MenuItem exit = new MenuItem("Exit");
         exit.setOnAction(e-> System.exit(0));
         file.getItems().add(exit);
         menuBar.getMenus().addAll(file);
+        menuBar.setTranslateY(0);
+        this.getChildren().add(menuBar);
     }
     
-    public void setGames(Group game1, Group game2){
-        game1.setTranslateX(345);
-        game1.setTranslateY(145);
-        game2.setTranslateX(345);
-        game2.setTranslateY(200);
-        ImageView iv1 = new ImageView(new Image("Checkers.png", 115, 115, false, true));
-        ImageView iv2 = new ImageView(new Image("Checkers.png", 115, 115, false, true)); 
-        Button b1 = new Button("Space Invaders");
+    public void setGames(){
+        iv1 = new ImageView(new Image("Checkers.png", 115, 115, false, true)); //spaceinvaders
+        b1 = new Button("Space Invaders");
         b1.setOnAction(e -> {
                 TetrisStage tetris = new TetrisStage();
                 tetris.showAndWait();
                     });
-        b1.setMinSize(5, 5);
-        b1.setTranslateY(10);
-        Button b2 = new Button("Checkers");
+        iv1.setTranslateX(345);
+        iv1.setTranslateY(130);
+        b1.setPrefSize(135, 25);
+        b1.setTranslateY(140);
+        b1.setTranslateX(335);
+        iv2 = new ImageView(new Image("Checkers.png", 115, 115, false, true)); 
+        b2 = new Button("Checkers");
         b2.setOnAction(e -> {
                 CheckersStage checkers = new CheckersStage();
                 checkers.showAndWait();
             });
-        b2.setMinSize(5, 5);
-        b2.setTranslateY(10);
-        game1.getChildren().addAll(iv1, b1);
-        game2.getChildren().addAll(iv2, b2);
-    }
-
-    public void setBottomBar(HBox bottomBar){
-        Text credit = new Text("Courtesy of team Lano");
-        bottomBar.getChildren().addAll(credit);
+        iv2.setTranslateX(345);
+        iv2.setTranslateY(160);
+        b2.setPrefSize(135, 25);
+        b2.setTranslateY(170);
+        b2.setTranslateX(335);
+        this.getChildren().addAll(iv1, b1, iv2, b2);
     }
 }
