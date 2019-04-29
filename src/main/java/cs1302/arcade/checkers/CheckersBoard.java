@@ -89,4 +89,17 @@ public class CheckersBoard extends VBox{
             stageRef.getTurnText().setFill(Color.RED);
         }
     }
+
+    public void removeAllHighlights(){
+        for(int x = 0; x < BOARD_WIDTH; x++){
+            for(int y = 0; y < BOARD_HEIGHT; y++){
+                CheckersTile tile = board[x][y];
+                tile.setStrokeWidth(0);
+                if(tile.getPiece() != null){
+                    CheckersPiece piece = tile.getPiece();
+                    piece.removeOptions();
+                }
+            }
+        }
+    }
 }

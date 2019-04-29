@@ -32,9 +32,11 @@ public class CheckersPiece extends StackPane{
         this.getChildren().addAll(bottom, top);
         this.setOnMousePressed(e-> {
                 if(piece == Piece.RED && board.isRedTurn()){
+                    board.removeAllHighlights();
                     this.moveRed();
                 }
                 if(piece == Piece.BLUE && board.isBlueTurn()){
+                    board.removeAllHighlights();
                     this.moveBlue();
                 }
             });
@@ -108,7 +110,7 @@ public class CheckersPiece extends StackPane{
                                 option1.setStrokeWidth(0);
                                 board.setIsRedTurn(true);
                                 board.setIsBlueTurn(false);
-                                option1 = null;
+                                this.removeOptions();
                             }
                         });
                 }
@@ -131,7 +133,7 @@ public class CheckersPiece extends StackPane{
                                 option1.setStrokeWidth(0);
                                 board.setIsRedTurn(true);
                                 board.setIsBlueTurn(false);
-                                option1 = null;
+                                this.removeOptions();
                             }
                         });
                 }
@@ -156,8 +158,7 @@ public class CheckersPiece extends StackPane{
                                 option2.setStrokeWidth(0);
                                 board.setIsRedTurn(true);
                                 board.setIsBlueTurn(false);
-                                option1 = null;
-                                option2 = null;
+                                this.removeOptions();
                             }
                         });
                 }
@@ -178,8 +179,7 @@ public class CheckersPiece extends StackPane{
                                 option2.setStrokeWidth(0);
                                 board.setIsRedTurn(true);
                                 board.setIsBlueTurn(false);
-                                option1 = null;
-                                option2 = null;
+                                this.removeOptions();
                             }
                         });
                 }
@@ -207,7 +207,7 @@ public class CheckersPiece extends StackPane{
                                 option1.setStrokeWidth(0);
                                 board.setIsBlueTurn(true);
                                 board.setIsRedTurn(false);
-                                option1 = null;
+                                this.removeOptions();
                             }
                         });
                 }
@@ -230,7 +230,7 @@ public class CheckersPiece extends StackPane{
                                 option1.setStrokeWidth(0);
                                 board.setIsBlueTurn(true);
                                 board.setIsRedTurn(false);
-                                option1 = null;
+                                this.removeOptions();
                             }
                         });
                 }
@@ -255,8 +255,7 @@ public class CheckersPiece extends StackPane{
                                 option2.setStrokeWidth(0);
                                 board.setIsBlueTurn(true);
                                 board.setIsRedTurn(false);
-                                option1 = null;
-                                option2 = null;
+                                this.removeOptions();
                             }
                         });
                    
@@ -278,17 +277,19 @@ public class CheckersPiece extends StackPane{
                                 option2.setStrokeWidth(0);
                                 board.setIsBlueTurn(true);
                                 board.setIsRedTurn(false);
-                                option1 = null;
-                                option2 = null;
+                                this.removeOptions();
                             }
                         });
                 } //if
             } //else
         } //if
     } //moveRed
+
+    public void removeOptions(){
+        option1 = null;
+        option2 = null;
+    }
 }
-
-
 
 enum Piece{
     
