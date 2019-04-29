@@ -6,8 +6,8 @@ import javafx.scene.paint.Color;
 
 public class CheckersTile extends Rectangle{
 
-    public static final int TILE_WIDTH = 82; //width of a tile
-    public static final int TILE_HEIGHT = 82; //height of a tile
+    public static final int TILE_WIDTH = 80; //width of a tile
+    public static final int TILE_HEIGHT = 80; //height of a tile
 
     private CheckersPiece piece;
 
@@ -20,7 +20,7 @@ public class CheckersTile extends Rectangle{
             this.setFill(Color.WHITE);
         }
         else{
-            this.setFill(Color.BLACK);
+            this.setFill(Color.web("#262626"));
         }
     }
 

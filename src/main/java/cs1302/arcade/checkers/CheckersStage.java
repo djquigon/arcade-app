@@ -8,20 +8,28 @@ import javafx.scene.Scene;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.scene.paint.Color;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.text.Font;
 import javafx.geometry.Insets;
+import javafx.scene.image.Image;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundSize;
 
 public class CheckersStage extends Stage{
 
-    Scene scene;
-    VBox window;
-    HBox main;
-    MenuBar menuBar;
-    CheckersBoard board;
-    VBox info;
+    private Scene scene;
+    private VBox window;
+    private HBox main;
+    private MenuBar menuBar;
+    private CheckersBoard board;
+    private VBox info;
+    private Text turn;
 
     public CheckersStage(){
         super();
@@ -29,10 +37,16 @@ public class CheckersStage extends Stage{
         menuBar = new MenuBar();
         this.setMenuBar();
         main = new HBox();
-        board = new CheckersBoard();
+        board = new CheckersBoard(this);
         this.setInfo();
         main.getChildren().addAll(board, info);
         window.getChildren().addAll(menuBar, main);
+        BackgroundImage bi= new BackgroundImage(new Image("background_checkers.png",800,680,false,true),
+                                                BackgroundRepeat.NO_REPEAT,
+                                                BackgroundRepeat.NO_REPEAT,
+                                                BackgroundPosition.DEFAULT,
+                                                BackgroundSize.DEFAULT);
+        window.setBackground(new Background(bi));
         scene = new Scene(window, 800, 680);
         this.initModality(Modality.APPLICATION_MODAL);
         this.setTitle("C H E C K E R S");
@@ -59,11 +73,16 @@ public class CheckersStage extends Stage{
      * Sets the contents of the {@code info} VBox.
      */
     public void setInfo(){
-        String whoseTurn = "";
-        Text turn = new Text("Turn: " + whoseTurn);
+        turn = new Text("Red's Turn");
         turn.setFont(new Font(20));
+        turn.setUnderline(true);
+        turn.setFill(Color.RED);
         info = new VBox(25);
-        info.setMargin(turn, new Insets(0, 100, 0, 50));
+        info.setMargin(turn, new Insets(0, 50, 0, 20));
         info.getChildren().addAll(turn);
-    }   
+    }
+
+    public Text getTurnText(){
+        return turn;
+    }
 }

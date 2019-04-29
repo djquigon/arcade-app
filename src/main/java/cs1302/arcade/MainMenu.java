@@ -73,13 +73,15 @@ public class MainMenu extends VBox{
                 TetrisStage tetris = new TetrisStage();
                 tetris.showAndWait();
                     });
-        b1.setMinSize(50, 50);
+        b1.setMinSize(5, 5);
+        b1.setTranslateY(10);
         Button b2 = new Button("Checkers");
         b2.setOnAction(e -> {
                 CheckersStage checkers = new CheckersStage();
                 checkers.showAndWait();
             });
-        b2.setMinSize(50, 50);
+        b2.setMinSize(5, 5);
+        b2.setTranslateY(10);
         game1.getChildren().addAll(iv1, b1);
         game2.getChildren().addAll(iv2, b2);
     }
