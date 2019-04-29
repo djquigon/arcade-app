@@ -92,19 +92,21 @@ public class CheckersPiece extends StackPane{
                 CheckersTile option1 = board.getBoardIndex(currentX+1, currentY+1);
                 if(option1.isOpen()){
                     option1.setStrokeWidth(3);
-                    option1.setOnMousePressed(e-> {        
-                            currentX++;
-                            currentY++;
-                            if(currentY == 7){
-                                this.setToKing();
+                    option1.setOnMousePressed(e-> {
+                            if(board.isBlueTurn()){
+                                currentX++;
+                                currentY++;
+                                if(currentY == 7){
+                                    this.setToKing();
+                                }
+                                this.relocate((currentX) *  CheckersTile.TILE_WIDTH,
+                                              (currentY) *  CheckersTile.TILE_HEIGHT);
+                                board.getBoardIndex(currentX, currentY).setPiece(this);
+                                board.getBoardIndex(currentX-1, currentY-1).setPiece(null);
+                                option1.setStrokeWidth(0);
+                                board.setIsRedTurn(true);
+                                board.setIsBlueTurn(false);
                             }
-                            this.relocate((currentX) *  CheckersTile.TILE_WIDTH,
-                                          (currentY) *  CheckersTile.TILE_HEIGHT);
-                            board.getBoardIndex(currentX, currentY).setPiece(this);
-                            board.getBoardIndex(currentX-1, currentY-1).setPiece(null);
-                            option1.setStrokeWidth(0);
-                            board.setIsRedTurn(true);
-                            board.setIsBlueTurn(false);
                         });
                 }
             }
@@ -112,19 +114,21 @@ public class CheckersPiece extends StackPane{
                 CheckersTile option1 = board.getBoardIndex(currentX-1, currentY+1);
                 if(option1.isOpen()){
                     option1.setStrokeWidth(3);
-                    option1.setOnMousePressed(e-> {        
-                            currentX--;
-                            currentY++;
-                            if(currentY == 7){
-                                this.setToKing();
+                    option1.setOnMousePressed(e-> {
+                            if(board.isBlueTurn()){
+                                currentX--;
+                                currentY++;
+                                if(currentY == 7){
+                                    this.setToKing();
+                                }
+                                this.relocate((currentX) *  CheckersTile.TILE_WIDTH,
+                                              (currentY) *  CheckersTile.TILE_HEIGHT);
+                                board.getBoardIndex(currentX, currentY).setPiece(this);
+                                board.getBoardIndex(currentX+1, currentY-1).setPiece(null);
+                                option1.setStrokeWidth(0);
+                                board.setIsRedTurn(true);
+                                board.setIsBlueTurn(false);
                             }
-                            this.relocate((currentX) *  CheckersTile.TILE_WIDTH,
-                                          (currentY) *  CheckersTile.TILE_HEIGHT);
-                            board.getBoardIndex(currentX, currentY).setPiece(this);
-                            board.getBoardIndex(currentX+1, currentY-1).setPiece(null);
-                            option1.setStrokeWidth(0);
-                            board.setIsRedTurn(true);
-                            board.setIsBlueTurn(false);
                         });
                 }
             }
@@ -133,38 +137,42 @@ public class CheckersPiece extends StackPane{
                 CheckersTile option2 = board.getBoardIndex(currentX-1, currentY+1);
                 if(option1.isOpen()){
                     option1.setStrokeWidth(3);
-                    option1.setOnMousePressed(e-> {        
-                            currentX++;
-                            currentY++;
-                            if(currentY == 7){
-                                this.setToKing();
+                    option1.setOnMousePressed(e-> {
+                            if(board.isBlueTurn()){
+                                currentX++;
+                                currentY++;
+                                if(currentY == 7){
+                                    this.setToKing();
+                                }
+                                this.relocate((currentX) *  CheckersTile.TILE_WIDTH,
+                                              (currentY) *  CheckersTile.TILE_HEIGHT);
+                                board.getBoardIndex(currentX, currentY).setPiece(this);
+                                board.getBoardIndex(currentX-1, currentY-1).setPiece(null);
+                                option1.setStrokeWidth(0);
+                                option2.setStrokeWidth(0);
+                                board.setIsRedTurn(true);
+                                board.setIsBlueTurn(false);
                             }
-                            this.relocate((currentX) *  CheckersTile.TILE_WIDTH,
-                                          (currentY) *  CheckersTile.TILE_HEIGHT);
-                            board.getBoardIndex(currentX, currentY).setPiece(this);
-                            board.getBoardIndex(currentX-1, currentY-1).setPiece(null);
-                            option1.setStrokeWidth(0);
-                            option2.setStrokeWidth(0);
-                            board.setIsRedTurn(true);
-                            board.setIsBlueTurn(false);
                         });
                 }
                 if(option2.isOpen()){
                     option2.setStrokeWidth(3);
-                    option2.setOnMousePressed(e-> {        
-                            currentX--;
-                            currentY++;
-                            if(currentY == 7){
-                                this.setToKing();
+                    option2.setOnMousePressed(e-> {
+                            if(board.isBlueTurn()){
+                                currentX--;
+                                currentY++;
+                                if(currentY == 7){
+                                    this.setToKing();
+                                }
+                                this.relocate((currentX) *  CheckersTile.TILE_WIDTH,
+                                              (currentY) *  CheckersTile.TILE_HEIGHT);
+                                board.getBoardIndex(currentX, currentY).setPiece(this);
+                                board.getBoardIndex(currentX+1, currentY-1).setPiece(null);
+                                option1.setStrokeWidth(0);
+                                option2.setStrokeWidth(0);
+                                board.setIsRedTurn(true);
+                                board.setIsBlueTurn(false);
                             }
-                            this.relocate((currentX) *  CheckersTile.TILE_WIDTH,
-                                          (currentY) *  CheckersTile.TILE_HEIGHT);
-                            board.getBoardIndex(currentX, currentY).setPiece(this);
-                            board.getBoardIndex(currentX+1, currentY-1).setPiece(null);
-                            option1.setStrokeWidth(0);
-                            option2.setStrokeWidth(0);
-                            board.setIsRedTurn(true);
-                            board.setIsBlueTurn(false);
                         });
                 }
             } //else
@@ -177,19 +185,21 @@ public class CheckersPiece extends StackPane{
                 CheckersTile option1 = board.getBoardIndex(currentX+1, currentY-1);
                 if(option1.isOpen()){
                     option1.setStrokeWidth(3);
-                    option1.setOnMousePressed(e-> {        
-                            currentX++;
-                            currentY--;
-                            if(currentY == 0){
-                                this.setToKing();
+                    option1.setOnMousePressed(e-> {
+                            if(board.isRedTurn()){
+                                currentX++;
+                                currentY--;
+                                if(currentY == 0){
+                                    this.setToKing();
+                                }
+                                this.relocate((currentX) *  CheckersTile.TILE_WIDTH,
+                                              (currentY) *  CheckersTile.TILE_HEIGHT);
+                                board.getBoardIndex(currentX, currentY).setPiece(this);
+                                board.getBoardIndex(currentX-1, currentY+1).setPiece(null);
+                                option1.setStrokeWidth(0);
+                                board.setIsBlueTurn(true);
+                                board.setIsRedTurn(false);
                             }
-                            this.relocate((currentX) *  CheckersTile.TILE_WIDTH,
-                                          (currentY) *  CheckersTile.TILE_HEIGHT);
-                            board.getBoardIndex(currentX, currentY).setPiece(this);
-                            board.getBoardIndex(currentX-1, currentY+1).setPiece(null);
-                            option1.setStrokeWidth(0);
-                            board.setIsBlueTurn(true);
-                            board.setIsRedTurn(false);
                         });
                 }
             } //if
@@ -197,19 +207,21 @@ public class CheckersPiece extends StackPane{
                 CheckersTile option1 = board.getBoardIndex(currentX-1, currentY-1);
                 if(option1.isOpen()){
                     option1.setStrokeWidth(3);
-                    option1.setOnMousePressed(e-> {        
-                            currentX--;
-                            currentY--;
-                            if(currentY == 0){
-                                this.setToKing();
+                    option1.setOnMousePressed(e-> {
+                            if(board.isRedTurn()){
+                                currentX--;
+                                currentY--;
+                                if(currentY == 0){
+                                    this.setToKing();
+                                }
+                                this.relocate((currentX) *  CheckersTile.TILE_WIDTH,
+                                              (currentY) *  CheckersTile.TILE_HEIGHT);
+                                board.getBoardIndex(currentX, currentY).setPiece(this);
+                                board.getBoardIndex(currentX+1, currentY+1).setPiece(null);
+                                option1.setStrokeWidth(0);
+                                board.setIsBlueTurn(true);
+                                board.setIsRedTurn(false);
                             }
-                            this.relocate((currentX) *  CheckersTile.TILE_WIDTH,
-                                          (currentY) *  CheckersTile.TILE_HEIGHT);
-                            board.getBoardIndex(currentX, currentY).setPiece(this);
-                            board.getBoardIndex(currentX+1, currentY+1).setPiece(null);
-                            option1.setStrokeWidth(0);
-                            board.setIsBlueTurn(true);
-                            board.setIsRedTurn(false);
                         });
                 }
             } //else if
@@ -218,38 +230,42 @@ public class CheckersPiece extends StackPane{
                 CheckersTile option2 = board.getBoardIndex(currentX-1, currentY-1);
                 if(option1.isOpen()){
                     option1.setStrokeWidth(3);
-                    option1.setOnMousePressed(e-> {        
-                            currentX++;
-                            currentY--;
-                            if(currentY == 0){
-                                this.setToKing();
+                    option1.setOnMousePressed(e-> {
+                            if(board.isRedTurn()){
+                                currentX++;
+                                currentY--;
+                                if(currentY == 0){
+                                    this.setToKing();
+                                }
+                                this.relocate((currentX) *  CheckersTile.TILE_WIDTH,
+                                              (currentY) *  CheckersTile.TILE_HEIGHT);
+                                board.getBoardIndex(currentX, currentY).setPiece(this);
+                                board.getBoardIndex(currentX-1, currentY+1).setPiece(null);
+                                option1.setStrokeWidth(0);
+                                option2.setStrokeWidth(0);
+                                board.setIsBlueTurn(true);
+                                board.setIsRedTurn(false);
                             }
-                            this.relocate((currentX) *  CheckersTile.TILE_WIDTH,
-                                          (currentY) *  CheckersTile.TILE_HEIGHT);
-                            board.getBoardIndex(currentX, currentY).setPiece(this);
-                            board.getBoardIndex(currentX-1, currentY+1).setPiece(null);
-                            option1.setStrokeWidth(0);
-                            option2.setStrokeWidth(0);
-                            board.setIsBlueTurn(true);
-                            board.setIsRedTurn(false);
                         });
                 } //if
                 if(option2.isOpen()){
                     option2.setStrokeWidth(3);
-                    option2.setOnMousePressed(e-> {        
-                            currentX--;
-                            currentY--;
-                            if(currentY == 0){
-                                this.setToKing();
+                    option2.setOnMousePressed(e-> {
+                            if(board.isRedTurn()){
+                                currentX--;
+                                currentY--;
+                                if(currentY == 0){
+                                    this.setToKing();
+                                }
+                                this.relocate((currentX) *  CheckersTile.TILE_WIDTH,
+                                              (currentY) *  CheckersTile.TILE_HEIGHT);
+                                board.getBoardIndex(currentX, currentY).setPiece(this);
+                                board.getBoardIndex(currentX+1, currentY+1).setPiece(null);
+                                option1.setStrokeWidth(0);
+                                option2.setStrokeWidth(0);
+                                board.setIsBlueTurn(true);
+                                board.setIsRedTurn(false);
                             }
-                            this.relocate((currentX) *  CheckersTile.TILE_WIDTH,
-                                          (currentY) *  CheckersTile.TILE_HEIGHT);
-                            board.getBoardIndex(currentX, currentY).setPiece(this);
-                            board.getBoardIndex(currentX+1, currentY+1).setPiece(null);
-                            option1.setStrokeWidth(0);
-                            option2.setStrokeWidth(0);
-                            board.setIsBlueTurn(true);
-                            board.setIsRedTurn(false);
                         });
                 } //if
             } //else

@@ -50,9 +50,9 @@ public class CheckersBoard extends VBox{
         }
         container.getChildren().addAll(tiles, pieces);
         this.getChildren().add(container);
-        String cssLayout = "-fx-border-color: black;\n" +
+        String cssLayout = "-fx-border-color: #262626;\n" +
             "-fx-border-insets: 0;\n" +
-            "-fx-border-width: 6;\n" +
+            "-fx-border-width: 12;\n" +
             "-fx-border-style: solid;\n" +
             "-fx-outline-style: solid;\n" +
             "-fx-outline-width: 6;\n" +
