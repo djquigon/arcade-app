@@ -58,6 +58,10 @@ public class MainMenu extends VBox{
     public void setGames(){
         iv1 = new ImageView(new Image("Checkers.png", 115, 115, false, true)); //spaceinvaders
         b1 = new Button("Space Invaders");
+        b1.setStyle("-fx-background-color: #ff0000;\n" + 
+                    "-fx-focus-color: transparent;\n" + 
+                    "-fx-faint-focus-color: transparent;\n");
+        //b1.setFocused(true);
         b1.setOnAction(e -> {
                 TetrisStage tetris = new TetrisStage();
                 tetris.showAndWait();
@@ -69,6 +73,10 @@ public class MainMenu extends VBox{
         b1.setTranslateX(335);
         iv2 = new ImageView(new Image("Checkers.png", 115, 115, false, true)); 
         b2 = new Button("Checkers");
+        b2.setStyle("-fx-background-color: #ff0000;\n" + 
+                    "-fx-focus-color: transparent;\n" + 
+                    "-fx-faint-focus-color: transparent;\n");
+        //b2.setFocused(true);
         b2.setOnAction(e -> {
                 CheckersStage checkers = new CheckersStage();
                 checkers.showAndWait();

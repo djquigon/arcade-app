@@ -87,7 +87,7 @@ public class CheckersPiece extends StackPane{
     }
 
     public void moveBlue(){
-        //if(board.isBlueTurn()){
+        if(board.isBlueTurn()){
             if(currentX == 0){
                 CheckersTile option1 = board.getBoardIndex(currentX+1, currentY+1);
                 if(option1.isOpen()){
@@ -168,11 +168,11 @@ public class CheckersPiece extends StackPane{
                         });
                 }
             } //else
-            // } //if
+        } //if
     } //moveBlue
 
     public void moveRed(){
-        //if(board.isRedTurn()){
+        if(board.isRedTurn()){
             if(currentX == 0){
                 CheckersTile option1 = board.getBoardIndex(currentX+1, currentY-1);
                 if(option1.isOpen()){
@@ -253,7 +253,7 @@ public class CheckersPiece extends StackPane{
                         });
                 } //if
             } //else
-            //} //if
+        } //if
     } //moveRed
 }
 
