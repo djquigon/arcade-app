@@ -166,6 +166,7 @@ public class CheckersPiece extends StackPane{
                         board.setIsBlueTurn(true);
                         board.setIsRedTurn(false);
                         this.removeOptions();
+                        board.removeAllHighlights();
                     }
                 });
         }
@@ -192,6 +193,7 @@ public class CheckersPiece extends StackPane{
                         board.setIsBlueTurn(true);
                         board.setIsRedTurn(false);
                         this.removeOptions();
+                        board.removeAllHighlights();
                     }
                 });
         }
@@ -216,16 +218,17 @@ public class CheckersPiece extends StackPane{
                         board.setIsBlueTurn(true);
                         board.setIsRedTurn(false);
                         this.removeOptions();
-                            }
+                        board.removeAllHighlights();
+                    }
                 });
         }
     }
 
     public void checkAttackR2(){
-         if(option1.getPiece().getType() == Piece.BLUE && board.getBoardIndex(currentX-2, currentY-2).isOpen()){
-             option1 = board.getBoardIndex(currentX-2, currentY-2);
-             option1.setStrokeWidth(3);
-             option1.setOnMousePressed(e-> {
+         if(option2.getPiece().getType() == Piece.BLUE && board.getBoardIndex(currentX-2, currentY-2).isOpen()){
+             option2 = board.getBoardIndex(currentX-2, currentY-2);
+             option2.setStrokeWidth(3);
+             option2.setOnMousePressed(e-> {
                      if(board.isRedTurn() && option1 != null){
                          currentX = currentX-2;
                          currentY = currentY-2;
@@ -242,6 +245,7 @@ public class CheckersPiece extends StackPane{
                          board.setIsBlueTurn(true);
                          board.setIsRedTurn(false);
                          this.removeOptions();
+                         board.removeAllHighlights();
                      }
                  });
          }
@@ -265,6 +269,7 @@ public class CheckersPiece extends StackPane{
                     board.setIsBlueTurn(true);
                     board.setIsRedTurn(false);
                     this.removeOptions();
+                    board.removeAllHighlights();
                 }
             });    
     }
@@ -287,6 +292,7 @@ public class CheckersPiece extends StackPane{
                     board.setIsBlueTurn(true);
                     board.setIsRedTurn(false);
                     this.removeOptions();
+                    board.removeAllHighlights();
                 }
             });
     }
@@ -310,6 +316,7 @@ public class CheckersPiece extends StackPane{
                         board.setIsRedTurn(true);
                         board.setIsBlueTurn(false);
                         this.removeOptions();
+                        board.removeAllHighlights();
                     }
                 });   
         }
@@ -334,6 +341,7 @@ public class CheckersPiece extends StackPane{
                         board.setIsRedTurn(true);
                         board.setIsBlueTurn(false);
                         this.removeOptions();
+                        board.removeAllHighlights();
                     }
                 });
         }
@@ -358,6 +366,7 @@ public class CheckersPiece extends StackPane{
                     board.setIsRedTurn(true);
                     board.setIsBlueTurn(false);
                     this.removeOptions();
+                    board.removeAllHighlights();
                 }
             }); 
     }
@@ -380,6 +389,7 @@ public class CheckersPiece extends StackPane{
                     board.setIsRedTurn(true);
                     board.setIsBlueTurn(false);
                     this.removeOptions();
+                    board.removeAllHighlights();
                 }
             });
     }
