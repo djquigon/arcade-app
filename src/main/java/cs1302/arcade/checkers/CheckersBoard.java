@@ -6,6 +6,10 @@ import javafx.scene.paint.Color;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Alert.AlertType;
+import javafx.application.Platform;
 
 /**
  *JavaDoc
@@ -17,7 +21,7 @@ public class CheckersBoard extends VBox{
     public static final int BOARD_HEIGHT = 8;
 
     //Instance variables
-    private CheckersStage stageRef;
+    private CheckersStage stage;
     private CheckersTile[][] board = new CheckersTile[BOARD_WIDTH][BOARD_HEIGHT]; //track tiles
     private Group container; //container for pieces and tiles
     private Group pieces; //group for the pieces
@@ -33,7 +37,7 @@ public class CheckersBoard extends VBox{
      */
     public CheckersBoard(CheckersStage ref){
         super();
-        stageRef = ref;
+        stage = ref;
         container = new Group();
         pieces = new Group();
         tiles = new Group();
@@ -114,8 +118,8 @@ public class CheckersBoard extends VBox{
     public void setIsRedTurn(boolean b){
         isRedTurn = b;
         if(!isRedTurn){
-            stageRef.getTurnText().setText("Blue's Turn");
-            stageRef.getTurnText().setFill(Color.ROYALBLUE);
+            stage.getTurnText().setText("Blue's Turn");
+            stage.getTurnText().setFill(Color.ROYALBLUE);
         }//if
     }//SetIsRedTurn
 
@@ -126,8 +130,8 @@ public class CheckersBoard extends VBox{
     public void setIsBlueTurn(boolean b){
         isBlueTurn = b;
         if(!isBlueTurn){
-            stageRef.getTurnText().setText("Red's Turn");
-            stageRef.getTurnText().setFill(Color.RED);
+            stage.getTurnText().setText("Red's Turn");
+            stage.getTurnText().setFill(Color.RED);
         }//if
     }//SetIsBlueTurn
 
@@ -154,8 +158,24 @@ public class CheckersBoard extends VBox{
      */
     public void setRPiecesLeft(int rPiecesLeft){
         this.rPiecesLeft = rPiecesLeft;
-        if(this.rPiecesLeft == 0){
-            //alert box game over, red wins! play again/close stage
+        if(this.rPiecesLeft == 0){ //if blue has won
+            this.clearHighlights();
+            ButtonType playAgain = new ButtonType("Play Again");
+            ButtonType exitToMenu = new ButtonType("Exit to menu");
+            Alert blueWins = new Alert(AlertType.CONFIRMATION, "Blue has won! " +
+                                       "Would you like to play again?",
+                                       playAgain, exitToMenu);
+            blueWins.setTitle("GAME OVER");
+            blueWins.showAndWait().ifPresent(response -> {                                
+                    if(response == playAgain){ //if they want to play again
+                        stage.close();
+                        CheckersStage newGame = new CheckersStage();
+                        newGame.show();
+                    }
+                    if(response == exitToMenu){ //if they want to exit
+                        stage.close();
+                    }
+                });
         }
     }//SetRPiecesLeft
     
@@ -165,8 +185,24 @@ public class CheckersBoard extends VBox{
      */
     public void setBPiecesLeft(int bPiecesLeft){
         this.bPiecesLeft = bPiecesLeft;
-        if(this.bPiecesLeft == 0){
-            //alert box game over, red wins! play again/close stage
+        if(this.bPiecesLeft == 0){ //if red has won
+            this.clearHighlights();
+            ButtonType playAgain = new ButtonType("Play Again");
+            ButtonType exitToMenu = new ButtonType("Exit to menu");
+            Alert redWins = new Alert(AlertType.CONFIRMATION, "Red has won! " +
+                                       "Would you like to play again?",
+                                       playAgain, exitToMenu);
+            redWins.setTitle("GAME OVER");
+            redWins.showAndWait().ifPresent(response -> {                                
+                    if(response == playAgain){ //if they want to play again
+                        stage.close();
+                        CheckersStage newGame = new CheckersStage();
+                        newGame.show();
+                    }
+                    if(response == exitToMenu){ //if they want to exit
+                        stage.close();
+                    }
+                });
         }
     }//SetBPiecesLeft
     
