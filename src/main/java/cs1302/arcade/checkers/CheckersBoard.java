@@ -154,6 +154,9 @@ public class CheckersBoard extends VBox{
      */
     public void setRPiecesLeft(int rPiecesLeft){
         this.rPiecesLeft = rPiecesLeft;
+        if(this.rPiecesLeft == 0){
+            //alert box game over, red wins! play again/close stage
+        }
     }//SetRPiecesLeft
     
     /**
@@ -162,6 +165,9 @@ public class CheckersBoard extends VBox{
      */
     public void setBPiecesLeft(int bPiecesLeft){
         this.bPiecesLeft = bPiecesLeft;
+        if(this.bPiecesLeft == 0){
+            //alert box game over, red wins! play again/close stage
+        }
     }//SetBPiecesLeft
     
     /**

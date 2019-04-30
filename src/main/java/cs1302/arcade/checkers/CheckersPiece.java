@@ -75,10 +75,12 @@ public class CheckersPiece extends StackPane{
     public void findOptions(){
         this.setOnMousePressed(e-> {
                 if(type == Piece.RED && board.isRedTurn()){
+                    System.out.println("Red Pieces Left: "+board.getRPiecesLeft());
                     board.clearHighlights();
                     this.moveRed();
                 }//if
                 if(type == Piece.BLUE && board.isBlueTurn()){
+                    System.out.println("Blue Pieces Left: "+board.getBPiecesLeft());
                     board.clearHighlights();
                     this.moveBlue();
                 }//if
@@ -409,6 +411,7 @@ public class CheckersPiece extends StackPane{
                     board.getIndex(currentX-1, currentY+1).getPiece().getChildren().clear();
                     board.getIndex(currentX-1, currentY+1).setPiece(null);
                     board.getIndex(currentX-2, currentY+2).setPiece(null);
+                    board.setBPiecesLeft(board.getBPiecesLeft()-1);
                     this.endRedTurn();
                 }//if
             });//MouseEvent
@@ -433,6 +436,7 @@ public class CheckersPiece extends StackPane{
                     board.getIndex(currentX+1, currentY+1).getPiece().getChildren().clear();
                     board.getIndex(currentX+1, currentY+1).setPiece(null);
                     board.getIndex(currentX+2, currentY+2).setPiece(null);
+                    board.setBPiecesLeft(board.getBPiecesLeft()-1);
                     this.endRedTurn();
                 }//if
             });//MouseEvent
@@ -605,6 +609,7 @@ public class CheckersPiece extends StackPane{
                     board.getIndex(currentX-1, currentY-1).getPiece().getChildren().clear();
                     board.getIndex(currentX-1, currentY-1).setPiece(null);
                     board.getIndex(currentX-2, currentY-2).setPiece(null);
+                    board.setRPiecesLeft(board.getRPiecesLeft()-1);
                     this.endBlueTurn();
                 }//if
             });//MouseEvent
@@ -629,6 +634,7 @@ public class CheckersPiece extends StackPane{
                     board.getIndex(currentX+1, currentY-1).getPiece().getChildren().clear();
                     board.getIndex(currentX+1, currentY-1).setPiece(null);
                     board.getIndex(currentX+2, currentY-2).setPiece(null);
+                    board.setRPiecesLeft(board.getRPiecesLeft()-1);
                     this.endBlueTurn();
                 }//if
             });//MouseEvent
