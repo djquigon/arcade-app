@@ -89,298 +89,302 @@ public class CheckersPiece extends StackPane{
     public boolean getIsKing(){
         return isKing;
     }
-
+    
     public void moveBlue(){
         if(board.isBlueTurn()){
             if(currentX == 0){
-                option1 = board.getBoardIndex(currentX+1, currentY+1);
-                if(option1.isOpen()){
-                    option1.setStrokeWidth(3);
-                    option1.setOnMousePressed(e-> {
-                            if(board.isBlueTurn() && option1 != null){
-                                currentX++;
-                                currentY++;
-                                if(currentY == 7){
-                                    this.setToKing();
-                                }
-                                this.relocate((currentX) *  CheckersTile.TILE_WIDTH,
-                                              (currentY) *  CheckersTile.TILE_HEIGHT);
-                                board.getBoardIndex(currentX, currentY).setPiece(this);
-                                board.getBoardIndex(currentX-1, currentY-1).setPiece(null);
-                                option1.setStrokeWidth(0);
-                                board.setIsRedTurn(true);
-                                board.setIsBlueTurn(false);
-                                this.removeOptions();
-                            }
-                        });
-                }
+                this.updateMapLeftB();
             }
+            
             else if(currentX == 7){
-                option1 = board.getBoardIndex(currentX-1, currentY+1);
-                if(option1.isOpen()){
-                    option1.setStrokeWidth(3);
-                    option1.setOnMousePressed(e-> {
-                            if(board.isBlueTurn() && option1 != null){
-                                currentX--;
-                                currentY++;
-                                if(currentY == 7){
-                                    this.setToKing();
-                                }
-                                this.relocate((currentX) *  CheckersTile.TILE_WIDTH,
-                                              (currentY) *  CheckersTile.TILE_HEIGHT);
-                                board.getBoardIndex(currentX, currentY).setPiece(this);
-                                board.getBoardIndex(currentX+1, currentY-1).setPiece(null);
-                                option1.setStrokeWidth(0);
-                                board.setIsRedTurn(true);
-                                board.setIsBlueTurn(false);
-                                this.removeOptions();
-                            }
-                        });
-                }
+                this.updateMapRightB();
             }
+            
             else{
                 option1 = board.getBoardIndex(currentX+1, currentY+1);
                 option2 = board.getBoardIndex(currentX-1, currentY+1);
                 if(option1.isOpen()){
-                    option1.setStrokeWidth(3);
-                    option1.setOnMousePressed(e-> {
-                            if(board.isBlueTurn() && option1 != null && option2 != null){
-                                currentX++;
-                                currentY++;
-                                if(currentY == 7){
-                                    this.setToKing();
-                                }
-                                this.relocate((currentX) *  CheckersTile.TILE_WIDTH,
-                                              (currentY) *  CheckersTile.TILE_HEIGHT);
-                                board.getBoardIndex(currentX, currentY).setPiece(this);
-                                board.getBoardIndex(currentX-1, currentY-1).setPiece(null);
-                                option1.setStrokeWidth(0);
-                                option2.setStrokeWidth(0);
-                                board.setIsRedTurn(true);
-                                board.setIsBlueTurn(false);
-                                this.removeOptions();
-                            }
-                        });
+                    this.updateMidChoiceB();
                 }
                 if(option2.isOpen()){
-                    option2.setStrokeWidth(3);
-                    option2.setOnMousePressed(e-> {
-                            if(board.isBlueTurn() && option1 != null && option2 != null){
-                                currentX--;
-                                currentY++;
-                                if(currentY == 7){
-                                    this.setToKing();
-                                }
-                                this.relocate((currentX) *  CheckersTile.TILE_WIDTH,
-                                              (currentY) *  CheckersTile.TILE_HEIGHT);
-                                board.getBoardIndex(currentX, currentY).setPiece(this);
-                                board.getBoardIndex(currentX+1, currentY-1).setPiece(null);
-                                option1.setStrokeWidth(0);
-                                option2.setStrokeWidth(0);
-                                board.setIsRedTurn(true);
-                                board.setIsBlueTurn(false);
-                                this.removeOptions();
-                            }
-                        });
+                    this.updateMidChoice2B();
                 }
-            } //else
-        } //if
-    } //moveBlue
-
+            }
+        }
+    }
+        
     public void moveRed(){
         if(board.isRedTurn()){
             if(currentX == 0){
-                option1 = board.getBoardIndex(currentX+1, currentY-1);
-                if(option1.isOpen()){
-                    option1.setStrokeWidth(3);
-                    option1.setOnMousePressed(e-> {
-                            if(board.isRedTurn() && option1 != null){
-                                currentX++;
-                                currentY--;
-                                if(currentY == 0){
-                                    this.setToKing();
-                                }
-                                this.relocate((currentX) *  CheckersTile.TILE_WIDTH,
-                                              (currentY) *  CheckersTile.TILE_HEIGHT);
-                                board.getBoardIndex(currentX, currentY).setPiece(this);
-                                board.getBoardIndex(currentX-1, currentY+1).setPiece(null);
-                                option1.setStrokeWidth(0);
-                                board.setIsBlueTurn(true);
-                                board.setIsRedTurn(false);
-                                this.removeOptions();
-                            }
-                        });
-                }
-                else if(option1.getPiece().getType() == Piece.BLUE && board.getBoardIndex(currentX+2, currentY-2).isOpen()){
-                    option1 = board.getBoardIndex(currentX+2, currentY-2);
-                    option1.setStrokeWidth(3);
-                    option1.setOnMousePressed(e-> {
-                            if(board.isRedTurn() && option1 != null){
-                                currentX = currentX+2;
-                                currentY = currentY-2;
-                                if(currentY == 0){
-                                    this.setToKing();
-                                }
-                                this.relocate((currentX) *  CheckersTile.TILE_WIDTH,
-                                              (currentY) *  CheckersTile.TILE_HEIGHT);
-                                board.getBoardIndex(currentX, currentY).setPiece(this);
-                                board.getBoardIndex(currentX-1, currentY+1).getPiece().getChildren().clear();
-                                board.getBoardIndex(currentX-1, currentY+1).setPiece(null);
-                                board.getBoardIndex(currentX-2, currentY+2).setPiece(null);
-                                option1.setStrokeWidth(0);
-                                board.setIsBlueTurn(true);
-                                board.setIsRedTurn(false);
-                                this.removeOptions();
-                            }
-                        });
-                }
-            } //if
-            else if(currentX == 6){
-                option1 = board.getBoardIndex(currentX-1, currentY-1);
-                if(option1.isOpen()){
-                    option1.setStrokeWidth(3);
-                    option1.setOnMousePressed(e-> {
-                            if(board.isRedTurn() && option1 != null){
-                                currentX--;
-                                currentY--;
-                                if(currentY == 0){
-                                    this.setToKing();
-                                }
-                                this.relocate((currentX) *  CheckersTile.TILE_WIDTH,
-                                              (currentY) *  CheckersTile.TILE_HEIGHT);
-                                board.getBoardIndex(currentX, currentY).setPiece(this);
-                                board.getBoardIndex(currentX+1, currentY+1).setPiece(null);
-                                option1.setStrokeWidth(0);
-                                board.setIsBlueTurn(true);
-                                board.setIsRedTurn(false);
-                                this.removeOptions();
-                            }
-                        });
-                }
-                else if(option1.getPiece().getType() == Piece.BLUE && board.getBoardIndex(currentX-2, currentY-2).isOpen()){
-                    option1 = board.getBoardIndex(currentX-2, currentY-2);
-                    option1.setStrokeWidth(3);
-                    option1.setOnMousePressed(e-> {
-                            if(board.isRedTurn() && option1 != null){
-                                currentX = currentX-2;
-                                currentY = currentY-2;
-                                if(currentY == 0){
-                                    this.setToKing();
-                                }
-                                this.relocate((currentX) *  CheckersTile.TILE_WIDTH,
-                                              (currentY) *  CheckersTile.TILE_HEIGHT);
-                                board.getBoardIndex(currentX, currentY).setPiece(this);
-                                board.getBoardIndex(currentX+1, currentY+1).getPiece().getChildren().clear();
-                                board.getBoardIndex(currentX+1, currentY+1).setPiece(null);
-                                board.getBoardIndex(currentX+2, currentY+2).setPiece(null);
-                                option1.setStrokeWidth(0);
-                                board.setIsBlueTurn(true);
-                                board.setIsRedTurn(false);
-                                this.removeOptions();
-                            }
-                        });
-                }
-            } //else if
+                this.updateMapLeftR();
+                this.checkAttackR();
+            }
+            
+            else if(currentX == 7){
+                this.updateMapRightR();
+                this.checkAttackR2();
+            }
+            
             else{
                 option1 = board.getBoardIndex(currentX+1, currentY-1);
                 option2 = board.getBoardIndex(currentX-1, currentY-1);
                 if(option1.isOpen()){
-                    option1.setStrokeWidth(3);
-                    option1.setOnMousePressed(e-> {
-                            if(board.isRedTurn() && option1 != null && option2 != null){
-                                currentX++;
-                                currentY--;
-                                if(currentY == 0){
-                                    this.setToKing();
-                                }
-                                this.relocate((currentX) *  CheckersTile.TILE_WIDTH,
-                                              (currentY) *  CheckersTile.TILE_HEIGHT);
-                                board.getBoardIndex(currentX, currentY).setPiece(this);
-                                board.getBoardIndex(currentX-1, currentY+1).setPiece(null);
-                                option1.setStrokeWidth(0);
-                                option2.setStrokeWidth(0);
-                                board.setIsBlueTurn(true);
-                                board.setIsRedTurn(false);
-                                this.removeOptions();
-                            }
-                        });
-                   
-                } //if
-                else if(currentX != 7){
-                    if(option1.getPiece().getType() == Piece.BLUE && board.getBoardIndex(currentX+2, currentY-2).isOpen()){
-                        option1 = board.getBoardIndex(currentX+2, currentY-2);
-                        option1.setStrokeWidth(3);
-                        option1.setOnMousePressed(e-> {
-                                if(board.isRedTurn() && option1 != null){
-                                    currentX = currentX+2;
-                                    currentY = currentY-2;
-                                    if(currentY == 0){
-                                        this.setToKing();
-                                    }
-                                    this.relocate((currentX) *  CheckersTile.TILE_WIDTH,
-                                                  (currentY) *  CheckersTile.TILE_HEIGHT);
-                                    board.getBoardIndex(currentX, currentY).setPiece(this);
-                                    board.getBoardIndex(currentX-1, currentY+1).getPiece().getChildren().clear();
-                                    board.getBoardIndex(currentX-1, currentY+1).setPiece(null);
-                                    board.getBoardIndex(currentX-2, currentY+2).setPiece(null);
-                                    option1.setStrokeWidth(0);
-                                    board.setIsBlueTurn(true);
-                                    board.setIsRedTurn(false);
-                                    this.removeOptions();
-                                }
-                            });
-                    }
+                    this.updateMidChoiceR();
                 }
+                
+                else if(currentX != 6){
+                    this.checkAttackR();
+                }
+                
                 if(option2.isOpen()){
-                    option2.setStrokeWidth(3);
-                    option2.setOnMousePressed(e-> {
-                            if(board.isRedTurn() && option2 != null && option1 != null){
-                                currentX--;
-                                currentY--;
-                                if(currentY == 0){
-                                    this.setToKing();
-                                }
-                                this.relocate((currentX) *  CheckersTile.TILE_WIDTH,
-                                              (currentY) *  CheckersTile.TILE_HEIGHT);
-                                board.getBoardIndex(currentX, currentY).setPiece(this);
-                                board.getBoardIndex(currentX+1, currentY+1).setPiece(null);
-                                option1.setStrokeWidth(0);
-                                option2.setStrokeWidth(0);
-                                board.setIsBlueTurn(true);
-                                board.setIsRedTurn(false);
-                                this.removeOptions();
-                            }
-                        });
-                } //if
-                else if(currentX != 1){
-                    if(option1.getPiece().getType() == Piece.BLUE && board.getBoardIndex(currentX-2, currentY-2).isOpen()){
-                        option1 = board.getBoardIndex(currentX-2, currentY-2);
-                        option1.setStrokeWidth(3);
-                        option1.setOnMousePressed(e-> {
-                                if(board.isRedTurn() && option1 != null){
-                                    currentX = currentX-2;
-                                    currentY = currentY-2;
-                                    if(currentY == 0){
-                                        this.setToKing();
-                                    }
-                                    this.relocate((currentX) *  CheckersTile.TILE_WIDTH,
-                                                  (currentY) *  CheckersTile.TILE_HEIGHT);
-                                    board.getBoardIndex(currentX, currentY).setPiece(this);
-                                    board.getBoardIndex(currentX+1, currentY+1).getPiece().getChildren().clear();
-                                    board.getBoardIndex(currentX+1, currentY+1).setPiece(null);
-                                    board.getBoardIndex(currentX+2, currentY+2).setPiece(null);
-                                    option1.setStrokeWidth(0);
-                                    board.setIsBlueTurn(true);
-                                    board.setIsRedTurn(false);
-                                    this.removeOptions();
-                                }
-                            });
-                    }
+                    this.updateMidChoiceR2();
                 }
-            } //else
-        } //if
-    } //moveRed
+                
+                else if(currentX != 1){
+                    this.checkAttackR2();
+                }
+            }
+        }
+    }
     
+    public void updateMapLeftR(){
+        option1 = board.getBoardIndex(currentX+1, currentY-1);
+        if(option1.isOpen()){
+            option1.setStrokeWidth(3);
+            option1.setOnMousePressed(e-> {
+                    if(board.isRedTurn() && option1 != null){
+                        currentX++;
+                        currentY--;
+                        if(currentY == 0){
+                            this.setToKing();
+                        }
+                        this.relocate((currentX) *  CheckersTile.TILE_WIDTH,
+                                      (currentY) *  CheckersTile.TILE_HEIGHT);
+                        board.getBoardIndex(currentX, currentY).setPiece(this);
+                        board.getBoardIndex(currentX-1, currentY+1).setPiece(null);
+                        option1.setStrokeWidth(0);
+                        board.setIsBlueTurn(true);
+                        board.setIsRedTurn(false);
+                        this.removeOptions();
+                    }
+                });
+        }
+    }
+    
+    public void checkAttackR(){
+        if(option1.getPiece().getType() == Piece.BLUE && board.getBoardIndex(currentX+2, currentY-2).isOpen()){
+            option1 = board.getBoardIndex(currentX+2, currentY-2);
+            option1.setStrokeWidth(3);
+            option1.setOnMousePressed(e-> {
+                    if(board.isRedTurn() && option1 != null){
+                        currentX = currentX+2;
+                        currentY = currentY-2;
+                        if(currentY == 0){
+                            this.setToKing();
+                        }
+                        this.relocate((currentX) *  CheckersTile.TILE_WIDTH,
+                                      (currentY) *  CheckersTile.TILE_HEIGHT);
+                        board.getBoardIndex(currentX, currentY).setPiece(this);
+                        board.getBoardIndex(currentX-1, currentY+1).getPiece().getChildren().clear();
+                        board.getBoardIndex(currentX-1, currentY+1).setPiece(null);
+                        board.getBoardIndex(currentX-2, currentY+2).setPiece(null);
+                        option1.setStrokeWidth(0);
+                        board.setIsBlueTurn(true);
+                        board.setIsRedTurn(false);
+                        this.removeOptions();
+                    }
+                });
+        }
+    }
+    
+    public void updateMapRightR(){
+        option1 = board.getBoardIndex(currentX-1, currentY-1);
+        if(option1.isOpen()){
+            option1.setStrokeWidth(3);
+            option1.setOnMousePressed(e-> {
+                    if(board.isRedTurn() && option1 != null){
+                        currentX--;
+                        currentY--;
+                        if(currentY == 0){
+                            this.setToKing();
+                        }
+                        this.relocate((currentX) *  CheckersTile.TILE_WIDTH,
+                                      (currentY) *  CheckersTile.TILE_HEIGHT);
+                        board.getBoardIndex(currentX, currentY).setPiece(this);
+                        board.getBoardIndex(currentX+1, currentY+1).setPiece(null);
+                        option1.setStrokeWidth(0);
+                        board.setIsBlueTurn(true);
+                        board.setIsRedTurn(false);
+                        this.removeOptions();
+                            }
+                });
+        }
+    }
+
+    public void checkAttackR2(){
+         if(option1.getPiece().getType() == Piece.BLUE && board.getBoardIndex(currentX-2, currentY-2).isOpen()){
+             option1 = board.getBoardIndex(currentX-2, currentY-2);
+             option1.setStrokeWidth(3);
+             option1.setOnMousePressed(e-> {
+                     if(board.isRedTurn() && option1 != null){
+                         currentX = currentX-2;
+                         currentY = currentY-2;
+                         if(currentY == 0){
+                             this.setToKing();
+                         }
+                         this.relocate((currentX) *  CheckersTile.TILE_WIDTH,
+                                       (currentY) *  CheckersTile.TILE_HEIGHT);
+                         board.getBoardIndex(currentX, currentY).setPiece(this);
+                         board.getBoardIndex(currentX+1, currentY+1).getPiece().getChildren().clear();
+                         board.getBoardIndex(currentX+1, currentY+1).setPiece(null);
+                         board.getBoardIndex(currentX+2, currentY+2).setPiece(null);
+                         option1.setStrokeWidth(0);
+                         board.setIsBlueTurn(true);
+                         board.setIsRedTurn(false);
+                         this.removeOptions();
+                     }
+                 });
+         }
+    }
+
+    public void updateMidChoiceR(){
+        option1.setStrokeWidth(3);
+        option1.setOnMousePressed(e-> {
+                if(board.isRedTurn() && option1 != null && option2 != null){
+                    currentX++;
+                    currentY--;
+                    if(currentY == 0){
+                        this.setToKing();
+                    }
+                    this.relocate((currentX) *  CheckersTile.TILE_WIDTH,
+                                  (currentY) *  CheckersTile.TILE_HEIGHT);
+                    board.getBoardIndex(currentX, currentY).setPiece(this);
+                    board.getBoardIndex(currentX-1, currentY+1).setPiece(null);
+                    option1.setStrokeWidth(0);
+                    option2.setStrokeWidth(0);
+                    board.setIsBlueTurn(true);
+                    board.setIsRedTurn(false);
+                    this.removeOptions();
+                }
+            });    
+    }
+    
+    public void updateMidChoiceR2(){
+        option2.setStrokeWidth(3);
+        option2.setOnMousePressed(e-> {
+                if(board.isRedTurn() && option2 != null && option1 != null){
+                    currentX--;
+                    currentY--;
+                    if(currentY == 0){
+                        this.setToKing();
+                    }
+                    this.relocate((currentX) *  CheckersTile.TILE_WIDTH,
+                                  (currentY) *  CheckersTile.TILE_HEIGHT);
+                    board.getBoardIndex(currentX, currentY).setPiece(this);
+                    board.getBoardIndex(currentX+1, currentY+1).setPiece(null);
+                    option1.setStrokeWidth(0);
+                    option2.setStrokeWidth(0);
+                    board.setIsBlueTurn(true);
+                    board.setIsRedTurn(false);
+                    this.removeOptions();
+                }
+            });
+    }
+
+    public void updateMapLeftB(){
+        option1 = board.getBoardIndex(currentX+1, currentY+1);
+        if(option1.isOpen()){
+            option1.setStrokeWidth(3);
+            option1.setOnMousePressed(e-> {
+                    if(board.isBlueTurn() && option1 != null){
+                        currentX++;
+                        currentY++;
+                        if(currentY == 7){
+                            this.setToKing();
+                        }
+                        this.relocate((currentX) *  CheckersTile.TILE_WIDTH,
+                                      (currentY) *  CheckersTile.TILE_HEIGHT);
+                        board.getBoardIndex(currentX, currentY).setPiece(this);
+                        board.getBoardIndex(currentX-1, currentY-1).setPiece(null);
+                        option1.setStrokeWidth(0);
+                        board.setIsRedTurn(true);
+                        board.setIsBlueTurn(false);
+                        this.removeOptions();
+                    }
+                });   
+        }
+    }
+    
+    public void updateMapRightB(){
+        option1 = board.getBoardIndex(currentX-1, currentY+1);
+        if(option1.isOpen()){
+            option1.setStrokeWidth(3);
+            option1.setOnMousePressed(e-> {
+                    if(board.isBlueTurn() && option1 != null){
+                        currentX--;
+                        currentY++;
+                        if(currentY == 7){
+                            this.setToKing();
+                        }
+                        this.relocate((currentX) *  CheckersTile.TILE_WIDTH,
+                                      (currentY) *  CheckersTile.TILE_HEIGHT);
+                        board.getBoardIndex(currentX, currentY).setPiece(this);
+                        board.getBoardIndex(currentX+1, currentY-1).setPiece(null);
+                        option1.setStrokeWidth(0);
+                        board.setIsRedTurn(true);
+                        board.setIsBlueTurn(false);
+                        this.removeOptions();
+                    }
+                });
+        }
+        
+    }
+    
+    public void updateMidChoiceB(){
+        option1.setStrokeWidth(3);
+        option1.setOnMousePressed(e-> {
+                if(board.isBlueTurn() && option1 != null && option2 != null){
+                    currentX++;
+                    currentY++;
+                    if(currentY == 7){
+                        this.setToKing();
+                    }
+                    this.relocate((currentX) *  CheckersTile.TILE_WIDTH,
+                                  (currentY) *  CheckersTile.TILE_HEIGHT);
+                    board.getBoardIndex(currentX, currentY).setPiece(this);
+                    board.getBoardIndex(currentX-1, currentY-1).setPiece(null);
+                    option1.setStrokeWidth(0);
+                    option2.setStrokeWidth(0);
+                    board.setIsRedTurn(true);
+                    board.setIsBlueTurn(false);
+                    this.removeOptions();
+                }
+            }); 
+    }
+
+    public void updateMidChoice2B(){
+        option2.setStrokeWidth(3);
+        option2.setOnMousePressed(e-> {
+                if(board.isBlueTurn() && option1 != null && option2 != null){
+                    currentX--;
+                    currentY++;
+                    if(currentY == 7){
+                        this.setToKing();
+                    }
+                    this.relocate((currentX) *  CheckersTile.TILE_WIDTH,
+                                  (currentY) *  CheckersTile.TILE_HEIGHT);
+                    board.getBoardIndex(currentX, currentY).setPiece(this);
+                    board.getBoardIndex(currentX+1, currentY-1).setPiece(null);
+                    option1.setStrokeWidth(0);
+                    option2.setStrokeWidth(0);
+                    board.setIsRedTurn(true);
+                    board.setIsBlueTurn(false);
+                    this.removeOptions();
+                }
+            });
+    }
+    
+
     public void removeOptions(){
         option1 = null;
         option2 = null;
