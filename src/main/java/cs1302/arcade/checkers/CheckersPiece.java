@@ -93,11 +93,24 @@ public class CheckersPiece extends StackPane{
     public void moveBlue(){
         if(board.isBlueTurn()){
             if(currentX == 0){
-                this.moveBlueAt0();
-            }
-            
-            else if(currentX == 7){
-                this.moveBlueAt7();
+                option1 = board.getBoardIndex(currentX+1, currentY+1);
+                if(option1.isOpen()){
+                    this.moveBlueAt0();
+                }
+                else if(option1.getPiece().getType() == Piece.RED && board.getBoardIndex(currentX+2, currentY+2).isOpen()){
+                    this.attackBlue();
+                }
+            }//X=0
+
+            //right corner got stuck
+            else if(currentX == 7 && currentY < 6){
+                option2 = board.getBoardIndex(currentX-1, currentY+1);
+                if(option2.isOpen()){
+                    this.moveBlueAt7();
+                }
+                else if(option2.getPiece().getType() == Piece.RED && board.getBoardIndex(currentX-2, currentY+2).isOpen()){
+                    this.attackBlue2();
+                }
             }
             
             else{
@@ -106,8 +119,21 @@ public class CheckersPiece extends StackPane{
                 if(option1.isOpen()){
                     this.moveBlueMid();
                 }
+
+                else if(currentX != 6 && currentY < 6){
+                    if(option1.getPiece().getType() == Piece.RED && board.getBoardIndex(currentX+2, currentY+2).isOpen()){
+                        this.attackBlue();
+                    }
+                }
+                
                 if(option2.isOpen()){
                     this.moveBlueMid2();
+                }
+                
+                else if(currentX != 1 && currentY < 6){
+                    if(option2.getPiece().getType() == Piece.RED && board.getBoardIndex(currentX-2, currentY+2).isOpen()){
+                        this.attackBlue2();
+                    }
                 }
             }
         }
@@ -144,6 +170,7 @@ public class CheckersPiece extends StackPane{
                 else if(currentX != 6 && currentY > 1){
                     if(option1.getPiece().getType() == Piece.BLUE && board.getBoardIndex(currentX+2, currentY-2).isOpen()){
                         this.attackRed();
+                        System.out.println(currentX);
                     }
                 }
                 
@@ -154,6 +181,7 @@ public class CheckersPiece extends StackPane{
                 else if(currentX != 1 && currentY > 1){
                     if(option2.getPiece().getType() == Piece.BLUE && board.getBoardIndex(currentX-2, currentY-2).isOpen()){
                         this.attackRed2();
+                        System.out.println(currentX);
                     }
                 }
             }
@@ -301,8 +329,6 @@ public class CheckersPiece extends StackPane{
     }
 
     public void moveBlueAt0(){
-        option1 = board.getBoardIndex(currentX+1, currentY+1);
-        if(option1.isOpen()){
             option1.setStrokeWidth(3);
             option1.setOnMousePressed(e-> {
                     if(board.isBlueTurn() && option1 != null){
@@ -322,15 +348,12 @@ public class CheckersPiece extends StackPane{
                         board.removeAllHighlights();
                     }
                 });   
-        }
     }
     
     public void moveBlueAt7(){
-        option1 = board.getBoardIndex(currentX-1, currentY+1);
-        if(option1.isOpen()){
-            option1.setStrokeWidth(3);
-            option1.setOnMousePressed(e-> {
-                    if(board.isBlueTurn() && option1 != null){
+            option2.setStrokeWidth(3);
+            option2.setOnMousePressed(e-> {
+                    if(board.isBlueTurn() && option2 != null){
                         currentX--;
                         currentY++;
                         if(currentY == 7){
@@ -340,15 +363,63 @@ public class CheckersPiece extends StackPane{
                                       (currentY) *  CheckersTile.TILE_HEIGHT);
                         board.getBoardIndex(currentX, currentY).setPiece(this);
                         board.getBoardIndex(currentX+1, currentY-1).setPiece(null);
-                        option1.setStrokeWidth(0);
+                        option2.setStrokeWidth(0);
                         board.setIsRedTurn(true);
                         board.setIsBlueTurn(false);
                         this.removeOptions();
                         board.removeAllHighlights();
                     }
                 });
-        }
-        
+    }
+
+    public void attackBlue(){
+        option1 = board.getBoardIndex(currentX+2, currentY+2);
+        option1.setStrokeWidth(3);
+        option1.setOnMousePressed(e-> {
+                if(board.isBlueTurn() && option1 != null){
+                    currentX = currentX+2;
+                    currentY = currentY+2;
+                    if(currentY == 7){
+                        this.setToKing();
+                    }
+                    this.relocate((currentX) *  CheckersTile.TILE_WIDTH,
+                                  (currentY) *  CheckersTile.TILE_HEIGHT);
+                    board.getBoardIndex(currentX, currentY).setPiece(this);
+                    board.getBoardIndex(currentX-1, currentY-1).getPiece().getChildren().clear();
+                    board.getBoardIndex(currentX-1, currentY-1).setPiece(null);
+                    board.getBoardIndex(currentX-2, currentY-2).setPiece(null);
+                    option1.setStrokeWidth(0);
+                    board.setIsBlueTurn(false);
+                    board.setIsRedTurn(true);
+                    this.removeOptions();
+                    board.removeAllHighlights();
+                }
+            });
+    }
+
+    public void attackBlue2(){
+        option2 = board.getBoardIndex(currentX-2, currentY+2);
+        option2.setStrokeWidth(3);
+        option2.setOnMousePressed(e-> {
+                if(board.isBlueTurn() && option2 != null){
+                    currentX = currentX-2;
+                    currentY = currentY+2;
+                    if(currentY == 7){
+                        this.setToKing();
+                    }
+                    this.relocate((currentX) *  CheckersTile.TILE_WIDTH,
+                                  (currentY) *  CheckersTile.TILE_HEIGHT);
+                    board.getBoardIndex(currentX, currentY).setPiece(this);
+                    board.getBoardIndex(currentX+1, currentY-1).getPiece().getChildren().clear();
+                    board.getBoardIndex(currentX+1, currentY-1).setPiece(null);
+                    board.getBoardIndex(currentX+2, currentY-2).setPiece(null);
+                    option2.setStrokeWidth(0);
+                    board.setIsBlueTurn(false);
+                    board.setIsRedTurn(true);
+                    this.removeOptions();
+                    board.removeAllHighlights();
+                }
+            });
     }
     
     public void moveBlueMid(){
