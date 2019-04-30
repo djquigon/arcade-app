@@ -21,8 +21,13 @@ import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundPosition;
 import javafx.scene.layout.BackgroundSize;
 
+/**
+ *JavaDoc
+ *
+ */
 public class CheckersStage extends Stage{
 
+    //Instance Variables
     private Scene scene;
     private VBox window;
     private HBox main;
@@ -31,6 +36,10 @@ public class CheckersStage extends Stage{
     private VBox info;
     private Text turn;
 
+    /**
+     *JavaDoc
+     *
+     */
     public CheckersStage(){
         super();
         window = new VBox();
@@ -55,8 +64,12 @@ public class CheckersStage extends Stage{
         this.setResizable(false);
         this.sizeToScene();
         this.setScene(scene);
-    }
+    }//Constructor
 
+    /**
+     *JavaDoc
+     *
+     */
     public void setMenuBar(){
         Menu file = new Menu("File");
         MenuItem exit = new MenuItem("Exit to Main Menu");
@@ -67,7 +80,7 @@ public class CheckersStage extends Stage{
         help.getItems().add(about);
         menuBar.getMenus().addAll(file, help);
         menuBar.prefWidthProperty().bind(this.widthProperty());
-    }
+    }//SetMenuBar
         
     /**
      * Sets the contents of the {@code info} VBox.
@@ -80,9 +93,14 @@ public class CheckersStage extends Stage{
         info = new VBox(25);
         info.setMargin(turn, new Insets(0, 50, 0, 20));
         info.getChildren().addAll(turn);
-    }
+    }//SetInfo
 
+    /**
+     *JavaDoc
+     *
+     */
     public Text getTurnText(){
         return turn;
-    }
-}
+    }//GetTurnText
+
+}//Class
