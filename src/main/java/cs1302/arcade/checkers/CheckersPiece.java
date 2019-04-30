@@ -10,7 +10,7 @@ import javafx.scene.image.Image;
 public class CheckersPiece extends StackPane{
 
     private CheckersBoard board;
-    private Piece piece;
+    private Piece type;
     private Ellipse bottom;
     private Ellipse top;
     private Ellipse king;
@@ -20,9 +20,9 @@ public class CheckersPiece extends StackPane{
     private CheckersTile option1;
     private CheckersTile option2;
 
-    public CheckersPiece(CheckersBoard board, Piece piece, int x, int y){
+    public CheckersPiece(CheckersBoard board, Piece type, int x, int y){
         this.board = board; //gets reference to board
-        this.piece = piece; //sets piece
+        this.type = type; //sets type
         this.isKing = false; //at start is not a king
         currentX = x;
         currentY = y;
@@ -31,28 +31,28 @@ public class CheckersPiece extends StackPane{
         this.setBottom();
         this.getChildren().addAll(bottom, top);
         this.setOnMousePressed(e-> {
-                if(piece == Piece.RED && board.isRedTurn()){
+                if(type == Piece.RED && board.isRedTurn()){
                     board.removeAllHighlights();
                     this.moveRed();
                 }
-                if(piece == Piece.BLUE && board.isBlueTurn()){
+                if(type == Piece.BLUE && board.isBlueTurn()){
                     board.removeAllHighlights();
                     this.moveBlue();
                 }
             });
     }
 
-    public Piece getPiece(){
-        return piece;
+    public Piece getType(){
+        return type;
     }
 
     public void setBottom(){
         bottom = new Ellipse(CheckersTile.TILE_WIDTH * .3, CheckersTile.TILE_HEIGHT * .2);
-        if(piece == Piece.RED){
+        if(type == Piece.RED){
             bottom.setFill(Color.RED);
             bottom.setStroke(Color.DARKRED);
         }
-        if(piece == Piece.BLUE){
+        if(type == Piece.BLUE){
             bottom.setFill(Color.ROYALBLUE);
             bottom.setStroke(Color.MEDIUMBLUE);
         }
@@ -63,7 +63,7 @@ public class CheckersPiece extends StackPane{
 
     public void setTop(){
         top = new Ellipse(CheckersTile.TILE_WIDTH * .3, CheckersTile.TILE_HEIGHT * .2);
-        if(piece == Piece.BLUE){
+        if(type == Piece.BLUE){
             top.setFill(Color.ROYALBLUE);
             top.setStroke(Color.MEDIUMBLUE);
         }
@@ -211,8 +211,31 @@ public class CheckersPiece extends StackPane{
                             }
                         });
                 }
+                else if(option1.getPiece().getType() == Piece.BLUE && board.getBoardIndex(currentX+2, currentY-2).isOpen()){
+                    option1 = board.getBoardIndex(currentX+2, currentY-2);
+                    option1.setStrokeWidth(3);
+                    option1.setOnMousePressed(e-> {
+                            if(board.isRedTurn() && option1 != null){
+                                currentX = currentX+2;
+                                currentY = currentY-2;
+                                if(currentY == 0){
+                                    this.setToKing();
+                                }
+                                this.relocate((currentX) *  CheckersTile.TILE_WIDTH,
+                                              (currentY) *  CheckersTile.TILE_HEIGHT);
+                                board.getBoardIndex(currentX, currentY).setPiece(this);
+                                board.getBoardIndex(currentX-1, currentY+1).getPiece().getChildren().clear();
+                                board.getBoardIndex(currentX-1, currentY+1).setPiece(null);
+                                board.getBoardIndex(currentX-2, currentY+2).setPiece(null);
+                                option1.setStrokeWidth(0);
+                                board.setIsBlueTurn(true);
+                                board.setIsRedTurn(false);
+                                this.removeOptions();
+                            }
+                        });
+                }
             } //if
-            else if(currentX == 7){
+            else if(currentX == 6){
                 option1 = board.getBoardIndex(currentX-1, currentY-1);
                 if(option1.isOpen()){
                     option1.setStrokeWidth(3);
@@ -227,6 +250,29 @@ public class CheckersPiece extends StackPane{
                                               (currentY) *  CheckersTile.TILE_HEIGHT);
                                 board.getBoardIndex(currentX, currentY).setPiece(this);
                                 board.getBoardIndex(currentX+1, currentY+1).setPiece(null);
+                                option1.setStrokeWidth(0);
+                                board.setIsBlueTurn(true);
+                                board.setIsRedTurn(false);
+                                this.removeOptions();
+                            }
+                        });
+                }
+                else if(option1.getPiece().getType() == Piece.BLUE && board.getBoardIndex(currentX-2, currentY-2).isOpen()){
+                    option1 = board.getBoardIndex(currentX-2, currentY-2);
+                    option1.setStrokeWidth(3);
+                    option1.setOnMousePressed(e-> {
+                            if(board.isRedTurn() && option1 != null){
+                                currentX = currentX-2;
+                                currentY = currentY-2;
+                                if(currentY == 0){
+                                    this.setToKing();
+                                }
+                                this.relocate((currentX) *  CheckersTile.TILE_WIDTH,
+                                              (currentY) *  CheckersTile.TILE_HEIGHT);
+                                board.getBoardIndex(currentX, currentY).setPiece(this);
+                                board.getBoardIndex(currentX+1, currentY+1).getPiece().getChildren().clear();
+                                board.getBoardIndex(currentX+1, currentY+1).setPiece(null);
+                                board.getBoardIndex(currentX+2, currentY+2).setPiece(null);
                                 option1.setStrokeWidth(0);
                                 board.setIsBlueTurn(true);
                                 board.setIsRedTurn(false);
@@ -260,6 +306,31 @@ public class CheckersPiece extends StackPane{
                         });
                    
                 } //if
+                else if(currentX != 7){
+                    if(option1.getPiece().getType() == Piece.BLUE && board.getBoardIndex(currentX+2, currentY-2).isOpen()){
+                        option1 = board.getBoardIndex(currentX+2, currentY-2);
+                        option1.setStrokeWidth(3);
+                        option1.setOnMousePressed(e-> {
+                                if(board.isRedTurn() && option1 != null){
+                                    currentX = currentX+2;
+                                    currentY = currentY-2;
+                                    if(currentY == 0){
+                                        this.setToKing();
+                                    }
+                                    this.relocate((currentX) *  CheckersTile.TILE_WIDTH,
+                                                  (currentY) *  CheckersTile.TILE_HEIGHT);
+                                    board.getBoardIndex(currentX, currentY).setPiece(this);
+                                    board.getBoardIndex(currentX-1, currentY+1).getPiece().getChildren().clear();
+                                    board.getBoardIndex(currentX-1, currentY+1).setPiece(null);
+                                    board.getBoardIndex(currentX-2, currentY+2).setPiece(null);
+                                    option1.setStrokeWidth(0);
+                                    board.setIsBlueTurn(true);
+                                    board.setIsRedTurn(false);
+                                    this.removeOptions();
+                                }
+                            });
+                    }
+                }
                 if(option2.isOpen()){
                     option2.setStrokeWidth(3);
                     option2.setOnMousePressed(e-> {
@@ -281,10 +352,35 @@ public class CheckersPiece extends StackPane{
                             }
                         });
                 } //if
+                else if(currentX != 1){
+                    if(option1.getPiece().getType() == Piece.BLUE && board.getBoardIndex(currentX-2, currentY-2).isOpen()){
+                        option1 = board.getBoardIndex(currentX-2, currentY-2);
+                        option1.setStrokeWidth(3);
+                        option1.setOnMousePressed(e-> {
+                                if(board.isRedTurn() && option1 != null){
+                                    currentX = currentX-2;
+                                    currentY = currentY-2;
+                                    if(currentY == 0){
+                                        this.setToKing();
+                                    }
+                                    this.relocate((currentX) *  CheckersTile.TILE_WIDTH,
+                                                  (currentY) *  CheckersTile.TILE_HEIGHT);
+                                    board.getBoardIndex(currentX, currentY).setPiece(this);
+                                    board.getBoardIndex(currentX+1, currentY+1).getPiece().getChildren().clear();
+                                    board.getBoardIndex(currentX+1, currentY+1).setPiece(null);
+                                    board.getBoardIndex(currentX+2, currentY+2).setPiece(null);
+                                    option1.setStrokeWidth(0);
+                                    board.setIsBlueTurn(true);
+                                    board.setIsRedTurn(false);
+                                    this.removeOptions();
+                                }
+                            });
+                    }
+                }
             } //else
         } //if
     } //moveRed
-
+    
     public void removeOptions(){
         option1 = null;
         option2 = null;

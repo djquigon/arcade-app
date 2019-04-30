@@ -19,6 +19,8 @@ public class CheckersBoard extends VBox{
     private Group tiles; //group for the tiles
     private boolean isRedTurn;
     private boolean isBlueTurn;
+    private int rPiecesLeft;
+    private int bPiecesLeft;
 
     public CheckersBoard(CheckersStage ref){
         super();
@@ -28,7 +30,7 @@ public class CheckersBoard extends VBox{
         tiles = new Group();
         for(int x = 0; x < BOARD_WIDTH; x++){ //populate rows
             for(int y = 0; y < BOARD_HEIGHT; y++){ //populate columns
-                CheckersTile tile = new CheckersTile((x+y) % 2 == 0, x, y);
+                CheckersTile tile = new CheckersTile(this, (x+y) % 2 == 0, x, y);
                 tile.setStroke(Color.LAWNGREEN);
                 tile.setStrokeWidth(0);
                 board[x][y] = tile;
@@ -60,6 +62,8 @@ public class CheckersBoard extends VBox{
         this.setStyle(cssLayout); //outline not working?
         isRedTurn = true; //red's turn first
         isBlueTurn = false;
+        rPiecesLeft = 12;
+        bPiecesLeft = 12;
     }
 
     public CheckersTile getBoardIndex(int x, int y){
@@ -101,5 +105,21 @@ public class CheckersBoard extends VBox{
                 }
             }
         }
+    }
+
+    public void setRPiecesLeft(int rPiecesLeft){
+        this.rPiecesLeft = rPiecesLeft;
+    }
+
+    public void setBPiecesLeft(int bPiecesLeft){
+        this.bPiecesLeft = bPiecesLeft;
+    }
+
+    public int getRPiecesLeft(){
+        return rPiecesLeft;
+    }
+
+    public int getBPiecesLeft(){
+        return bPiecesLeft;
     }
 }
