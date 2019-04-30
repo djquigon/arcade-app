@@ -41,6 +41,8 @@ public class CheckersPiece extends StackPane{
     private int currentY;
     private CheckersTile option1;
     private CheckersTile option2;
+    private CheckersTile option3;
+    private CheckersTile option4;
     
     /**
      *JavaDoc
@@ -214,13 +216,13 @@ public class CheckersPiece extends StackPane{
         //Creates opportunity for blue piece to move based on position  
         if(board.isBlueTurn()){
             if(currentX == 0){
-                this.bluePath0();
+                this.moveTopLeft();
             }//if
             else if(currentX == 7 && currentY < 7){
-                this.bluePath7();
+                this.moveTopRight();
             }//else-if
             else{
-                this.bluePaths();
+                this.moveDown();
             }//else
         }//if
     }//MoveBlue
@@ -230,79 +232,123 @@ public class CheckersPiece extends StackPane{
      *
      */
     public void moveRed(){
-        //Creates opportunity for red piece to move based on position  
+        //Creates opportunity for red piece to move based on position
         if(board.isRedTurn()){
-            if(currentX == 0){
-                this.redPath0();
-            }//if
-            else if(currentX == 7){
-                this.redPath7();
-            }//else-if
+            if(isKing){
+                if(currentX == 0){ 
+                    //MoveDown
+                    if(currentY == 0){
+                        this.moveTopLeft();
+                    }
+                    else if(currentY == 7){
+                        this.moveBotLeft();
+                    }
+                    else{
+                        this.moveTopLeft();
+                        this.moveBotLeft();
+                        //Both of these methods reference option1, check for bugs
+                    }
+                    //MoveDown
+                }
+                else if(currentX == 7){
+                    if(currentY == 0){
+                        this.moveTopRight();
+                    }
+                    else if(currentY == 7){
+                        this.moveBotRight();
+                    }
+                    //MoveUp
+                    else{
+                        this.moveTopRight();
+                        this.moveBotRight();
+                    }
+                }
+                else{
+                    if(currentY == 0){
+                        this.moveDown();
+                    }
+                    else if(currentY == 7){
+                        this.moveUp();
+                    }
+                    else{
+                        this.moveDown();
+                        this.moveUp();
+                    }
+                }
+            }
             else{
-                this.redPaths();
+                if(currentX == 0){
+                    this.moveBotLeft();
+                }//if
+                else if(currentX == 7){
+                    this.moveBotRight();
+                }//else-if
+                else{
+                    this.moveUp();
+                }//else
             }//else
-        }//if
+        }//IsRedTurn
     }//MoveRed
-
+    
     /**
      *JavaDox
      *
      */
-    public void redPath0(){
+    public void moveBotLeft(){
         //Handles movement for red pieces at x = 0
         option1 = board.getIndex(currentX+1, currentY-1);
         if(option1.isOpen()){
-            this.redLeftSide();
+            this.botLeft();
         }//if
-        else if(option1.getPiece().getType() == Piece.BLUE && currentY > 1){
+        else if(option1.getPiece().getType() != this.getType() && currentY > 1){
             if(board.getIndex(currentX+2, currentY-2).isOpen()){
-                this.redAttack();
+                this.attackUp();
             }//if
         }//else-if
-    }//RedPath0
+    }//MoveBotLeft
 
     /**
      *JavaDoc
      *
      */
-    public void redPath7(){
+    public void moveBotRight(){
         //Handles movement for red pieces on x = 7
         option2 = board.getIndex(currentX-1, currentY-1);
         if(option2.isOpen()){
-            this.redRightSide();
+            this.botRight();
         }//if
-        else if(option2.getPiece().getType() == Piece.BLUE && currentY > 1){
+        else if(option2.getPiece().getType() != this.getType() && currentY > 1){
             if(board.getIndex(currentX-2, currentY-2).isOpen()){
-                this.redAttack2();
+                this.attackUp2();
             }//if
         }//else-if
-    }//RedPath7
+    }//MoveBotRight
 
     /**
      *JavaDoc
      *
      */
-    public void redPaths(){
+    public void moveUp(){
         //Handles movement for red pieces where x is between 1 and 7
         option1 = board.getIndex(currentX+1, currentY-1);
         option2 = board.getIndex(currentX-1, currentY-1);
         if(option1.isOpen()){
-            this.redCenter();
+            this.genMoveUp();
         }//if
         else if(currentX != 6 && currentY > 1){
-            if(option1.getPiece().getType() == Piece.BLUE){
+            if(option1.getPiece().getType() != this.getType()){
                 if(board.getIndex(currentX+2, currentY-2).isOpen()){
-                    this.redAttack();
+                    this.attackUp();
                 }//if
             }//if
         }//else-if        
         if(option2.isOpen()){
-            this.redCenter2();
+            this.genMoveUp2();
         }//if
         else if(currentX != 1 && currentY > 1){
-            if(option2.getPiece().getType() == Piece.BLUE){
+            if(option2.getPiece().getType() != this.getType()){
                 if(board.getIndex(currentX-2, currentY-2).isOpen()){
-                    this.redAttack2();
+                    this.attackUp2();
                 }//if
             }//if
         }//else-if
@@ -312,11 +358,11 @@ public class CheckersPiece extends StackPane{
      *JavaDoc
      *
      */
-    public void redLeftSide(){
+    public void botLeft(){
         //Movement for red piece when x = 0
         option1.setStrokeWidth(3);
         option1.setOnMousePressed(e-> {
-                if(board.isRedTurn() && option1 != null){
+                if(option1 != null){
                     currentX++;
                     currentY--;
                     this.kingCheckRed();
@@ -324,20 +370,25 @@ public class CheckersPiece extends StackPane{
                                       (currentY) *  CheckersTile.TILE_HEIGHT);
                     board.getIndex(currentX, currentY).setPiece(this);
                     board.getIndex(currentX-1, currentY+1).setPiece(null);
-                    this.endRedTurn();
+                    if(option1.getPiece().getType() == Piece.BLUE){
+                        this.endBlueTurn();
+                    }
+                    else{
+                        this.endRedTurn();
+                    }
                 }//if
             });//MouseEvent
-    }//RedLeftSide
+    }//BotLeft
 
     /**
      *JavaDoc
      *
      */
-    public void redRightSide(){
+    public void botRight(){
         //Movement for red piece when x = 7
         option2.setStrokeWidth(3);
         option2.setOnMousePressed(e-> {
-                if(board.isRedTurn() && option2 != null){
+                if(option2 != null){
                     currentX--;
                     currentY--;
                     this.kingCheckRed();
@@ -345,20 +396,25 @@ public class CheckersPiece extends StackPane{
                                   (currentY) *  CheckersTile.TILE_HEIGHT);
                     board.getIndex(currentX, currentY).setPiece(this);
                     board.getIndex(currentX+1, currentY+1).setPiece(null);
-                    this.endRedTurn();
+                    if(option2.getPiece().getType() == Piece.BLUE){
+                        this.endBlueTurn();
+                    }
+                    else{
+                        this.endRedTurn();
+                    }
                 }//if
             });//MouseEvent
-    }//RedRightSide
+    }//BotRight
 
     /**
      *JavaDoc
      *
      */
-    public void redCenter(){
+    public void genMoveUp(){
         //Movement option 1 for red pieces not on x = 1 or x = 7
         option1.setStrokeWidth(3);
         option1.setOnMousePressed(e-> {
-                if(board.isRedTurn() && option1 != null && option2 != null){
+                if(option1 != null && option2 != null){
                     currentX++;
                     currentY--;
                     this.kingCheckRed();
@@ -366,20 +422,25 @@ public class CheckersPiece extends StackPane{
                                   (currentY) *  CheckersTile.TILE_HEIGHT);
                     board.getIndex(currentX, currentY).setPiece(this);
                     board.getIndex(currentX-1, currentY+1).setPiece(null);
-                    this.endRedTurn();
+                    if(option1.getPiece().getType() == Piece.BLUE){
+                        this.endBlueTurn();
+                    }
+                    else{
+                        this.endRedTurn();
+                    }
                 }//if
             });//MouseEvent    
-    }//RedCenter
+    }//GenMoveUp
 
     /**
      *JavaDoc
      *
      */
-    public void redCenter2(){
+    public void genMoveUp2(){
         //Movement option 2 for red pieces not on x = 1 or x = 7
         option2.setStrokeWidth(3);
         option2.setOnMousePressed(e-> {
-                if(board.isRedTurn() && option2 != null && option1 != null){
+                if(option2 != null && option1 != null){
                     currentX--;
                     currentY--;
                     this.kingCheckRed();
@@ -387,21 +448,26 @@ public class CheckersPiece extends StackPane{
                                   (currentY) *  CheckersTile.TILE_HEIGHT);
                     board.getIndex(currentX, currentY).setPiece(this);
                     board.getIndex(currentX+1, currentY+1).setPiece(null);
-                    this.endRedTurn();
+                    if(option2.getPiece().getType() == Piece.BLUE){
+                        this.endBlueTurn();
+                    }
+                    else{
+                        this.endRedTurn();
+                    }
                 }//if
             });//MouseEvent
-    }//RedCenter2
+    }//GenMoveUp2
 
     /**
      *JavaDoc
      *
      */
-    public void redAttack(){
+    public void attackUp(){
         //Movement & Actions for red pieces attacking
         option1 = board.getIndex(currentX+2, currentY-2);
         option1.setStrokeWidth(3);
         option1.setOnMousePressed(e-> {
-                if(board.isRedTurn() && option1 != null){
+                if(option1 != null){
                     currentX = currentX+2;
                     currentY = currentY-2;
                     this.kingCheckRed();
@@ -412,21 +478,26 @@ public class CheckersPiece extends StackPane{
                     board.getIndex(currentX-1, currentY+1).setPiece(null);
                     board.getIndex(currentX-2, currentY+2).setPiece(null);
                     board.setBPiecesLeft(board.getBPiecesLeft()-1);
-                    this.endRedTurn();
+                    if(option1.getPiece().getType() == Piece.BLUE){
+                        this.endBlueTurn();
+                    }
+                    else{
+                        this.endRedTurn();
+                    }
                 }//if
             });//MouseEvent
-    }//RedAttack
+    }//AttackUp
 
     /**
      *JavaDoc
      *
      */
-    public void redAttack2(){
+    public void attackUp2(){
         //Secondary movements & actions for red pieces attacking
         option2 = board.getIndex(currentX-2, currentY-2);
         option2.setStrokeWidth(3);
         option2.setOnMousePressed(e-> {
-                if(board.isRedTurn() && option2 != null){
+                if(option2 != null){
                     currentX = currentX-2;
                     currentY = currentY-2;
                     this.kingCheckRed();
@@ -437,7 +508,12 @@ public class CheckersPiece extends StackPane{
                     board.getIndex(currentX+1, currentY+1).setPiece(null);
                     board.getIndex(currentX+2, currentY+2).setPiece(null);
                     board.setBPiecesLeft(board.getBPiecesLeft()-1);
-                    this.endRedTurn();
+                    if(option2.getPiece().getType() == Piece.BLUE){
+                        this.endBlueTurn();
+                    }
+                    else{
+                        this.endRedTurn();
+                    }
                 }//if
             });//MouseEvent
     }//RedAttack2
@@ -446,75 +522,75 @@ public class CheckersPiece extends StackPane{
      *JavaDoc
      *
      */
-    public void bluePath0(){
+    public void moveTopLeft(){
         //Handles movement for blue pieces at x = 0
         option1 = board.getIndex(currentX+1, currentY+1);
         if(option1.isOpen()){
-            this.blueLeftSide();
+            this.topLeft();
         }//if
-        else if(option1.getPiece().getType() == Piece.RED){
+        else if(option1.getPiece().getType() != this.getType()){
             if(board.getIndex(currentX+2, currentY+2).isOpen()){
-                this.blueAttack();
+                this.attackDown();
             }//if
         }//else-if
-    }//BluePath0
+    }//MoveTopLeft
 
     /**
      *JavaDoc
      *
      */
-    public void bluePath7(){
+    public void moveTopRight(){
         //Handles movement for blue pieces at x = 7
         option2 = board.getIndex(currentX-1, currentY+1);
         if(option2.isOpen()){
-            this.blueRightSide();
+            this.topRight();
         }//if
-        else if(option2.getPiece().getType() == Piece.RED && currentY < 6){
+        else if(option2.getPiece().getType() != this.getType() && currentY < 6){
             if(board.getIndex(currentX-2, currentY+2).isOpen()){
-                this.blueAttack2();
+                this.attackDown2();
             }//if
         }//else-if
-    }//BluePath7
+    }//MoveTopRight
 
     /**
      *JavaDoc
      *
      */
-    public void bluePaths(){
+    public void moveDown(){
         //Handles movement for blue pieces when x is between 1 and 7
         option1 = board.getIndex(currentX+1, currentY+1);
         option2 = board.getIndex(currentX-1, currentY+1);
         if(option1.isOpen()){
-            this.blueCenter();
+            this.genMoveDown();
         }//if
         else if(currentX != 6 && currentY < 6){
-            if(option1.getPiece().getType() == Piece.RED){
+            if(option1.getPiece().getType() != this.getType()){
                 if(board.getIndex(currentX+2, currentY+2).isOpen()){
-                    this.blueAttack();
+                    this.attackDown();
                 }//if
             }//if
         }//else-if           
         if(option2.isOpen()){
-            this.blueCenter2();
+            this.genMoveDown2();
         }//if
         else if(currentX != 1 && currentY < 6){
-            if(option2.getPiece().getType() == Piece.RED){
+            if(option2.getPiece().getType() != this.getType()){
                 if(board.getIndex(currentX-2, currentY+2).isOpen()){
-                    this.blueAttack2();
+                    this.attackDown2();
                 }//if
             }//if
         }//else-if
-    }//BluePaths
+    }//MoveDown
 
     /**
      *JavaDoc
      *
      */
-    public void blueLeftSide(){
+    public void topLeft(){
         //Movement for blue piece when x = 0
         option1.setStrokeWidth(3);
         option1.setOnMousePressed(e-> {
-                if(board.isBlueTurn() && option1 != null){
+                if(option1 != null){
                     currentX++;
                     currentY++;
                     this.kingCheckBlue();
@@ -522,20 +598,25 @@ public class CheckersPiece extends StackPane{
                                   (currentY) *  CheckersTile.TILE_HEIGHT);
                     board.getIndex(currentX, currentY).setPiece(this);
                     board.getIndex(currentX-1, currentY-1).setPiece(null);
-                    this.endBlueTurn();
+                    if(option1.getPiece().getType() == Piece.BLUE){
+                        this.endBlueTurn();
+                    }
+                    else{
+                        this.endRedTurn();
+                    }
                 }//if
             });//MouseEvent   
-    }//BlueLeftSide
+    }//TopLeft
 
     /**
      *JavaDoc
      *
      */
-    public void blueRightSide(){
+    public void topRight(){
         //Movement for blue piece when x = 7
         option2.setStrokeWidth(3);
         option2.setOnMousePressed(e-> {
-                if(board.isBlueTurn() && option2 != null){
+                if(option2 != null){
                     currentX--;
                     currentY++;
                     this.kingCheckBlue();
@@ -543,20 +624,25 @@ public class CheckersPiece extends StackPane{
                                   (currentY) *  CheckersTile.TILE_HEIGHT);
                     board.getIndex(currentX, currentY).setPiece(this);
                     board.getIndex(currentX+1, currentY-1).setPiece(null);
-                    this.endBlueTurn();
+                     if(option2.getPiece().getType() == Piece.BLUE){
+                        this.endBlueTurn();
+                    }
+                    else{
+                        this.endRedTurn();
+                    }
                 }//if
             });//MouseEvent
-    }//BlueRightSide
+    }//TopRight
 
     /**
      *JavaDoc
      *
      */
-    public void blueCenter(){
+    public void genMoveDown(){
         //Movement option 1 for blue pieces not on x = 1 or x = 7
         option1.setStrokeWidth(3);
         option1.setOnMousePressed(e-> {
-                if(board.isBlueTurn() && option1 != null && option2 != null){
+                if(option1 != null && option2 != null){
                     currentX++;
                     currentY++;
                     this.kingCheckBlue();
@@ -564,20 +650,25 @@ public class CheckersPiece extends StackPane{
                                   (currentY) *  CheckersTile.TILE_HEIGHT);
                     board.getIndex(currentX, currentY).setPiece(this);
                     board.getIndex(currentX-1, currentY-1).setPiece(null);
-                    this.endBlueTurn();
+                    if(option1.getPiece().getType() == Piece.BLUE){
+                        this.endBlueTurn();
+                    }
+                    else{
+                        this.endRedTurn();
+                    }
                 }//if
             });//MouseEvent 
-    }//BlueCenter
+    }//GenMoveDown
 
     /**
      *JavaDoc
      *
      */
-    public void blueCenter2(){
+    public void genMoveDown2(){
         //Movement option 2 for blue pieces not on x = 1 or x = 7
         option2.setStrokeWidth(3);
         option2.setOnMousePressed(e-> {
-                if(board.isBlueTurn() && option1 != null && option2 != null){
+                if(option1 != null && option2 != null){
                     currentX--;
                     currentY++;
                     this.kingCheckBlue();
@@ -585,7 +676,12 @@ public class CheckersPiece extends StackPane{
                                   (currentY) *  CheckersTile.TILE_HEIGHT);
                     board.getIndex(currentX, currentY).setPiece(this);
                     board.getIndex(currentX+1, currentY-1).setPiece(null);
-                    this.endBlueTurn();
+                    if(option2.getPiece().getType() == Piece.BLUE){
+                        this.endBlueTurn();
+                    }
+                    else{
+                        this.endRedTurn();
+                    }
                 }//if
             });//MouseEvent
     }//BlueCenter2
@@ -594,12 +690,12 @@ public class CheckersPiece extends StackPane{
      *JavaDoc
      *
      */
-    public void blueAttack(){
+    public void attackDown(){
         //Movements & actions for blue pieces attacking
         option1 = board.getIndex(currentX+2, currentY+2);
         option1.setStrokeWidth(3);
         option1.setOnMousePressed(e-> {
-                if(board.isBlueTurn() && option1 != null){
+                if(option1 != null){
                     currentX = currentX+2;
                     currentY = currentY+2;
                     this.kingCheckBlue();
@@ -610,21 +706,26 @@ public class CheckersPiece extends StackPane{
                     board.getIndex(currentX-1, currentY-1).setPiece(null);
                     board.getIndex(currentX-2, currentY-2).setPiece(null);
                     board.setRPiecesLeft(board.getRPiecesLeft()-1);
-                    this.endBlueTurn();
+                    if(option1.getPiece().getType() == Piece.BLUE){
+                        this.endBlueTurn();
+                    }
+                    else{
+                        this.endRedTurn();
+                    }
                 }//if
             });//MouseEvent
-    }//BlueAttack
+    }//AttackDown
 
     /**
      *JavaDoc
      *
      */
-    public void blueAttack2(){
+    public void attackDown2(){
         //Secondary movements & actions for blue pieces attacking
         option2 = board.getIndex(currentX-2, currentY+2);
         option2.setStrokeWidth(3);
         option2.setOnMousePressed(e-> {
-                if(board.isBlueTurn() && option2 != null){
+                if(option2 != null){
                     currentX = currentX-2;
                     currentY = currentY+2;
                     this.kingCheckBlue();
@@ -635,8 +736,14 @@ public class CheckersPiece extends StackPane{
                     board.getIndex(currentX+1, currentY-1).setPiece(null);
                     board.getIndex(currentX+2, currentY-2).setPiece(null);
                     board.setRPiecesLeft(board.getRPiecesLeft()-1);
-                    this.endBlueTurn();
+                    if(option2.getPiece().getType() == Piece.BLUE){
+                        this.endBlueTurn();
+                    }
+                    else{
+                        this.endRedTurn();
+                    }
                 }//if
             });//MouseEvent
-    }//BlueAttack2
+    }//AttackDown2
+    
 }//Class
