@@ -5,8 +5,8 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.paint.Color;
 
 /**
- *JavaDoc
- *
+ * Represents a single tile for a checkers game. There are
+ * 64 tiles in a board.
  */
 public class CheckersTile extends Rectangle{
 
@@ -17,8 +17,12 @@ public class CheckersTile extends Rectangle{
     private CheckersPiece piece; //piece in tile
 
     /**
-     *JavaDoc
+     * Creates a tile with all properties set.
      *
+     * @param board a {@code CheckersBoard} object
+     * @param isWhite whether the tile isWhite or not
+     * @param x the x index of the tile
+     * @param y the y index of the tile
      */
     public CheckersTile(CheckersBoard board, boolean isWhite, int x, int y){
         super();
@@ -35,24 +39,27 @@ public class CheckersTile extends Rectangle{
     }//Constructor
 
     /**
-     *JavaDoc
+     * Sets the piece instance variable for a tile.
      *
+     * @param piece a CheckersPiece
      */
     public void setPiece(CheckersPiece piece){
         this.piece = piece;
     }//SetPiece
 
     /**
-     *JavaDoc
+     * Returns the piece instance variable of a tile.
      *
+     * @return the piece property of the tile
      */
     public CheckersPiece getPiece(){
         return piece;
     }//GetPiece
 
     /**
-     *JavaDoc
+     * Returns whether or not a tile contains a piece.
      *
+     * @return true or false if the tile doesn't contain a piece
      */
     public boolean isOpen(){
         return this.getPiece() == null;

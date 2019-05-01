@@ -9,7 +9,7 @@ import javafx.scene.image.Image;
 
 
 /**
- *Represents the two different team colors.
+ * Represents the two different team colors.
  */
 enum Piece{
     //Color name being associated with movement
@@ -30,27 +30,27 @@ enum Piece{
 }//Piece
 
 /**
- *This class creates the checkers piece for both teams with corresponding 
- *functionality for each.
+ * This class creates the checkers piece for both teams with corresponding 
+ * functionality for each.
  */
 public class CheckersPiece extends StackPane{
     
     //Instance variables
-    private CheckersBoard board;
-    private Piece type;
-    private Ellipse bottom;
-    private Ellipse top;
-    private Ellipse king;
+    private CheckersBoard board; //the board
+    private Piece type; //the type of piece
+    private Ellipse bottom; //adds 3d effect
+    private Ellipse top; //top ellipse of piece
+    private Ellipse king; //king symbol
     private Boolean isKing;
-    private int currentX;
-    private int currentY;
+    private int currentX; //current x position
+    private int currentY; //current y position
     private CheckersTile option1;
     private CheckersTile option2;
     private CheckersTile option3;
     private CheckersTile option4;
 
     /**
-     *Constructs a checkers piece with the neccesary variables to keep track of it.
+     * Constructs a checkers piece with the neccesary variables to keep track of it.
      *
      *@param board board object for piece to be placed on
      *@param type color of the piece
@@ -72,16 +72,16 @@ public class CheckersPiece extends StackPane{
     }//Piece Constructor
 
      /**
-     *Returns the color for checkers piece.
+     * Returns the color for checkers piece.
      *
-     *@return reference to what color the piece is
+     * @return reference to what color the piece is
      */
     public Piece getType(){
         return type;
     }//GetType
     
     /**
-     *Clears all options for avaliable moves.
+     * Clears all options for avaliable moves.
      */
     public void clearOptions(){
         //Resets Options
@@ -92,16 +92,16 @@ public class CheckersPiece extends StackPane{
     }//ClearOptions
     
     /**
-     *Checks whether a piece is a king or not.
+     * Checks whether a piece is a king or not.
      *
-     *@return whether a piece is a king or not
+     * @return whether a piece is a king or not
      */
     public boolean getIsKing(){
         return isKing;
     }//GetIsKing
     
     /**
-     *Creates the bottom half visual for piece. 
+     * Creates the bottom half visual for piece. 
      */
     public void setBottom(){
         //Creates bottom portion of piece based on color
@@ -120,7 +120,7 @@ public class CheckersPiece extends StackPane{
     }//SetBottom
     
     /**
-     *Creates the top half of visual for piece.
+     * Creates the top half of visual for piece.
      */
     public void setTop(){
         //Creates top portion of piece based on color
@@ -139,7 +139,7 @@ public class CheckersPiece extends StackPane{
     }//SetTop
     
     /**
-     *Creates the visual for when a piece becomes a king.
+     * Creates the visual for when a piece becomes a king.
      */
     public void setToKing(){
         //Changes piece to a king
@@ -154,7 +154,7 @@ public class CheckersPiece extends StackPane{
     }//SetToKing
 
     /**
-     *Completes the task of showing avaliable moves for a piece.
+     * Completes the task of showing avaliable moves for a piece.
      */
     public void findOptions(){
         this.setOnMousePressed(e-> {
@@ -174,7 +174,7 @@ public class CheckersPiece extends StackPane{
     }//FindOptions
     
     /**
-     *Checks if a blue piece becomes a king.
+     * Checks if a blue piece becomes a king.
      */
     public void kingCheckBlue(){
         //Checks if blue piece has met condition for becoming king
@@ -184,7 +184,7 @@ public class CheckersPiece extends StackPane{
     }//KingCheckBlue
     
     /**
-     *Checks if a Red piece becomes a king.
+     * Checks if a Red piece becomes a king.
      */
     public void kingCheckRed(){
         //Checks if red piece has met condition for becoming king
@@ -194,7 +194,7 @@ public class CheckersPiece extends StackPane{
     }//KingCheckRed
     
     /**
-     *End blue player's turn and sets board for new move.
+     * End blue player's turn and sets board for new move.
      */
     public void endBlueTurn(){
         //Set environment for turn change
@@ -205,7 +205,7 @@ public class CheckersPiece extends StackPane{
     }//EndBlueTurn
     
     /**
-     *End red player's turn and sets board for new move.
+     * End red player's turn and sets board for new move.
      */
     public void endRedTurn(){
         //Sets environment for turn change
@@ -216,7 +216,7 @@ public class CheckersPiece extends StackPane{
     }//EndRedTurn
     
     /**
-     *Moves blue piece after displaying avaliable moves to user and having them select one.
+     * Moves blue piece after displaying avaliable moves to user and having them select one.
      */
     public void moveBlue(){
         //Creates opportunity for blue piece to move based on position  
@@ -243,7 +243,7 @@ public class CheckersPiece extends StackPane{
     }//MoveBlue
     
     /**
-     *Moves red piece after displaying avaliable moves to user and having them select one.
+     * Moves red piece after displaying avaliable moves to user and having them select one.
      */
     public void moveRed(){
         //Creates opportunity for red piece to move based on position
@@ -270,8 +270,8 @@ public class CheckersPiece extends StackPane{
     }//MoveRed
     
     /**
-     *Handles the movement options for when a piece is located in the top
-     *left corner.
+     * Handles the movement options for when a piece is located in the top
+     * left corner.
      */
     public void moveTopLeft(){
         //Handles movement for blue pieces at x = 0, y = 0
@@ -289,8 +289,8 @@ public class CheckersPiece extends StackPane{
     }//MoveTopLeft
     
     /**
-     *Handles the movement options for when a piece is located in the bottom
-     *left corner.
+     * Handles the movement options for when a piece is located in the bottom
+     * left corner.
      */
     public void moveBotLeft(){
         //Handles movement for red pieces at x = 0, y = 7
@@ -308,8 +308,8 @@ public class CheckersPiece extends StackPane{
     }//MoveBotLeft
     
     /**
-     *Handles the movement options for when a piece is located in the top right
-     *corner.
+     * Handles the movement options for when a piece is located in the top right
+     * corner.
      */
     public void moveTopRight(){
         //Handles movement for blue pieces at x = 7, y = 0
@@ -327,8 +327,8 @@ public class CheckersPiece extends StackPane{
     }//MoveTopRight
     
     /**
-     *Handles the movement options for when a piece is located in the bottom
-     *right corner.
+     * Handles the movement options for when a piece is located in the bottom
+     * right corner.
      */
     public void moveBotRight(){
         //Handles movement for red pieces on x = 7, y = 7
@@ -346,8 +346,8 @@ public class CheckersPiece extends StackPane{
     }//MoveBotRight
     
     /**
-     *Highlights option for piece in top left corner, and if user
-     *selects option, it then updates board.
+     * Highlights option for piece in top left corner, and if user
+     * selects option, it then updates board.
      */
     public void topLeft(){
         //Movement action for x = 0, y = 0
@@ -375,8 +375,8 @@ public class CheckersPiece extends StackPane{
     }//TopLeft
 
     /**
-     *Highlights option for piece in bottom left corner, and if user
-     *selects option, it then updates board.
+     * Highlights option for piece in bottom left corner, and if user
+     * selects option, it then updates board.
      */
     public void botLeft(){
         //Movement action for x = 0, y = 7
@@ -404,8 +404,8 @@ public class CheckersPiece extends StackPane{
     }//BotLeft
     
     /**
-     *Highlights option for piece in top right corner, and if user
-     *selects option, it then updates board.
+     * Highlights option for piece in top right corner, and if user
+     * selects option, it then updates board.
      */
     public void topRight(){
         //Movement action for x = 7, y = 0
@@ -433,8 +433,8 @@ public class CheckersPiece extends StackPane{
     }//TopRight
     
     /**
-     *Highlights option for piece in bottom right corner, and if user
-     *selects option, it then updates board.
+     * Highlights option for piece in bottom right corner, and if user
+     * selects option, it then updates board.
      */
     public void botRight(){
         //Movement action for x = 7, y = 7
@@ -462,8 +462,8 @@ public class CheckersPiece extends StackPane{
     }//BotRight
     
     /**
-     *Checks for valid movements when piece is moving upwards and if an
-     *attack is possible.
+     * Checks for valid movements when piece is moving upwards and if an
+     * attack is possible.
      */
     public void moveUp(){
         //Handles movement for pieces moving up between x = 0 and x = 7
@@ -496,8 +496,8 @@ public class CheckersPiece extends StackPane{
     }//MoveUp
     
     /**
-     *Creates an option for when piece is moving upwards and it is not on
-     *x = 0 or x = 7.
+     * Creates an option for when piece is moving upwards and it is not on
+     * x = 0 or x = 7.
      */
     public void genMoveUp(){
         //First movement option for pieces moving upwards between x = 0 and x = 7
@@ -525,7 +525,7 @@ public class CheckersPiece extends StackPane{
     }//GenMoveUp
 
     /**
-     *Creates option for an attack when a piece is moving upwards. 
+     * Creates option for an attack when a piece is moving upwards. 
      */
     public void attackUp(){
         //Attack action for upward moving pieces 
@@ -558,8 +558,8 @@ public class CheckersPiece extends StackPane{
     }//AttackUp
     
     /**
-     *Creates secondary option for when piece is moving upwards and it is not on
-     *x = 0 or x = 7.
+     * Creates secondary option for when piece is moving upwards and it is not on
+     * x = 0 or x = 7.
      */
     public void genMoveUp2(){
         //Secondary movement action for pieces moving upwards between x = 0 and x = 7
@@ -587,7 +587,7 @@ public class CheckersPiece extends StackPane{
     }//GenMoveUp2
 
     /**
-     *Creates secondary option for an attack when a piece is moving upwards. 
+     * Creates secondary option for an attack when a piece is moving upwards. 
      */
     public void attackUp2(){
         //Secondary attack action for upward moving pieces
@@ -620,8 +620,8 @@ public class CheckersPiece extends StackPane{
     }//AttackUp2
 
     /**
-     *Checks for valid movements when piece is moving downwards and if an
-     *attack is possible.
+     * Checks for valid movements when piece is moving downwards and if an
+     * attack is possible.
      */
     public void moveDown(){
         //Handles movement for pieces moving down between x = 0 and x = 7
@@ -654,8 +654,8 @@ public class CheckersPiece extends StackPane{
     }//MoveDown
     
     /**
-     *Creates an option for when piece is moving downwards and it is not on
-     *x = 0 or x = 7.
+     * Creates an option for when piece is moving downwards and it is not on
+     * x = 0 or x = 7.
      */
     public void genMoveDown(){
         //First movement option for pieces moving downwards between x = 0 and x = 7
@@ -683,7 +683,7 @@ public class CheckersPiece extends StackPane{
     }//GenMoveDown
     
     /**
-     *Creates option for an attack when a piece is moving downwards. 
+     * Creates option for an attack when a piece is moving downwards. 
      */
     public void attackDown(){
         //Attack action for downward moving pieces 
@@ -716,8 +716,8 @@ public class CheckersPiece extends StackPane{
     }//AttackDown
 
     /**
-     *Creates secondary option for when piece is moving downwards and it is 
-     *not on x = 0 or x = 7.
+     * Creates secondary option for when piece is moving downwards and it is 
+     * not on x = 0 or x = 7.
      */
     public void genMoveDown2(){
         //Secondary movement option for pieces moving downwards between x = 0 and x = 7
@@ -745,7 +745,7 @@ public class CheckersPiece extends StackPane{
     }//GenMoveDown2
 
     /**
-     *Creates secondary option for an attack when a piece is moving downwards. 
+     * Creates secondary option for an attack when a piece is moving downwards. 
      */
     public void attackDown2(){
         //Attack action for downward moving pieces 
@@ -778,7 +778,7 @@ public class CheckersPiece extends StackPane{
     }//AttackDown2
 
     /**
-     *Checks what open moves are avaliable for a king piece when it is on x = 0.
+     * Checks what open moves are avaliable for a king piece when it is on x = 0.
      */
     public void checkLeft(){
         if(currentX == 0){ 
@@ -799,7 +799,7 @@ public class CheckersPiece extends StackPane{
     }//CheckLeft
     
     /**
-     *Checks what open moves are avaliable for a king piece when it is on x = 7.
+     * Checks what open moves are avaliable for a king piece when it is on x = 7.
      */
     public void checkRight(){
         if(currentX == 7){
@@ -820,8 +820,8 @@ public class CheckersPiece extends StackPane{
     }//CheckRight
     
     /**
-     *Checks what open moves are avaliable for a king piece when x is between
-     *0 and 7.
+     * Checks what open moves are avaliable for a king piece when x is between
+     * 0 and 7.
      */
     public void checkCenter(){
         if(currentX > 0 && currentX < 7){

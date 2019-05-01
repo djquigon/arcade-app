@@ -12,7 +12,8 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.application.Platform;
 
 /**
- *JavaDoc
+ * Represents a board for a checkers game. A board consists of
+ * 64 tiles, in an 8x8 format.
  *
  */
 public class CheckersBoard extends VBox{
@@ -28,12 +29,14 @@ public class CheckersBoard extends VBox{
     private Group tiles; //group for the tiles
     private boolean isRedTurn;
     private boolean isBlueTurn;
-    private int rPiecesLeft;
-    private int bPiecesLeft;
+    private int rPiecesLeft; //red pieces left
+    private int bPiecesLeft; //blue pieces left
 
     /**
-     *JavaDoc
+     * Creates a board for a checkers game with all
+     * properties set.
      *
+     * @param ref a reference to the main {@code CheckersStage}
      */
     public CheckersBoard(CheckersStage ref){
         super();
@@ -41,19 +44,14 @@ public class CheckersBoard extends VBox{
         container = new Group();
         pieces = new Group();
         tiles = new Group();
-        this.createPieces();
+        this.createPiecesAndTiles();
         container.getChildren().addAll(tiles, pieces);
         this.getChildren().add(container);
-        
-        String cssLayout = "-fx-border-color: #262626;\n" +
+        String cssLayout = "-fx-border-color: #262626;\n" + //boarder for board
             "-fx-border-insets: 0;\n" +
             "-fx-border-width: 12;\n" +
-            "-fx-border-style: solid;\n" +
-            "-fx-outline-style: solid;\n" +
-            "-fx-outline-width: 6;\n" +
-            "-fx-outline-color: red;\n";
-        
-        this.setStyle(cssLayout); //outline not working?
+            "-fx-border-style: solid;\n"; 
+        this.setStyle(cssLayout);
         isRedTurn = true; //red's turn first
         isBlueTurn = false;
         rPiecesLeft = 12;
@@ -61,10 +59,10 @@ public class CheckersBoard extends VBox{
     }//Contructor
 
     /**
-     *JavaDoc
-     *
+     * Creates all tile and pieces and adds them to their
+     * respective {@code Group}
      */
-    public void createPieces(){
+    public void createPiecesAndTiles(){
         for(int x = 0; x < BOARD_WIDTH; x++){ //populate rows
             for(int y = 0; y < BOARD_HEIGHT; y++){ //populate columns
                 CheckersTile tile = new CheckersTile(this, (x+y) % 2 == 0, x, y);
@@ -88,32 +86,38 @@ public class CheckersBoard extends VBox{
     }//CreatePieces
 
     /**
-     *JavaDoc
+     * Returns the tile at a given index in the board.
      *
+     * @param x the x value in the board array
+     * @param y the y value in the board array
+     * @return the {@code CheckersTile} at the given x,y position
      */
     public CheckersTile getIndex(int x, int y){
         return board[x][y];
     }//GetIndex
 
     /**
-     *JavaDoc
+     * Returns whether or not it is red's turn.
      *
+     * @return true or false if it's red turn
      */
     public boolean isRedTurn(){
         return isRedTurn;
     }//IsRedTurn
     
     /**
-     *JavaDoc
+     * Returns whether or not it is blue's turn.
      *
+     * @return true or false if it's blue turn
      */
     public boolean isBlueTurn(){
         return isBlueTurn;
     }//IsBlueTurn
     
     /**
-     *JavaDoc
+     * Sets wheter it is red's turn to true or false
      *
+     * @param b true or false whether it should be red's turn
      */
     public void setIsRedTurn(boolean b){
         isRedTurn = b;
@@ -124,8 +128,9 @@ public class CheckersBoard extends VBox{
     }//SetIsRedTurn
 
     /**
-     *JavaDoc
+     * Sets whether it is blue's turn to true or false
      *
+     * @param b true or false whether it should be blue's turn
      */
     public void setIsBlueTurn(boolean b){
         isBlueTurn = b;
@@ -136,8 +141,7 @@ public class CheckersBoard extends VBox{
     }//SetIsBlueTurn
 
     /**
-     *JavaDoc
-     *
+     * Sets the stroke of every tile on the board to 0.
      */
     public void clearHighlights(){
         for(int x = 0; x < BOARD_WIDTH; x++){
@@ -153,8 +157,9 @@ public class CheckersBoard extends VBox{
     }//ClearHighlights
    
     /**
-     *JavaDoc
+     * Sets the number of red pieces that are left.
      *
+     * @param rPiecesLeft the number of red pieces left
      */
     public void setRPiecesLeft(int rPiecesLeft){
         this.rPiecesLeft = rPiecesLeft;
@@ -180,10 +185,11 @@ public class CheckersBoard extends VBox{
                 });
         }
     }//SetRPiecesLeft
-    
+       
     /**
-     *JavaDoc
+     * Sets the number of blue pieces that are left.
      *
+     * @param bPiecesLeft the number of blue pieces left
      */
     public void setBPiecesLeft(int bPiecesLeft){
         this.bPiecesLeft = bPiecesLeft;
@@ -211,16 +217,18 @@ public class CheckersBoard extends VBox{
     }//SetBPiecesLeft
     
     /**
-     *JavaDoc
+     * Returns the number of red pieces left.
      *
+     * @return the number of red pieces left
      */
     public int getRPiecesLeft(){
         return rPiecesLeft;
     }//GetRPiecesLeft
 
     /**
-     *JavaDoc
+     * Returns the number of blue pieces left.
      *
+     * @return the number of blue pieces left
      */
     public int getBPiecesLeft(){
         return bPiecesLeft;
