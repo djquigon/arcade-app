@@ -26,3 +26,13 @@
 3. **PROB:** Our approach for Tetris has encountered a few difficulties, specifically
     regarding our blocks and how they move through our 2d rectangle array. Will
     possibly consider other approaches.
+
+    
+## PARTIAL SUBMISSION 3 // TUE 2019-04-30 @ 11:55 PM EST
+
+1. **DONE:** Majority of checkers done, only need to fix small bugs involving king piece functonality.    
+
+2. **TODO:** Fix checkers bugs and make small improvements to UI, start on space invaders.
+
+3. **PROB:** We've decided to scrap tetris due to difficulties with the board, we've agreed on
+    replacing it with space invaders. Other than that, checkers was much easier.
