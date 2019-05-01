@@ -544,12 +544,13 @@ public class CheckersPiece extends StackPane{
                     board.getIndex(currentX-1, currentY+1).getPiece().getChildren().clear();
                     board.getIndex(currentX-1, currentY+1).setPiece(null);
                     board.getIndex(currentX-2, currentY+2).setPiece(null);
-                    board.setBPiecesLeft(board.getBPiecesLeft()-1);
                     //End turn
                     if(option3.getPiece().getType() == Piece.BLUE){
+                        board.setRPiecesLeft(board.getRPiecesLeft()-1);
                         this.endBlueTurn();
                     }//if
                     else{
+                        board.setBPiecesLeft(board.getBPiecesLeft()-1);
                         this.endRedTurn();
                     }//else
                 }//if
@@ -605,12 +606,13 @@ public class CheckersPiece extends StackPane{
                     board.getIndex(currentX+1, currentY+1).getPiece().getChildren().clear();
                     board.getIndex(currentX+1, currentY+1).setPiece(null);
                     board.getIndex(currentX+2, currentY+2).setPiece(null);
-                    board.setBPiecesLeft(board.getBPiecesLeft()-1);
                     //End turn
                     if(option4.getPiece().getType() == Piece.BLUE){
+                        board.setRPiecesLeft(board.getRPiecesLeft()-1);
                         this.endBlueTurn();
                     }//if
                     else{
+                        board.setBPiecesLeft(board.getBPiecesLeft()-1);
                         this.endRedTurn();
                     }//else
                 }//if
@@ -700,12 +702,13 @@ public class CheckersPiece extends StackPane{
                     board.getIndex(currentX-1, currentY-1).getPiece().getChildren().clear();
                     board.getIndex(currentX-1, currentY-1).setPiece(null);
                     board.getIndex(currentX-2, currentY-2).setPiece(null);
-                    board.setRPiecesLeft(board.getRPiecesLeft()-1);
                     //End Turn
                     if(option1.getPiece().getType() == Piece.BLUE){
+                        board.setRPiecesLeft(board.getRPiecesLeft()-1);
                         this.endBlueTurn();
                     }//if
                     else{
+                        board.setBPiecesLeft(board.getBPiecesLeft()-1);
                         this.endRedTurn();
                     }//else
                 }//if
@@ -761,12 +764,13 @@ public class CheckersPiece extends StackPane{
                     board.getIndex(currentX+1, currentY-1).getPiece().getChildren().clear();
                     board.getIndex(currentX+1, currentY-1).setPiece(null);
                     board.getIndex(currentX+2, currentY-2).setPiece(null);
-                    board.setRPiecesLeft(board.getRPiecesLeft()-1);
                     //End turn
                     if(option2.getPiece().getType() == Piece.BLUE){
+                        board.setRPiecesLeft(board.getRPiecesLeft()-1);
                         this.endBlueTurn();
                     }//if
                     else{
+                        board.setBPiecesLeft(board.getBPiecesLeft()-1);
                         this.endRedTurn();
                     }//else
                 }//if
@@ -817,7 +821,7 @@ public class CheckersPiece extends StackPane{
     
     /**
      *Checks what open moves are avaliable for a king piece when x is between
-     *1 and 7.
+     *0 and 7.
      */
     public void checkCenter(){
         if(currentX > 0 && currentX < 7){

@@ -20,6 +20,9 @@ import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundPosition;
 import javafx.scene.layout.BackgroundSize;
+import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.paint.Paint;
 
 /**
  *JavaDoc
@@ -35,6 +38,7 @@ public class CheckersStage extends Stage{
     private CheckersBoard board;
     private VBox info;
     private Text turn;
+    private Text piecesTaken;
 
     /**
      *JavaDoc
@@ -86,13 +90,18 @@ public class CheckersStage extends Stage{
      * Sets the contents of the {@code info} VBox.
      */
     public void setInfo(){
-        turn = new Text("Red's Turn");
+        turn = new Text("Red's Turn"); //red's turn at start
         turn.setFont(new Font(20));
-        turn.setUnderline(true);
+        //turn.setUnderline(true);
         turn.setFill(Color.RED);
+        piecesTaken = new Text("Blue Pieces Taken: " + 0 + "\n" //0 pieces taken at start
+                               + "Red Pieces Taken: " + 0);
+        piecesTaken.setFill(Color.WHITE);
         info = new VBox(25);
         info.setMargin(turn, new Insets(0, 50, 0, 20));
-        info.getChildren().addAll(turn);
+        info.setMargin(piecesTaken, new Insets(0, 0, 0, 10));
+        info.getChildren().addAll(turn, piecesTaken);
+        info.setBackground(new Background(new BackgroundFill(Paint.valueOf("#1a1a1a"), null, null)));
     }//SetInfo
 
     /**
@@ -102,5 +111,9 @@ public class CheckersStage extends Stage{
     public Text getTurnText(){
         return turn;
     }//GetTurnText
+
+    public Text getPiecesTaken(){
+        return piecesTaken;
+    }
 
 }//Class

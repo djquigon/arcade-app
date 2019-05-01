@@ -158,6 +158,8 @@ public class CheckersBoard extends VBox{
      */
     public void setRPiecesLeft(int rPiecesLeft){
         this.rPiecesLeft = rPiecesLeft;
+        stage.getPiecesTaken().setText("Blue Pieces Taken: " + (12 - this.getBPiecesLeft()) + "\n"
+                               + "Red Pieces Taken: " + (12 - this.getRPiecesLeft()));
         if(this.rPiecesLeft == 0){ //if blue has won
             this.clearHighlights();
             ButtonType playAgain = new ButtonType("Play Again");
@@ -185,6 +187,8 @@ public class CheckersBoard extends VBox{
      */
     public void setBPiecesLeft(int bPiecesLeft){
         this.bPiecesLeft = bPiecesLeft;
+        stage.getPiecesTaken().setText("Blue Pieces Taken: " + (12 - this.getBPiecesLeft()) + "\n"
+                               + "Red Pieces Taken: " + (12 - this.getRPiecesLeft()));
         if(this.bPiecesLeft == 0){ //if red has won
             this.clearHighlights();
             ButtonType playAgain = new ButtonType("Play Again");
