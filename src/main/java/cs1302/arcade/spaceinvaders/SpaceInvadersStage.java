@@ -20,6 +20,11 @@ import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.Background;
 import javafx.scene.image.Image;
 
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.event.EventHandler;
+
+
 public class SpaceInvadersStage extends Stage{
 
     private SpaceInvadersShip ship; 
@@ -53,10 +58,8 @@ public class SpaceInvadersStage extends Stage{
         this.setResizable(false);
         this.sizeToScene();
         this.setScene(scene);
-        UserFunctions.checkEvents(ship);
+        UserFunctions.checkEvents(this, ship);
     }
-
-    //this.checkEvents()
 
     //public void updateScreen(){}
 
