@@ -128,8 +128,11 @@ public class CheckersStage extends Stage{
                     board.setBPiecesLeft(0);
                 }
             });
+        
+        forfeit.setStyle("-fx-background-color: black;\n" +
+                         "-fx-text-fill: white;");
         info = new VBox(25);
-        info.setMargin(turn, new Insets(0, 50, 0, 20));
+        info.setMargin(turn, new Insets(10, 50, 0, 20));
         info.setMargin(piecesTaken, new Insets(0, 0, 0, 10));
         info.setMargin(howTo, new Insets(10, 0, 0, 3));
         info.setMargin(forfeit, new Insets(50, 50, 20, 40));

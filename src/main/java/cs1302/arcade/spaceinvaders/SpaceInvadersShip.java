@@ -22,8 +22,6 @@ public class SpaceInvadersShip extends Rectangle{
         currentX = 400;
         stage.getMain().getChildren().add(this);
         stage.getMain().setAlignment(this, Pos.BOTTOM_CENTER);
-        functions.checkEvents(this);
-        this.update();
     }
 
     public void update(){

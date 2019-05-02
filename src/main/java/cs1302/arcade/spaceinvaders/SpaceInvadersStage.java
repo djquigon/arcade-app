@@ -22,8 +22,7 @@ import javafx.scene.image.Image;
 
 public class SpaceInvadersStage extends Stage{
 
-    private SpaceInvadersShip ship;
-    private UserFunctions functions;
+    private SpaceInvadersShip ship; 
     private Scene scene; //the main scene
     private VBox window; //window
     private MenuBar menuBar; //menubar
@@ -54,6 +53,7 @@ public class SpaceInvadersStage extends Stage{
         this.setResizable(false);
         this.sizeToScene();
         this.setScene(scene);
+        UserFunctions.checkEvents(ship);
     }
 
     //this.checkEvents()
