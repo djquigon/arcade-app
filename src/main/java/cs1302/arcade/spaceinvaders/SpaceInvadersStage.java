@@ -20,11 +20,6 @@ import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.Background;
 import javafx.scene.image.Image;
 
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
-import javafx.event.EventHandler;
-
-
 public class SpaceInvadersStage extends Stage{
 
     private SpaceInvadersShip ship; 

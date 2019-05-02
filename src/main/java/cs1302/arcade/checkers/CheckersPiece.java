@@ -160,13 +160,11 @@ public class CheckersPiece extends StackPane{
         this.setOnMousePressed(e-> {
                 //Shows options for red piece user clicked
                 if(type == Piece.RED && board.isRedTurn()){
-                    System.out.println("Red Pieces Left: "+board.getRPiecesLeft());
                     board.clearHighlights();
                     this.moveRed();
                 }//if
                 //Shows options for blue piece user clicked
                 if(type == Piece.BLUE && board.isBlueTurn()){
-                    System.out.println("Blue Pieces Left: "+board.getBPiecesLeft());
                     board.clearHighlights();
                     this.moveBlue();
                 }//if

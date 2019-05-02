@@ -1,5 +1,6 @@
 package cs1302.arcade;
 
+import cs1302.arcade.*;
 import javafx.scene.Scene;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.HBox;
@@ -19,7 +20,8 @@ import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundPosition;
 import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.Background;
-import cs1302.arcade.*;
+import javafx.scene.text.Font;
+import javafx.scene.paint.Color;
 
 public class MainMenu extends VBox{
 
@@ -29,6 +31,7 @@ public class MainMenu extends VBox{
     ImageView iv2;
     Button b2;
     HBox bottomBar;
+    Text credit;
 
     public MainMenu(){
         super();
@@ -38,10 +41,8 @@ public class MainMenu extends VBox{
                                                   BackgroundPosition.DEFAULT,
                                                   BackgroundSize.DEFAULT);
         this.setBackground(new Background(bi));
-        //create menuBar
-        this.setMenuBar();
-        //create games
-        this.setGames();
+        this.setMenuBar(); //create menuBar
+        this.setGames(); //create games
     }
 
     public void setMenuBar(){
@@ -86,6 +87,11 @@ public class MainMenu extends VBox{
         b2.setPrefSize(135, 25);
         b2.setTranslateY(170);
         b2.setTranslateX(335);
-        this.getChildren().addAll(iv1, b1, iv2, b2);
+        credit = new Text("By Logan Scheid and Ano Karadaghi");
+        credit.setFont(new Font(8));
+        credit.setTranslateX(25);
+        credit.setTranslateY(360);
+        credit.setFill(Color.WHITE);
+        this.getChildren().addAll(iv1, b1, iv2, b2, credit);
     }
 }
