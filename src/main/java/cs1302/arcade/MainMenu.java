@@ -63,8 +63,8 @@ public class MainMenu extends VBox{
                     "-fx-faint-focus-color: transparent;\n");
         //b1.setFocused(true);
         b1.setOnAction(e -> {
-                TetrisStage tetris = new TetrisStage();
-                tetris.showAndWait();
+                SpaceInvadersStage si = new SpaceInvadersStage();
+                si.showAndWait();
                     });
         iv1.setTranslateX(345);
         iv1.setTranslateY(130);
