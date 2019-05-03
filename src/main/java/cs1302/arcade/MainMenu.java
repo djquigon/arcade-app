@@ -23,6 +23,9 @@ import javafx.scene.layout.Background;
 import javafx.scene.text.Font;
 import javafx.scene.paint.Color;
 
+/**
+ *
+ */
 public class MainMenu extends VBox{
 
     MenuBar menuBar;
@@ -33,6 +36,9 @@ public class MainMenu extends VBox{
     HBox bottomBar;
     Text credit;
 
+    /**
+     *
+     */
     public MainMenu(){
         super();
         BackgroundImage bi= new BackgroundImage(new Image("background_menu.png",800,680,false,true),
@@ -45,6 +51,9 @@ public class MainMenu extends VBox{
         this.setGames(); //create games
     }
 
+    /**
+     *
+     */
     public void setMenuBar(){
         menuBar = new MenuBar();
         Menu file = new Menu("File");
@@ -55,14 +64,16 @@ public class MainMenu extends VBox{
         menuBar.setTranslateY(0);
         this.getChildren().add(menuBar);
     }
-    
+
+    /**
+     *
+     */
     public void setGames(){
         iv1 = new ImageView(new Image("checkers_img.png", 115, 115, false, true)); //spaceinvaders
         b1 = new Button("Space Invaders");
         b1.setStyle("-fx-background-color: #ff0000;\n" + 
                     "-fx-focus-color: transparent;\n" + 
                     "-fx-faint-focus-color: transparent;\n");
-        //b1.setFocused(true);
         b1.setOnAction(e -> {
                 SpaceInvadersStage si = new SpaceInvadersStage();
                 si.showAndWait();
@@ -77,7 +88,6 @@ public class MainMenu extends VBox{
         b2.setStyle("-fx-background-color: #ff0000;\n" + 
                     "-fx-focus-color: transparent;\n" + 
                     "-fx-faint-focus-color: transparent;\n");
-        //b2.setFocused(true);
         b2.setOnAction(e -> {
                 CheckersStage checkers = new CheckersStage();
                 checkers.showAndWait();
