@@ -9,7 +9,7 @@ import javafx.geometry.Pos;
 public class SpaceInvadersShip extends Rectangle{
 
     public static final double SHIP_SPEED = 15;
-    public static final double LASER_SPEED = .01; //something like this
+    public static final double LASER_SPEED = 10; //something like this
     
     private UserFunctions functions;
     private Image ship;

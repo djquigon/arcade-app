@@ -7,6 +7,14 @@ import javafx.scene.input.KeyEvent;
 import javafx.event.EventHandler;
 import javafx.scene.shape.Circle;
 import javafx.scene.paint.Color;
+import javafx.animation.Timeline;
+import javafx.animation.KeyFrame;
+import javafx.event.EventHandler;
+import javafx.event.ActionEvent;
+import javafx.util.Duration;
+import javafx.animation.KeyValue;
+import javafx.animation.AnimationTimer;
+
 /**
  * Represents all the possible actions the user can make pertaining to their ship.
  */
@@ -77,8 +85,26 @@ public class UserFunctions{
         Circle laser = new Circle(0, 0, 3, Color.LIME);
         laser.setTranslateX(ship.getCurrentX());
         laser.setTranslateY(SpaceInvadersStage.MAX_Y_DOWN);
-        double currentY = SpaceInvadersStage.MAX_Y_DOWN;
+        //double currentY = SpaceInvadersStage.MAX_Y_DOWN;
         stage.getMain().getChildren().add(laser); //add to stackpane
-        //need timeline for movement
+        AnimationTimer moveLaser = moveLaser(stage, laser);
+        moveLaser.start();
     }
+    
+    
+    private static AnimationTimer moveLaser(SpaceInvadersStage stage, Circle laser){
+        AnimationTimer moveLaser = new AnimationTimer(){
+                @Override
+                public void handle(long now){
+                    if(laser.getTranslateY() > SpaceInvadersStage.MAX_Y_UP){ //or not hitting an alien
+                        laser.setTranslateY(laser.getTranslateY() - SpaceInvadersShip.LASER_SPEED);
+                    }
+                    else{
+                        stage.getMain().getChildren().remove(laser);
+                    }
+                }
+            };
+        return moveLaser;
+    } //moveLaser
+    
 }

@@ -24,7 +24,7 @@ public class SpaceInvadersStage extends Stage{
 
     public static final int MAX_X_RIGHT = 375;
     public static final int MAX_X_LEFT = -375;
-    public static final int MAX_Y_UP = -323;
+    public static final int MAX_Y_UP = -320;
     public static final int MAX_Y_DOWN = 280; //where ship starts
 
     
