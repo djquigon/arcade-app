@@ -22,6 +22,12 @@ import javafx.scene.image.Image;
 
 public class SpaceInvadersStage extends Stage{
 
+    public static final int MAX_X_RIGHT = 375;
+    public static final int MAX_X_LEFT = -375;
+    public static final int MAX_Y_UP = -323;
+    public static final int MAX_Y_DOWN = 280; //where ship starts
+
+    
     private SpaceInvadersShip ship; 
     private Scene scene; //the main scene
     private VBox window; //window

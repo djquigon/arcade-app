@@ -8,8 +8,8 @@ import javafx.geometry.Pos;
 
 public class SpaceInvadersShip extends Rectangle{
 
-    public static final int MAX_X_RIGHT = 375; //375
-    public static final int MAX_X_LEFT = -375; //-375
+    public static final double SHIP_SPEED = 15;
+    public static final double LASER_SPEED = .01; //something like this
     
     private UserFunctions functions;
     private Image ship;
@@ -30,11 +30,11 @@ public class SpaceInvadersShip extends Rectangle{
 
     public void update(){
         if(movingRight){
-            currentX+=15;
+            currentX += SHIP_SPEED;
             this.setTranslateX(currentX);
         }
         if(movingLeft){
-            currentX-=15;
+            currentX -= SHIP_SPEED;
             this.setTranslateX(currentX);
         }
     }
