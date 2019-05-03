@@ -20,19 +20,22 @@ import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.Background;
 import javafx.scene.image.Image;
 
+/**
+ * Represents a stage object for a space invaders game.
+ */
 public class SpaceInvadersStage extends Stage{
 
-    public static final int MAX_X_RIGHT = 375;
-    public static final int MAX_X_LEFT = -375;
-    public static final int MAX_Y_UP = -320;
+    public static final int MAX_X_RIGHT = 375; //right limit
+    public static final int MAX_X_LEFT = -375; //left limit
+    public static final int MAX_Y_UP = -320; //top limit
     public static final int MAX_Y_DOWN = 280; //where ship starts
-
     
-    private SpaceInvadersShip ship; 
+    private SpaceInvadersShip ship; //the user's ship
+    private SpaceInvadersAlienGroup aliens; //the group of aliens
     private Scene scene; //the main scene
-    private VBox window; //window
+    private VBox window; //contains main and menubar
     private MenuBar menuBar; //menubar
-    private StackPane main; //contains board, sep and info
+    private StackPane main; //contains the ship and aliens
 
     /**
      * Creates the main Stage for the a Space Invaders game.
@@ -49,6 +52,7 @@ public class SpaceInvadersStage extends Stage{
                                                 BackgroundPosition.DEFAULT,
                                                 BackgroundSize.DEFAULT);
         main.setBackground(new Background(bi)); //creates background
+        aliens = new SpaceInvadersAlienGroup(this);
         ship = new SpaceInvadersShip(this);
         window.getChildren().addAll(menuBar, main);
         scene = new Scene(window, 800, 680);
@@ -82,6 +86,9 @@ public class SpaceInvadersStage extends Stage{
         menuBar.prefWidthProperty().bind(this.widthProperty());
     }
 
+    /**
+     * Returns the main {@code StackPane}.
+     */
     public StackPane getMain(){
         return main;
     }

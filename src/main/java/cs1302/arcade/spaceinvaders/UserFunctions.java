@@ -35,7 +35,7 @@ public class UserFunctions{
                 if(event.getCode() == KeyCode.LEFT){ //if left arrow clicked
                     UserFunctions.moveLeft(scene, ship);
                 }
-                if(event.getCode() == KeyCode.SPACE){
+                if(event.getCode() == KeyCode.SPACE){ //if spacebar clicked
                     UserFunctions.fireLaser(stage, ship);
                 }
             });
@@ -91,7 +91,12 @@ public class UserFunctions{
         moveLaser.start();
     }
     
-    
+    /**
+     * Provides the {@code AnimationTimer} for the firing the laser.
+     *
+     * @param stage a reference to the main stage
+     * @param laser the laser being fired
+     */
     private static AnimationTimer moveLaser(SpaceInvadersStage stage, Circle laser){
         AnimationTimer moveLaser = new AnimationTimer(){
                 @Override
