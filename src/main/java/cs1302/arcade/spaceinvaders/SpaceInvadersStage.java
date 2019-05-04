@@ -36,6 +36,8 @@ public class SpaceInvadersStage extends Stage{
     private VBox window; //contains main and menubar
     private MenuBar menuBar; //menubar
     private StackPane main; //contains the ship and aliens
+    private int score;
+    private int lives;
 
     /**
      * Creates the main Stage for the a Space Invaders game.
@@ -54,6 +56,8 @@ public class SpaceInvadersStage extends Stage{
         main.setBackground(new Background(bi)); //creates background
         aliens = new SpaceInvadersAlienGroup(this);
         ship = new SpaceInvadersShip(this);
+        score = 0;
+        lives = 3;
         window.getChildren().addAll(menuBar, main);
         scene = new Scene(window, 800, 680);
         this.initModality(Modality.APPLICATION_MODAL);
@@ -63,7 +67,7 @@ public class SpaceInvadersStage extends Stage{
         this.setResizable(false);
         this.sizeToScene();
         this.setScene(scene);
-        UserFunctions.checkEvents(this, ship);
+        UserFunctions.checkEvents(this, ship, aliens);
     }
 
     //public void updateScreen(){}
@@ -92,4 +96,45 @@ public class SpaceInvadersStage extends Stage{
     public StackPane getMain(){
         return main;
     }
+
+    /**
+     * Returns the alien {@code Group} attacking the users ship.
+     *
+     * @return the alien {@code Group} attacking the users ship.
+     */
+    public SpaceInvadersAlienGroup getAlienGroup(){
+        return aliens;
+    }
+
+    /**
+     * Returns the user's score.
+     */
+    public int getScore(){
+        return score;
+    }
+    
+    /**
+     * Sets the user's score.
+     *
+     * @param the user's score
+     */
+    public void setScore(int score){
+        this.score = score;
+    }
+    /**
+     * Returns the user's lives.
+     */
+    public int getLives(){
+        return lives;
+    }
+    
+    /**
+     * Sets the user's lives.
+     *
+     * @param the user's lives
+     */
+    public void setLives(int lives){
+        this.lives = lives;
+    }
+    
 }

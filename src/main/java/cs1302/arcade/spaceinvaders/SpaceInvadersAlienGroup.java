@@ -40,7 +40,7 @@ public class SpaceInvadersAlienGroup extends Group{
         stage.getMain().getChildren().add(this); //add the group to main
         this.setTranslateX(MAX_X_LEFT); //set the initial x position
         this.setTranslateY(MAX_Y_UP); //set the initial y position
-        moveAliens(this); //start moving the aliens
+        //moveAliens(this); //start moving the aliens
     }
 
     /**
@@ -91,6 +91,17 @@ public class SpaceInvadersAlienGroup extends Group{
             aliens.setTranslateY(aliens.getTranslateY() + ALIENS_SPEED_DOWN); //move down
             iteration++; //set to next iteration
         }
+    }
+    
+    /**
+     * Returns the alien array that tracks the full group of aliens.
+     *
+     * @return the aliens array
+     * @param x the x position in the array
+     * @param y the y position in the array
+     */
+    public SpaceInvadersAlien getAlien(int x, int y){
+        return aliens[x][y];
     }
     
 }

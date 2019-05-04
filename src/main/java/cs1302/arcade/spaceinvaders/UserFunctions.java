@@ -14,6 +14,7 @@ import javafx.event.ActionEvent;
 import javafx.util.Duration;
 import javafx.animation.KeyValue;
 import javafx.animation.AnimationTimer;
+import javafx.geometry.Bounds;
 
 /**
  * Represents all the possible actions the user can make pertaining to their ship.
@@ -26,7 +27,7 @@ public class UserFunctions{
      * @param stage a reference to the main stage
      * @param ship a reference to the main ship
      */
-    public static void checkEvents(SpaceInvadersStage stage, SpaceInvadersShip ship){
+    public static void checkEvents(SpaceInvadersStage stage, SpaceInvadersShip ship, SpaceInvadersAlienGroup aliens){ //this goes over
         Scene scene = stage.getScene();//get scene from stage
         scene.setOnKeyPressed(event-> {
                 if(event.getCode() == KeyCode.RIGHT){ //if right arrow clicked
@@ -36,7 +37,7 @@ public class UserFunctions{
                     UserFunctions.moveLeft(scene, ship);
                 }
                 if(event.getCode() == KeyCode.SPACE){ //if spacebar clicked
-                    UserFunctions.fireLaser(stage, ship);
+                    UserFunctions.fireLaser(stage, ship, aliens);
                 }
             });
     }
@@ -81,13 +82,13 @@ public class UserFunctions{
      * @param scene a reference to the main scene
      * @param ship a reference to the main ship
      */
-    private static void fireLaser(SpaceInvadersStage stage, SpaceInvadersShip ship){
+    private static void fireLaser(SpaceInvadersStage stage, SpaceInvadersShip ship, SpaceInvadersAlienGroup aliens){ //goes over
         Circle laser = new Circle(0, 0, 3, Color.LIME);
+        //Boolean collision = false;
         laser.setTranslateX(ship.getCurrentX());
         laser.setTranslateY(SpaceInvadersStage.MAX_Y_DOWN);
-        //double currentY = SpaceInvadersStage.MAX_Y_DOWN;
         stage.getMain().getChildren().add(laser); //add to stackpane
-        AnimationTimer moveLaser = moveLaser(stage, laser);
+        AnimationTimer moveLaser = moveLaser(stage, laser, aliens);
         moveLaser.start();
     }
     
@@ -97,12 +98,13 @@ public class UserFunctions{
      * @param stage a reference to the main stage
      * @param laser the laser being fired
      */
-    private static AnimationTimer moveLaser(SpaceInvadersStage stage, Circle laser){
+    private static AnimationTimer moveLaser(SpaceInvadersStage stage, Circle laser, SpaceInvadersAlienGroup aliens){ //goes over
         AnimationTimer moveLaser = new AnimationTimer(){
                 @Override
                 public void handle(long now){
-                    if(laser.getTranslateY() > SpaceInvadersStage.MAX_Y_UP){ //or not hitting an alien
+                    if(laser.getTranslateY() > SpaceInvadersStage.MAX_Y_UP){
                         laser.setTranslateY(laser.getTranslateY() - SpaceInvadersShip.LASER_SPEED);
+                        checkCollisions(laser, stage, aliens);
                     }
                     else{
                         stage.getMain().getChildren().remove(laser);
@@ -111,5 +113,19 @@ public class UserFunctions{
             };
         return moveLaser;
     } //moveLaser
+
+    public static void checkCollisions(Circle laser, SpaceInvadersStage stage, SpaceInvadersAlienGroup aliens){ //goes over
+        for(int x = 0; x < SpaceInvadersAlienGroup.ALIENS_WIDTH; x++){
+            for(int y = 0; y < SpaceInvadersAlienGroup.ALIENS_HEIGHT; y++){
+                if(laser.getBoundsInParent().intersects(aliens.getAlien(x,y).getBoundsInParent())){
+                    stage.getMain().getChildren().remove(laser);
+                    stage.getAlienGroup().getChildren().remove(aliens.getAlien(x,y));
+                    System.out.println("removed");
+                    return;
+                    //increment score
+                }
+            }
+        }
+    }
     
 }
