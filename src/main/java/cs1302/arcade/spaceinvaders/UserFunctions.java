@@ -1,11 +1,13 @@
 package cs1302.arcade;
 
 import cs1302.arcade.*;
+import javafx.scene.shape.Shape;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.event.EventHandler;
-import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.paint.Color;
 import javafx.animation.Timeline;
 import javafx.animation.KeyFrame;
@@ -83,7 +85,8 @@ public class UserFunctions{
      * @param ship a reference to the main ship
      */
     private static void fireLaser(SpaceInvadersStage stage, SpaceInvadersShip ship, SpaceInvadersAlienGroup aliens){ //goes over
-        Circle laser = new Circle(0, 0, 3, Color.LIME);
+        Rectangle laser = new Rectangle(ship.getCurrentX(), SpaceInvadersStage.MAX_Y_DOWN, 3, 5);
+        laser.setFill(Color.LIME);
         laser.setTranslateX(ship.getCurrentX());
         laser.setTranslateY(SpaceInvadersStage.MAX_Y_DOWN);
         stage.getMain().getChildren().add(laser); //add to stackpane
@@ -98,7 +101,7 @@ public class UserFunctions{
      * @param laser the laser being fired
      */
 
-    private static AnimationTimer moveLaser(SpaceInvadersStage stage, Circle laser, SpaceInvadersAlienGroup aliens){ //goes over
+    private static AnimationTimer moveLaser(SpaceInvadersStage stage, Rectangle laser, SpaceInvadersAlienGroup aliens){ //goes over
         AnimationTimer moveLaser = new AnimationTimer(){
                 @Override
                 public void handle(long now){
@@ -115,20 +118,21 @@ public class UserFunctions{
         return moveLaser;
     } //moveLaser
 
-    public static void checkCollision(Circle laser, SpaceInvadersStage stage, SpaceInvadersAlienGroup aliens, AnimationTimer moveLaser){ //goes over
+    public static void checkCollision(Rectangle laser, SpaceInvadersStage stage, SpaceInvadersAlienGroup aliens, AnimationTimer moveLaser){ //goes over
         for(int x = 0; x < SpaceInvadersAlienGroup.ALIENS_WIDTH; x++){
             for(int y = 0; y < SpaceInvadersAlienGroup.ALIENS_HEIGHT; y++){
                 SpaceInvadersAlien alien = aliens.getAlien(x,y); //alien at x,y in the group
-                if(alien!=null && laser.getBoundsInParent().intersects(alien.getBoundsInParent())){
-                    stage.getMain().getChildren().remove(laser);
-                    stage.getAlienGroup().getChildren().remove(alien);
-                    laser = null;
-                    aliens.removeAlien(x,y);
-                    moveLaser.stop();
-                    return;
+                if(alien != null){
+                    if((Shape.intersect(laser, alien)).getElements().size() > 0){
+                        stage.getMain().getChildren().remove(laser);
+                        stage.getAlienGroup().getChildren().remove(alien);
+                        laser = null;
+                        aliens.removeAlien(x,y);
+                        moveLaser.stop();
+                        return;
+                    }
                 }
             }
         }
     }
-    
 }
