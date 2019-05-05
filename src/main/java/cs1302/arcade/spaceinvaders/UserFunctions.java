@@ -119,11 +119,11 @@ public class UserFunctions{
         for(int x = 0; x < SpaceInvadersAlienGroup.ALIENS_WIDTH; x++){
             for(int y = 0; y < SpaceInvadersAlienGroup.ALIENS_HEIGHT; y++){
                 SpaceInvadersAlien alien = aliens.getAlien(x,y); //alien at x,y in the group
-                if(laser.getBoundsInParent().intersects(alien.getBoundsInParent())){
+                if(alien!=null && laser.getBoundsInParent().intersects(alien.getBoundsInParent())){
                     stage.getMain().getChildren().remove(laser);
                     stage.getAlienGroup().getChildren().remove(alien);
                     laser = null;
-                    alien = null;
+                    aliens.removeAlien(x,y);
                     moveLaser.stop();
                     return;
                 }

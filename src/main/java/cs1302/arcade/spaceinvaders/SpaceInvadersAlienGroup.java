@@ -103,5 +103,15 @@ public class SpaceInvadersAlienGroup extends Group{
     public SpaceInvadersAlien getAlien(int x, int y){
         return aliens[x][y];
     }
+
+    /**
+     * Sets the alien at the given indexes to null.
+     *
+     * @param x the x position
+     * @param y the y position
+     */
+    public void removeAlien(int x, int y){
+        aliens[x][y] = null;
+    }
     
 }
