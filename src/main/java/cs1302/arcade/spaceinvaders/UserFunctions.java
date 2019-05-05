@@ -84,7 +84,6 @@ public class UserFunctions{
      */
     private static void fireLaser(SpaceInvadersStage stage, SpaceInvadersShip ship, SpaceInvadersAlienGroup aliens){ //goes over
         Circle laser = new Circle(0, 0, 3, Color.LIME);
-        //Boolean collision = false;
         laser.setTranslateX(ship.getCurrentX());
         laser.setTranslateY(SpaceInvadersStage.MAX_Y_DOWN);
         stage.getMain().getChildren().add(laser); //add to stackpane
@@ -102,11 +101,11 @@ public class UserFunctions{
         AnimationTimer moveLaser = new AnimationTimer(){
                 @Override
                 public void handle(long now){
-                    if(laser.getTranslateY() > SpaceInvadersStage.MAX_Y_UP){
+                    if(laser.getTranslateY() > SpaceInvadersStage.MAX_Y_UP){ //while still on screen
                         laser.setTranslateY(laser.getTranslateY() - SpaceInvadersShip.LASER_SPEED);
                         checkCollisions(laser, stage, aliens);
                     }
-                    else{
+                    else{ //when off screen
                         stage.getMain().getChildren().remove(laser);
                     }
                 }
@@ -115,13 +114,25 @@ public class UserFunctions{
     } //moveLaser
 
     public static void checkCollisions(Circle laser, SpaceInvadersStage stage, SpaceInvadersAlienGroup aliens){ //goes over
+        Boolean collision = false;
+        System.out.println("here");
+        int hit = 0;
         for(int x = 0; x < SpaceInvadersAlienGroup.ALIENS_WIDTH; x++){
             for(int y = 0; y < SpaceInvadersAlienGroup.ALIENS_HEIGHT; y++){
-                if(laser.getBoundsInParent().intersects(aliens.getAlien(x,y).getBoundsInParent())){
-                    stage.getMain().getChildren().remove(laser);
-                    stage.getAlienGroup().getChildren().remove(aliens.getAlien(x,y));
-                    System.out.println("removed");
-                    return;
+                SpaceInvadersAlien alien = aliens.getAlien(x,y); //alien at x,y in the group
+                if(laser.getBoundsInParent().intersects(alien.getBoundsInParent())){
+                    collision = true;
+                    if(collision && hit < 1){
+                        hit++;
+                        stage.getMain().getChildren().remove(laser);
+                        stage.getAlienGroup().getChildren().remove(aliens.getAlien(x,y));
+                        collision = false;
+                        laser = null;
+                        alien = null;
+                        System.out.println(x+" "+y+" removed");
+                        return;
+                    }
+                    //return;
                     //increment score
                 }
             }
