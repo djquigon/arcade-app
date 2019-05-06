@@ -13,7 +13,7 @@ public class SpaceInvadersAlienGroup extends Group{
     public static final int ALIENS_HEIGHT = 5;
     public static final int ALIENS_HORZ_SPACING = 50;
     public static final int ALIENS_VERT_SPACING = 50;
-    public static final int ALIENS_SPEED = 10;
+    public static final int ALIENS_SPEED = 5;
     public static final int ALIENS_SPEED_DOWN = 20;
     public static final int MAX_X_LEFT = -200;
     public static final int MAX_X_RIGHT = 200;
@@ -40,7 +40,12 @@ public class SpaceInvadersAlienGroup extends Group{
         stage.getMain().getChildren().add(this); //add the group to main
         this.setTranslateX(MAX_X_LEFT); //set the initial x position
         this.setTranslateY(MAX_Y_UP); //set the initial y position
-        //moveAliens(this); //start moving the aliens
+        Runnable r = () -> {
+            moveAliens(this); //start moving the aliens
+        };
+        Thread moveAliens = new Thread(r);
+        moveAliens.setDaemon(true);
+        moveAliens.start();
     }
 
     /**
@@ -51,7 +56,7 @@ public class SpaceInvadersAlienGroup extends Group{
     public void moveAliens(SpaceInvadersAlienGroup aliens){
         AnimationTimer moveAliens = new AnimationTimer(){
                 @Override
-                public void handle(long now){
+                public void handle(long now){                  
                     if(iteration % 2 == 0){ //if on left side
                         moveRight(aliens);
                     }

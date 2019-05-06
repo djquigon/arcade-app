@@ -17,6 +17,8 @@ import javafx.util.Duration;
 import javafx.animation.KeyValue;
 import javafx.animation.AnimationTimer;
 import javafx.geometry.Bounds;
+import javafx.scene.shape.Path;
+import javafx.application.Platform;
 
 /**
  * Represents all the possible actions the user can make pertaining to their ship.
@@ -85,13 +87,20 @@ public class UserFunctions{
      * @param ship a reference to the main ship
      */
     private static void fireLaser(SpaceInvadersStage stage, SpaceInvadersShip ship, SpaceInvadersAlienGroup aliens){ //goes over
-        Rectangle laser = new Rectangle(ship.getCurrentX(), SpaceInvadersStage.MAX_Y_DOWN, 3, 5);
-        laser.setFill(Color.LIME);
-        laser.setTranslateX(ship.getCurrentX());
-        laser.setTranslateY(SpaceInvadersStage.MAX_Y_DOWN);
-        stage.getMain().getChildren().add(laser); //add to stackpane
-        AnimationTimer moveLaser = moveLaser(stage, laser, aliens);
-        moveLaser.start();
+        Runnable r = () -> {
+            Platform.runLater(()-> {
+                    Rectangle laser = new Rectangle(ship.getCurrentX(), SpaceInvadersStage.MAX_Y_DOWN, 3, 5);
+                    laser.setFill(Color.LIME);
+                    laser.setTranslateX(ship.getCurrentX());
+                    laser.setTranslateY(SpaceInvadersStage.MAX_Y_DOWN);
+                    stage.getMain().getChildren().add(laser); //add to stackpane
+                    AnimationTimer moveLaser = moveLaser(stage, laser, aliens);
+                    moveLaser.start();
+                });
+        };
+        Thread t = new Thread(r);
+        t.setDaemon(true);
+        t.start();
     }
 
     /**
@@ -119,11 +128,16 @@ public class UserFunctions{
     } //moveLaser
 
     public static void checkCollision(Rectangle laser, SpaceInvadersStage stage, SpaceInvadersAlienGroup aliens, AnimationTimer moveLaser){ //goes over
+        alienCollisions(laser,stage,aliens,moveLaser);
+        //ship
+    }
+
+    public static void alienCollisions(Rectangle laser, SpaceInvadersStage stage, SpaceInvadersAlienGroup aliens, AnimationTimer moveLaser){
         for(int x = 0; x < SpaceInvadersAlienGroup.ALIENS_WIDTH; x++){
             for(int y = 0; y < SpaceInvadersAlienGroup.ALIENS_HEIGHT; y++){
                 SpaceInvadersAlien alien = aliens.getAlien(x,y); //alien at x,y in the group
                 if(alien != null){
-                    if((Shape.intersect(laser, alien)).getElements().size() > 0){
+                    if(((Path)Shape.intersect(laser, alien)).getElements().size() > 0){
                         stage.getMain().getChildren().remove(laser);
                         stage.getAlienGroup().getChildren().remove(alien);
                         laser = null;

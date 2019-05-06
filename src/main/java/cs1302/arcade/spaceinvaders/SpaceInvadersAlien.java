@@ -25,7 +25,7 @@ public class SpaceInvadersAlien extends Rectangle{
         super(30, 30);
         alien = new Image("spaceinvaders_alien.gif", 30, 30, true, false);
         this.setFill(new ImagePattern(alien));
-        this.setStroke(Color.LAWNGREEN);
+        //this.setStroke(Color.LAWNGREEN);
     }
 }
     
