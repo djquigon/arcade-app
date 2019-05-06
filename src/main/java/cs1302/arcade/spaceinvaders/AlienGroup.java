@@ -24,7 +24,6 @@ public class AlienGroup extends Group{
     public static final int ALIENS_HEIGHT = 5;
     public static final int ALIENS_HORZ_SPACING = 50;
     public static final int ALIENS_VERT_SPACING = 50;
-    public static final int ALIENS_SPEED = 5;
     public static final int ALIENS_SPEED_DOWN = 20;
     public static final int MAX_X_LEFT = -200;
     public static final int MAX_X_RIGHT = 200;
@@ -32,7 +31,10 @@ public class AlienGroup extends Group{
     public static final int MAX_Y_DOWN = 180;
     
     private Alien[][] aliens; //track aliens
-    private int iteration = 0; //the iteration of alien group movement
+    private int iteration; //the iteration of alien group movement
+    private int aliensSpeed;
+    private AnimationTimer moveAliens;
+    private Timeline alienAttack;
     
     /**
      * Creates a group of aliens which attack the user ship.
@@ -52,7 +54,11 @@ public class AlienGroup extends Group{
         stage.getMain().getChildren().add(this); //add the group to main
         this.setTranslateX(MAX_X_LEFT); //set the initial x position
         this.setTranslateY(MAX_Y_UP); //set the initial y position
-        moveAliens(this); //start moving the aliens
+        iteration = 0;
+        aliensSpeed = (5 * stage.getLevel());
+        System.out.println(stage.getLevel());
+        moveAliens = moveAliens(this); //start moving the aliens
+        moveAliens.start();
         alienAttack(stage, ship, this);
         checkWin(stage);
     }
@@ -62,7 +68,7 @@ public class AlienGroup extends Group{
      * 
      * @param aliens the group of aliens attacking the user ship
      */
-    public void moveAliens(AlienGroup aliens){
+    public AnimationTimer moveAliens(AlienGroup aliens){
         AnimationTimer moveAliens = new AnimationTimer(){
                 @Override
                 public void handle(long now){                  
@@ -75,7 +81,7 @@ public class AlienGroup extends Group{
                     }
                 }
             };
-        moveAliens.start();
+        return moveAliens;
     }
 
     /**
@@ -84,8 +90,8 @@ public class AlienGroup extends Group{
      * @param aliens the group of aliens attacking the user ship
      */
     public void moveRight(AlienGroup aliens){
-        if(aliens.getTranslateX() != MAX_X_RIGHT){ //if not at max right
-            aliens.setTranslateX(aliens.getTranslateX() + ALIENS_SPEED); //move right
+        if(aliens.getTranslateX() <= MAX_X_RIGHT){ //if not at max right
+            aliens.setTranslateX(aliens.getTranslateX() + aliensSpeed); //move right
         }
         else{
             aliens.setTranslateY(aliens.getTranslateY() + ALIENS_SPEED_DOWN); //move down
@@ -99,8 +105,8 @@ public class AlienGroup extends Group{
      * @param aliens the group of aliens attacking the user ship
      */
     public void moveLeft(AlienGroup aliens){
-        if(aliens.getTranslateX() != MAX_X_LEFT){ //if not at max left
-            aliens.setTranslateX(aliens.getTranslateX() - ALIENS_SPEED); //move left
+        if(aliens.getTranslateX() >= MAX_X_LEFT){ //if not at max left
+            aliens.setTranslateX(aliens.getTranslateX() - aliensSpeed); //move left
         }
         else{
             aliens.setTranslateY(aliens.getTranslateY() + ALIENS_SPEED_DOWN); //move down
@@ -136,23 +142,23 @@ public class AlienGroup extends Group{
      * @param ship reference to the ship
      * @param aliens reference to alien group attacking the ship
      */
-    public void alienAttack(SpaceStage stage, Ship ship, AlienGroup aliens){
-        EventHandler<ActionEvent> handler = event -> {
-            Runnable r = () -> {
-                Platform.runLater(()-> {     
-                        randomAlien(stage, ship, aliens);
-                    });
-            };
-            Thread t = new Thread(r);
-            System.out.println("new thread");
-            t.setDaemon(true);
-            t.start();
+    public void alienAttack(SpaceStage stage, Ship ship, AlienGroup aliens){//
+        Runnable r = () -> {
+            Platform.runLater(()-> {     
+                    EventHandler<ActionEvent> handler = event -> {
+                        randomAlienFire(stage, ship, aliens);
+                    };
+                    KeyFrame keyFrame = new KeyFrame(Duration.seconds(5), handler);
+                    alienAttack = new Timeline();
+                    alienAttack.setCycleCount(Timeline.INDEFINITE);
+                    alienAttack.getKeyFrames().add(keyFrame);
+                    alienAttack.play();
+                });
         };
-        KeyFrame keyFrame = new KeyFrame(Duration.seconds(5), handler);
-        Timeline timeline = new Timeline();
-        timeline.setCycleCount(Timeline.INDEFINITE);
-        timeline.getKeyFrames().add(keyFrame);
-        timeline.play();
+        Thread t = new Thread(r);
+        System.out.println("new thread");
+        t.setDaemon(true);
+        t.start();
     }
 
     /**
@@ -197,17 +203,25 @@ public class AlienGroup extends Group{
             if(stage.getLives() == 0){
                 stage.getMain().getChildren().remove(ship);
                 ship = null;
+                moveLaser.stop();
+                moveAliens.stop();
+                alienAttack.stop();
                 stage.lose();
             }
-            //moveLaser.stop();
             return;
         }
         for(int x = 0; x < ALIENS_WIDTH; x++){ //create row of aliens
             for(int y = 0; y < ALIENS_HEIGHT; y++){ //creare columns of aliens
-                if(((Path)Shape.intersect(getAlien(x,y), ship)).getElements().size() > 0){
-                    stage.getMain().getChildren().remove(ship);
-                    ship = null;
-                    stage.lose();
+                if(getAlien(x,y) != null){
+                    if(((Path)Shape.intersect(getAlien(x,y), ship)).getElements().size() > 0){
+                        stage.getMain().getChildren().remove(ship);
+                        ship = null;
+                        moveLaser.stop();
+                        moveAliens.stop();
+                        alienAttack.stop();
+                        stage.lose();
+                        return;
+                    }
                 }
             }
         }
@@ -242,8 +256,13 @@ public class AlienGroup extends Group{
 
     /**
      * Sets the x and y to the location of a random existing alien.
+     * Then fires a laser towards the user.
+     *
+     * @param stage the main stage
+     * @param ship the user's ship
+     * @param aliens the group of aliens
      */
-    public void randomAlien(SpaceStage stage, Ship ship,AlienGroup aliens){
+    public void randomAlienFire(SpaceStage stage, Ship ship, AlienGroup aliens){
        int x = (int)(Math.random()*8);
        int y = (int)(Math.random()*5);
         if(getAlien(x,y) == null){
@@ -267,5 +286,23 @@ public class AlienGroup extends Group{
         stage.getMain().getChildren().add(laser); //add to stackpane
         AnimationTimer moveLaser = moveLaser(stage, ship, laser);
         moveLaser.start();
+    }
+
+    /**
+     * Returns the moveAliens {@code AnimationTimer}
+     *
+     * @return the animation timer to move aliens.
+     */
+    public AnimationTimer getMoveAliens(){
+        return moveAliens;
+    }
+
+    /**
+     * Returns the alienAttack {@code AnimationTimer}
+     *
+     * @return the timeline for attacking the user
+     */
+    public Timeline getAlienAttack(){
+        return alienAttack;
     }
 }

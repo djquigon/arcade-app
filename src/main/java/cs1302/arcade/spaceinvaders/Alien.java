@@ -18,8 +18,8 @@ public class Alien extends Rectangle{
      * Creates a single alien for a space invaders game.
      */ 
     public Alien(){
-        super(30, 30);
-        alien = new Image("spaceinvaders_alien.gif", 30, 30, true, false);
+        super(40, 40);
+        alien = new Image("spaceinvaders_alien.gif", 40, 40, true, false);
         this.setFill(new ImagePattern(alien));
     } 
 }
