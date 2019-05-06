@@ -19,12 +19,15 @@ import javafx.scene.layout.BackgroundPosition;
 import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.Background;
 import javafx.scene.image.Image;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Alert.AlertType;
 
 /**
  * Represents a stage object for a space invaders game.
  */
 public class SpaceStage extends Stage{
-
+    
     public static final int MAX_X_RIGHT = 375; //right limit
     public static final int MAX_X_LEFT = -375; //left limit
     public static final int MAX_Y_UP = -320; //top limit
@@ -38,6 +41,7 @@ public class SpaceStage extends Stage{
     private StackPane main; //contains the ship and aliens
     private int score;
     private int lives;
+    private int level;
 
     /**
      * Creates the main Stage for the a Space Invaders game.
@@ -56,6 +60,7 @@ public class SpaceStage extends Stage{
         main.setBackground(new Background(bi)); //creates background
         ship = new Ship(this);
         aliens = new AlienGroup(this, ship);
+        level = 1;
         score = 0;
         lives = 3;
         window.getChildren().addAll(menuBar, main);
@@ -88,6 +93,48 @@ public class SpaceStage extends Stage{
         menuBar.prefWidthProperty().bind(this.widthProperty());
     }
 
+    public void levelUp(){
+        aliens = new AlienGroup(this, ship);
+    }
+
+    public void victory(){
+        ButtonType playAgain = new ButtonType("Play Again");
+        ButtonType exitToMenu = new ButtonType("Exit to menu");
+        Alert win = new Alert(AlertType.CONFIRMATION, "You won! " +
+                               "Would you like to play again?",
+                               playAgain, exitToMenu);
+        win.setTitle("VICTORY");
+        win.showAndWait().ifPresent(response -> {                                
+                if(response == playAgain){ //if they want to play again
+                    this.close();
+                    SpaceStage newGame = new SpaceStage();
+                    newGame.show();
+                }
+                if(response == exitToMenu){ //if they want to exit
+                    this.close();
+                }
+            });
+    }
+
+    public void lose(){
+        ButtonType playAgain = new ButtonType("Play Again");
+        ButtonType exitToMenu = new ButtonType("Exit to menu");
+        Alert lose = new Alert(AlertType.CONFIRMATION, "You have been defeated!  " +
+                               "Would you like to play again?",
+                               playAgain, exitToMenu);
+        lose.setTitle("GAME OVER");
+        lose.showAndWait().ifPresent(response -> {                                
+                if(response == playAgain){ //if they want to play again
+                    this.close();
+                    SpaceStage newGame = new SpaceStage();
+                    newGame.show();
+                }
+                if(response == exitToMenu){ //if they want to exit
+                    this.close();
+                }
+            });
+    }
+    
     /**
      * Returns the main {@code StackPane}.
      *
@@ -140,5 +187,22 @@ public class SpaceStage extends Stage{
     public void setLives(int lives){
         this.lives = lives;
     }
-    
+
+    /**
+     * Returns the current level.
+     *
+     * @return level the current level of the game
+     */
+    public int getLevel(){
+        return level;
+    }
+
+    /**
+     * Sets the level of the game.
+     *
+     * @param level the level of the game
+     */
+    public void setLevel(int level){
+        this.level = level;
+    }
 }

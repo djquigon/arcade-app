@@ -19,7 +19,7 @@ import javafx.animation.KeyFrame;
  * This class represents a group of aliens which attack the user ship.
  */
 public class AlienGroup extends Group{
-
+    
     public static final int ALIENS_WIDTH = 8;
     public static final int ALIENS_HEIGHT = 5;
     public static final int ALIENS_HORZ_SPACING = 50;
@@ -54,6 +54,7 @@ public class AlienGroup extends Group{
         this.setTranslateY(MAX_Y_UP); //set the initial y position
         moveAliens(this); //start moving the aliens
         alienAttack(stage, ship, this);
+        checkWin(stage);
     }
 
     /**
@@ -138,22 +139,8 @@ public class AlienGroup extends Group{
     public void alienAttack(SpaceStage stage, Ship ship, AlienGroup aliens){
         EventHandler<ActionEvent> handler = event -> {
             Runnable r = () -> {
-                Platform.runLater(()-> {
-                        int x = (int)(Math.random()*8);
-                        int y = (int)(Math.random()*5);
-                        if(getAlien(x,y) == null){
-                            x = (int)(Math.random()*8);
-                            y = (int)(Math.random()*5);
-                        }
-                        Rectangle laser = new Rectangle(5, 10);
-                        laser.setTranslateX((aliens.getTranslateX()-175) + (x * ALIENS_HORZ_SPACING));
-                        System.out.println("x "+ x);
-                        laser.setTranslateY((aliens.getTranslateY()-100) + (y * ALIENS_VERT_SPACING));
-                        System.out.println("y " + y);
-                        laser.setFill(Color.RED);
-                        stage.getMain().getChildren().add(laser); //add to stackpane
-                        AnimationTimer moveLaser = moveLaser(stage, ship, laser);
-                        moveLaser.start();
+                Platform.runLater(()-> {     
+                        randomAlien(stage, ship, aliens);
                     });
             };
             Thread t = new Thread(r);
@@ -176,7 +163,7 @@ public class AlienGroup extends Group{
      * @param ship reference to the ship
      * @param laser reference to the laser that is being moved
      */
-    private static AnimationTimer moveLaser(SpaceStage stage, Ship ship, Rectangle laser){ //goes over
+    private AnimationTimer moveLaser(SpaceStage stage, Ship ship, Rectangle laser){ //goes over
         AnimationTimer moveLaser = new AnimationTimer(){
                 @Override
                 public void handle(long now){
@@ -200,15 +187,85 @@ public class AlienGroup extends Group{
      * @param laser reference to the laser being moved
      * @param moveLaser reference to the animation timer in charge of moving laser
      */
-    public static void shipCollision(SpaceStage stage, Ship ship, Rectangle laser, AnimationTimer moveLaser){
+    public void shipCollision(SpaceStage stage, Ship ship, Rectangle laser, AnimationTimer moveLaser){
         if(((Path)Shape.intersect(laser, ship)).getElements().size() > 0){
             stage.getMain().getChildren().remove(laser);
-            stage.getMain().getChildren().remove(ship);
             laser = null;
-            ship = null;
             moveLaser.stop();
+            stage.setLives(stage.getLives() -1);
+            System.out.println(stage.getLives());
+            if(stage.getLives() == 0){
+                stage.getMain().getChildren().remove(ship);
+                ship = null;
+                stage.lose();
+            }
+            //moveLaser.stop();
             return;
         }
+        for(int x = 0; x < ALIENS_WIDTH; x++){ //create row of aliens
+            for(int y = 0; y < ALIENS_HEIGHT; y++){ //creare columns of aliens
+                if(((Path)Shape.intersect(getAlien(x,y), ship)).getElements().size() > 0){
+                    stage.getMain().getChildren().remove(ship);
+                    ship = null;
+                    stage.lose();
+                }
+            }
+        }
     }
-    
+
+
+    /**
+     * Checks whether the user has defeated all the aliens on the current
+     * level, if so then the level goes up. Once the level is at 3, the user
+     * has won.
+     *
+     * @param stage a reference to the main stage
+     */
+    public void checkWin(SpaceStage stage){
+        int counter = 0;
+        for(int x = 0; x < ALIENS_WIDTH; x++){ //create row of aliens
+            for(int y = 0; y < ALIENS_HEIGHT; y++){ //creare columns of aliens
+                if(aliens[x][y] == null){
+                    counter++;
+                    if(counter == 40){
+                        stage.setLevel(stage.getLevel() + 1);
+                        stage.levelUp();
+                        if(stage.getLevel() == 4){
+                            stage.victory();
+                        }
+                    }
+                    continue;
+                }
+            }
+        }
+    }
+
+    /**
+     * Sets the x and y to the location of a random existing alien.
+     */
+    public void randomAlien(SpaceStage stage, Ship ship,AlienGroup aliens){
+       int x = (int)(Math.random()*8);
+       int y = (int)(Math.random()*5);
+        if(getAlien(x,y) == null){
+            while(true){
+                x = (int)(Math.random()*8);
+                y = (int)(Math.random()*5);
+                if(getAlien(x,y) != null){
+                    break;
+                }
+                else{
+                    continue;
+                }
+            }
+        }
+        Rectangle laser = new Rectangle(5, 10);
+        laser.setTranslateX((aliens.getTranslateX()-175) + (x * ALIENS_HORZ_SPACING));
+        System.out.println("x "+ x);
+        laser.setTranslateY((aliens.getTranslateY()-100) + (y * ALIENS_VERT_SPACING));
+        System.out.println("y " + y);
+        laser.setFill(Color.RED);
+        stage.getMain().getChildren().add(laser); //add to stackpane
+        AnimationTimer moveLaser = moveLaser(stage, ship, laser);
+        moveLaser.start();
+    }
 }
