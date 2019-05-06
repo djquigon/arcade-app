@@ -89,7 +89,7 @@ public class UserFunctions{
     private static void fireLaser(SpaceInvadersStage stage, SpaceInvadersShip ship, SpaceInvadersAlienGroup aliens){ //goes over
         Runnable r = () -> {
             Platform.runLater(()-> {
-                    Rectangle laser = new Rectangle(ship.getCurrentX(), SpaceInvadersStage.MAX_Y_DOWN, 3, 5);
+                    Rectangle laser = new Rectangle(ship.getCurrentX(), SpaceInvadersStage.MAX_Y_DOWN, 5, 7);
                     laser.setFill(Color.LIME);
                     laser.setTranslateX(ship.getCurrentX());
                     laser.setTranslateY(SpaceInvadersStage.MAX_Y_DOWN);
@@ -116,7 +116,7 @@ public class UserFunctions{
                 public void handle(long now){
                     if(laser.getTranslateY() > SpaceInvadersStage.MAX_Y_UP){ //while still on screen
                         laser.setTranslateY(laser.getTranslateY() - SpaceInvadersShip.LASER_SPEED);
-                        checkCollision(laser,stage,aliens,this);
+                        alienCollision(laser,stage,aliens,this);
                         
                     }
                     else{ //when off screen
@@ -127,12 +127,7 @@ public class UserFunctions{
         return moveLaser;
     } //moveLaser
 
-    public static void checkCollision(Rectangle laser, SpaceInvadersStage stage, SpaceInvadersAlienGroup aliens, AnimationTimer moveLaser){ //goes over
-        alienCollisions(laser,stage,aliens,moveLaser);
-        //ship
-    }
-
-    public static void alienCollisions(Rectangle laser, SpaceInvadersStage stage, SpaceInvadersAlienGroup aliens, AnimationTimer moveLaser){
+    public static void alienCollision(Rectangle laser, SpaceInvadersStage stage, SpaceInvadersAlienGroup aliens, AnimationTimer moveLaser){ //goes over
         for(int x = 0; x < SpaceInvadersAlienGroup.ALIENS_WIDTH; x++){
             for(int y = 0; y < SpaceInvadersAlienGroup.ALIENS_HEIGHT; y++){
                 SpaceInvadersAlien alien = aliens.getAlien(x,y); //alien at x,y in the group
@@ -149,4 +144,5 @@ public class UserFunctions{
             }
         }
     }
+    
 }

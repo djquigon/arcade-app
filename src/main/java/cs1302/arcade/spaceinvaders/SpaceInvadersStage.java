@@ -54,8 +54,8 @@ public class SpaceInvadersStage extends Stage{
                                                 BackgroundPosition.DEFAULT,
                                                 BackgroundSize.DEFAULT);
         main.setBackground(new Background(bi)); //creates background
-        aliens = new SpaceInvadersAlienGroup(this);
         ship = new SpaceInvadersShip(this);
+        aliens = new SpaceInvadersAlienGroup(this, ship);
         score = 0;
         lives = 3;
         window.getChildren().addAll(menuBar, main);

@@ -3,6 +3,17 @@ package cs1302.arcade;
 import cs1302.arcade.*;
 import javafx.scene.Group;
 import javafx.animation.AnimationTimer;
+import javafx.animation.Timeline;
+import javafx.event.EventHandler;
+import javafx.event.ActionEvent;
+import javafx.util.Duration;
+import java.lang.Math;
+import javafx.scene.shape.Path;
+import javafx.scene.shape.Shape;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+import javafx.application.Platform;
+import javafx.animation.KeyFrame;
 
 /**
  * This class represents a group of aliens which attack the user ship.
@@ -28,7 +39,7 @@ public class SpaceInvadersAlienGroup extends Group{
      *
      * @param stage reference to the main stage
      */
-    public SpaceInvadersAlienGroup(SpaceInvadersStage stage){ //could make enum for different types of aliens
+    public SpaceInvadersAlienGroup(SpaceInvadersStage stage, SpaceInvadersShip ship){ //could make enum for different types of aliens
         aliens = new SpaceInvadersAlien[ALIENS_WIDTH][ALIENS_HEIGHT];
         for(int x = 0; x < ALIENS_WIDTH; x++){ //create row of aliens
             for(int y = 0; y < ALIENS_HEIGHT; y++){ //creare columns of aliens
@@ -40,12 +51,13 @@ public class SpaceInvadersAlienGroup extends Group{
         stage.getMain().getChildren().add(this); //add the group to main
         this.setTranslateX(MAX_X_LEFT); //set the initial x position
         this.setTranslateY(MAX_Y_UP); //set the initial y position
-        Runnable r = () -> {
+        //Runnable r = () -> {
             moveAliens(this); //start moving the aliens
-        };
-        Thread moveAliens = new Thread(r);
-        moveAliens.setDaemon(true);
-        moveAliens.start();
+            alienAttack(stage, ship);
+            //};
+            //Thread moveAliens = new Thread(r);
+            //moveAliens.setDaemon(true);
+            // moveAliens.start();
     }
 
     /**
@@ -59,6 +71,7 @@ public class SpaceInvadersAlienGroup extends Group{
                 public void handle(long now){                  
                     if(iteration % 2 == 0){ //if on left side
                         moveRight(aliens);
+                        
                     }
                     if(iteration % 2 == 1){ //if on right side
                         moveLeft(aliens);
@@ -117,6 +130,70 @@ public class SpaceInvadersAlienGroup extends Group{
      */
     public void removeAlien(int x, int y){
         aliens[x][y] = null;
+    }
+
+    public void alienAttack(SpaceInvadersStage stage, SpaceInvadersShip ship){
+        EventHandler<ActionEvent> handler = event -> {
+            Runnable r = () -> {
+                Platform.runLater(()-> {
+                        //timer
+                        int x = (int)(Math.random()*8);
+                        int y = (int)(Math.random()*5);
+                        SpaceInvadersAlien alien = getAlien(x,y);
+                        if(alien == null){
+                            x = (int)(Math.random()*8);
+                            y = (int)(Math.random()*5);
+                            alien = getAlien(x,y);
+                        }
+                        //alien.getTranslateX(),alien.getTranslateY()
+                        Rectangle laser = new Rectangle(5, 10);
+                        laser.xProperty().bind(this.translateXProperty().add(alien.xProperty()));
+                        laser.yProperty().bind(this.translateYProperty().add(alien.yProperty()));
+                        laser.setTranslateX(alien.getTranslateX());
+                        laser.setTranslateY(alien.getTranslateY());
+                        laser.setFill(Color.RED);
+                        stage.getMain().getChildren().add(laser); //add to stackpane
+                        AnimationTimer moveLaser = moveLaser(stage, ship, laser);
+                        moveLaser.start();
+                    });
+            };
+            Thread t = new Thread(r);
+            System.out.println("new thread");
+            t.setDaemon(true);
+            t.start();
+        };
+        KeyFrame keyFrame = new KeyFrame(Duration.seconds(5), handler);
+        Timeline timeline = new Timeline();
+        timeline.setCycleCount(Timeline.INDEFINITE);
+        timeline.getKeyFrames().add(keyFrame);
+        timeline.play();
+    }
+
+    private static AnimationTimer moveLaser(SpaceInvadersStage stage, SpaceInvadersShip ship, Rectangle laser){ //goes over
+        AnimationTimer moveLaser = new AnimationTimer(){
+                @Override
+                public void handle(long now){
+                    if(laser.getTranslateY() < SpaceInvadersStage.MAX_Y_DOWN){ //while still on screen
+                        laser.setTranslateY(laser.getTranslateY() + SpaceInvadersShip.LASER_SPEED);
+                        shipCollision(stage,ship,laser,this);                        
+                    }
+                    else{ //when off screen
+                        stage.getMain().getChildren().remove(laser);
+                    }
+                }
+            };
+        return moveLaser;
+    } //moveLaser
+
+    public static void shipCollision(SpaceInvadersStage stage, SpaceInvadersShip ship, Rectangle laser, AnimationTimer moveLaser){
+        if(((Path)Shape.intersect(laser, ship)).getElements().size() > 0){
+            stage.getMain().getChildren().remove(laser);
+            stage.getMain().getChildren().remove(ship);
+            laser = null;
+            ship = null;
+            moveLaser.stop();
+            return;
+        }
     }
     
 }
