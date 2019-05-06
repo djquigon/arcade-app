@@ -18,7 +18,7 @@ import javafx.animation.KeyFrame;
 /**
  * This class represents a group of aliens which attack the user ship.
  */
-public class SpaceInvadersAlienGroup extends Group{
+public class AlienGroup extends Group{
 
     public static final int ALIENS_WIDTH = 8;
     public static final int ALIENS_HEIGHT = 5;
@@ -31,19 +31,20 @@ public class SpaceInvadersAlienGroup extends Group{
     public static final int MAX_Y_UP = -200;
     public static final int MAX_Y_DOWN = 180;
     
-    private SpaceInvadersAlien[][] aliens; //track aliens
+    private Alien[][] aliens; //track aliens
     private int iteration = 0; //the iteration of alien group movement
     
     /**
      * Creates a group of aliens which attack the user ship.
      *
      * @param stage reference to the main stage
+     * @param ship reference to the ship
      */
-    public SpaceInvadersAlienGroup(SpaceInvadersStage stage, SpaceInvadersShip ship){ //could make enum for different types of aliens
-        aliens = new SpaceInvadersAlien[ALIENS_WIDTH][ALIENS_HEIGHT];
+    public AlienGroup(SpaceStage stage, Ship ship){ //could make enum for different types of aliens
+        aliens = new Alien[ALIENS_WIDTH][ALIENS_HEIGHT];
         for(int x = 0; x < ALIENS_WIDTH; x++){ //create row of aliens
             for(int y = 0; y < ALIENS_HEIGHT; y++){ //creare columns of aliens
-                aliens[x][y] = new SpaceInvadersAlien(); //create new alien
+                aliens[x][y] = new Alien(); //create new alien
                 aliens[x][y].relocate(x * ALIENS_HORZ_SPACING, y * ALIENS_VERT_SPACING); //spacing
                 this.getChildren().add(aliens[x][y]); //add to group
             }
@@ -58,9 +59,9 @@ public class SpaceInvadersAlienGroup extends Group{
     /**
      * Creates the animation to move the alien group across the screen.
      * 
-     * @param aliens the gorup of aliens attacking the user ship
+     * @param aliens the group of aliens attacking the user ship
      */
-    public void moveAliens(SpaceInvadersAlienGroup aliens){
+    public void moveAliens(AlienGroup aliens){
         AnimationTimer moveAliens = new AnimationTimer(){
                 @Override
                 public void handle(long now){                  
@@ -81,7 +82,7 @@ public class SpaceInvadersAlienGroup extends Group{
      *
      * @param aliens the group of aliens attacking the user ship
      */
-    public void moveRight(SpaceInvadersAlienGroup aliens){
+    public void moveRight(AlienGroup aliens){
         if(aliens.getTranslateX() != MAX_X_RIGHT){ //if not at max right
             aliens.setTranslateX(aliens.getTranslateX() + ALIENS_SPEED); //move right
         }
@@ -96,7 +97,7 @@ public class SpaceInvadersAlienGroup extends Group{
      *
      * @param aliens the group of aliens attacking the user ship
      */
-    public void moveLeft(SpaceInvadersAlienGroup aliens){
+    public void moveLeft(AlienGroup aliens){
         if(aliens.getTranslateX() != MAX_X_LEFT){ //if not at max left
             aliens.setTranslateX(aliens.getTranslateX() - ALIENS_SPEED); //move left
         }
@@ -113,7 +114,7 @@ public class SpaceInvadersAlienGroup extends Group{
      * @param x the x position in the array
      * @param y the y position in the array
      */
-    public SpaceInvadersAlien getAlien(int x, int y){
+    public Alien getAlien(int x, int y){
         return aliens[x][y];
     }
 
@@ -127,20 +128,23 @@ public class SpaceInvadersAlienGroup extends Group{
         aliens[x][y] = null;
     }
 
-    public void alienAttack(SpaceInvadersStage stage, SpaceInvadersShip ship, SpaceInvadersAlienGroup aliens){
+    /**
+     * Selects a random alien and makes it shoot a laser.
+     *
+     * @param stage reference to the main stage
+     * @param ship reference to the ship
+     * @param aliens reference to alien group attacking the ship
+     */
+    public void alienAttack(SpaceStage stage, Ship ship, AlienGroup aliens){
         EventHandler<ActionEvent> handler = event -> {
             Runnable r = () -> {
                 Platform.runLater(()-> {
-                        //timer
                         int x = (int)(Math.random()*8);
                         int y = (int)(Math.random()*5);
-                        //SpaceInvadersAlien alien = getAlien(x,y);
                         if(getAlien(x,y) == null){
                             x = (int)(Math.random()*8);
                             y = (int)(Math.random()*5);
-                            //alien = getAlien(x,y);
                         }
-                        //alien.getTranslateX(),alien.getTranslateY()
                         Rectangle laser = new Rectangle(5, 10);
                         laser.setTranslateX((aliens.getTranslateX()-175) + (x * ALIENS_HORZ_SPACING));
                         System.out.println("x "+ x);
@@ -164,12 +168,20 @@ public class SpaceInvadersAlienGroup extends Group{
         timeline.play();
     }
 
-    private static AnimationTimer moveLaser(SpaceInvadersStage stage, SpaceInvadersShip ship, Rectangle laser){ //goes over
+    /**
+     * Moves laser away from aliens and towards the ship.
+     *
+     * @return the animation timer in charge of moving the laser
+     * @param stage reference to the main stage
+     * @param ship reference to the ship
+     * @param laser reference to the laser that is being moved
+     */
+    private static AnimationTimer moveLaser(SpaceStage stage, Ship ship, Rectangle laser){ //goes over
         AnimationTimer moveLaser = new AnimationTimer(){
                 @Override
                 public void handle(long now){
-                    if(laser.getTranslateY() < SpaceInvadersStage.MAX_Y_DOWN){ //while still on screen
-                        laser.setTranslateY(laser.getTranslateY() + SpaceInvadersShip.LASER_SPEED);
+                    if(laser.getTranslateY() < SpaceStage.MAX_Y_DOWN){ //while still on screen
+                        laser.setTranslateY(laser.getTranslateY() + Ship.LASER_SPEED);
                         shipCollision(stage,ship,laser,this);                        
                     }
                     else{ //when off screen
@@ -180,7 +192,15 @@ public class SpaceInvadersAlienGroup extends Group{
         return moveLaser;
     } //moveLaser
 
-    public static void shipCollision(SpaceInvadersStage stage, SpaceInvadersShip ship, Rectangle laser, AnimationTimer moveLaser){
+    /**
+     * Checks if the laser has collided with the ship.
+     *
+     * @param stage reference to the main stage
+     * @param ship reference to the ship
+     * @param laser reference to the laser being moved
+     * @param moveLaser reference to the animation timer in charge of moving laser
+     */
+    public static void shipCollision(SpaceStage stage, Ship ship, Rectangle laser, AnimationTimer moveLaser){
         if(((Path)Shape.intersect(laser, ship)).getElements().size() > 0){
             stage.getMain().getChildren().remove(laser);
             stage.getMain().getChildren().remove(ship);

@@ -23,15 +23,15 @@ import javafx.scene.image.Image;
 /**
  * Represents a stage object for a space invaders game.
  */
-public class SpaceInvadersStage extends Stage{
+public class SpaceStage extends Stage{
 
     public static final int MAX_X_RIGHT = 375; //right limit
     public static final int MAX_X_LEFT = -375; //left limit
     public static final int MAX_Y_UP = -320; //top limit
     public static final int MAX_Y_DOWN = 280; //where ship starts
     
-    private SpaceInvadersShip ship; //the user's ship
-    private SpaceInvadersAlienGroup aliens; //the group of aliens
+    private Ship ship; //the user's ship
+    private AlienGroup aliens; //the group of aliens
     private Scene scene; //the main scene
     private VBox window; //contains main and menubar
     private MenuBar menuBar; //menubar
@@ -42,7 +42,7 @@ public class SpaceInvadersStage extends Stage{
     /**
      * Creates the main Stage for the a Space Invaders game.
      */
-    public SpaceInvadersStage(){
+    public SpaceStage(){
         super();
         this.setMenuBar(); //initializes menuBar
         window = new VBox();
@@ -54,8 +54,8 @@ public class SpaceInvadersStage extends Stage{
                                                 BackgroundPosition.DEFAULT,
                                                 BackgroundSize.DEFAULT);
         main.setBackground(new Background(bi)); //creates background
-        ship = new SpaceInvadersShip(this);
-        aliens = new SpaceInvadersAlienGroup(this, ship);
+        ship = new Ship(this);
+        aliens = new AlienGroup(this, ship);
         score = 0;
         lives = 3;
         window.getChildren().addAll(menuBar, main);
@@ -69,8 +69,6 @@ public class SpaceInvadersStage extends Stage{
         this.setScene(scene);
         UserFunctions.checkEvents(this, ship, aliens);
     }
-
-    //public void updateScreen(){}
 
     /**
      * Sets the contents of the {@code MenuBar}.
@@ -92,6 +90,8 @@ public class SpaceInvadersStage extends Stage{
 
     /**
      * Returns the main {@code StackPane}.
+     *
+     * @return main the stackpane from the map
      */
     public StackPane getMain(){
         return main;
@@ -102,12 +102,14 @@ public class SpaceInvadersStage extends Stage{
      *
      * @return the alien {@code Group} attacking the users ship.
      */
-    public SpaceInvadersAlienGroup getAlienGroup(){
+    public AlienGroup getAlienGroup(){
         return aliens;
     }
 
     /**
      * Returns the user's score.
+     *
+     * @return score the amount of points the user has gotten
      */
     public int getScore(){
         return score;
@@ -123,6 +125,8 @@ public class SpaceInvadersStage extends Stage{
     }
     /**
      * Returns the user's lives.
+     *
+     * @return lives the number of lives the user has remaining
      */
     public int getLives(){
         return lives;

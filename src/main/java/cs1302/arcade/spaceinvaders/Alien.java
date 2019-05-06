@@ -10,22 +10,16 @@ import javafx.scene.paint.Color;
 /**
  * This class represents a single alien in a space invaders game.
  */
-public class SpaceInvadersAlien extends Rectangle{
+public class Alien extends Rectangle{
     
     private Image alien;
     
     /**
      * Creates a single alien for a space invaders game.
-     *
-     * @param stage a reference to the main stage
-     * @param x x position in group
-     * @param y y position in group
      */ 
-    public SpaceInvadersAlien(){
+    public Alien(){
         super(30, 30);
         alien = new Image("spaceinvaders_alien.gif", 30, 30, true, false);
         this.setFill(new ImagePattern(alien));
-        //this.setStroke(Color.LAWNGREEN);
     } 
 }
-    

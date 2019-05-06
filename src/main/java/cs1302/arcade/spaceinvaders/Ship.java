@@ -9,7 +9,7 @@ import javafx.geometry.Pos;
 /**
  * Represents a ship for a space invaders game.
  */
-public class SpaceInvadersShip extends Rectangle{
+public class Ship extends Rectangle{
 
     public static final double SHIP_SPEED = 15; //speed the ship moves
     public static final double LASER_SPEED = 10; //speed a laser from a ship moves
@@ -24,7 +24,7 @@ public class SpaceInvadersShip extends Rectangle{
      *
      * @param stage a reference to the main stage
      */
-    public SpaceInvadersShip(SpaceInvadersStage stage){
+    public Ship(SpaceStage stage){
         super(50, 50);
         ship = new Image("spaceinvaders_ship.png", 50, 50, true, false);
         this.setFill(new ImagePattern(ship));

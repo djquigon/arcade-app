@@ -30,8 +30,9 @@ public class UserFunctions{
      *
      * @param stage a reference to the main stage
      * @param ship a reference to the main ship
+     * @param aliens a reference to the alien group attacking the ship
      */
-    public static void checkEvents(SpaceInvadersStage stage, SpaceInvadersShip ship, SpaceInvadersAlienGroup aliens){ //this goes over
+    public static void checkEvents(SpaceStage stage, Ship ship, AlienGroup aliens){ //this goes over
         Scene scene = stage.getScene();//get scene from stage
         scene.setOnKeyPressed(event-> {
                 if(event.getCode() == KeyCode.RIGHT){ //if right arrow clicked
@@ -52,8 +53,8 @@ public class UserFunctions{
      * @param scene a reference to the main scene
      * @param ship a reference to the main ship
      */
-    private static void moveRight(Scene scene, SpaceInvadersShip ship){
-        if(ship.getCurrentX() != SpaceInvadersStage.MAX_X_RIGHT){//if not at right end
+    private static void moveRight(Scene scene, Ship ship){
+        if(ship.getCurrentX() != SpaceStage.MAX_X_RIGHT){//if not at right end
             ship.setMovingRight(true);
             ship.update();
         }
@@ -69,8 +70,8 @@ public class UserFunctions{
      * @param scene a reference to the main scene
      * @param ship a reference to the main ship
      */
-    private static void moveLeft(Scene scene, SpaceInvadersShip ship){
-        if(ship.getCurrentX() != SpaceInvadersStage.MAX_X_LEFT){//if not at left end
+    private static void moveLeft(Scene scene, Ship ship){
+        if(ship.getCurrentX() != SpaceStage.MAX_X_LEFT){//if not at left end
             ship.setMovingLeft(true);
             ship.update();
         }
@@ -83,16 +84,17 @@ public class UserFunctions{
     /**
      * Fires a laser from the ship towards the aliens.
      *
-     * @param scene a reference to the main scene
+     * @param stage a reference to the main stage
      * @param ship a reference to the main ship
+     * @param aliens a reference to the alien group that is attacking the ship
      */
-    private static void fireLaser(SpaceInvadersStage stage, SpaceInvadersShip ship, SpaceInvadersAlienGroup aliens){ //goes over
+    private static void fireLaser(SpaceStage stage, Ship ship, AlienGroup aliens){ //goes over
         Runnable r = () -> {
             Platform.runLater(()-> {
-                    Rectangle laser = new Rectangle(ship.getCurrentX(), SpaceInvadersStage.MAX_Y_DOWN, 5, 7);
+                    Rectangle laser = new Rectangle(ship.getCurrentX(), SpaceStage.MAX_Y_DOWN, 5, 7);
                     laser.setFill(Color.LIME);
                     laser.setTranslateX(ship.getCurrentX());
-                    laser.setTranslateY(SpaceInvadersStage.MAX_Y_DOWN);
+                    laser.setTranslateY(SpaceStage.MAX_Y_DOWN);
                     stage.getMain().getChildren().add(laser); //add to stackpane
                     AnimationTimer moveLaser = moveLaser(stage, laser, aliens);
                     moveLaser.start();
@@ -107,15 +109,15 @@ public class UserFunctions{
      * Provides the {@code AnimationTimer} for the firing the laser.
      *
      * @param stage a reference to the main stage
-     * @param laser the laser being fired
+     * @param laser reference to the laser being fired
+     * @param aliens reference to the alien group attacking the ship
      */
-
-    private static AnimationTimer moveLaser(SpaceInvadersStage stage, Rectangle laser, SpaceInvadersAlienGroup aliens){ //goes over
+    private static AnimationTimer moveLaser(SpaceStage stage, Rectangle laser, AlienGroup aliens){ //goes over
         AnimationTimer moveLaser = new AnimationTimer(){
                 @Override
                 public void handle(long now){
-                    if(laser.getTranslateY() > SpaceInvadersStage.MAX_Y_UP){ //while still on screen
-                        laser.setTranslateY(laser.getTranslateY() - SpaceInvadersShip.LASER_SPEED);
+                    if(laser.getTranslateY() > SpaceStage.MAX_Y_UP){ //while still on screen
+                        laser.setTranslateY(laser.getTranslateY() - Ship.LASER_SPEED);
                         alienCollision(laser,stage,aliens,this);
                         
                     }
@@ -127,10 +129,19 @@ public class UserFunctions{
         return moveLaser;
     } //moveLaser
 
-    public static void alienCollision(Rectangle laser, SpaceInvadersStage stage, SpaceInvadersAlienGroup aliens, AnimationTimer moveLaser){ //goes over
-        for(int x = 0; x < SpaceInvadersAlienGroup.ALIENS_WIDTH; x++){
-            for(int y = 0; y < SpaceInvadersAlienGroup.ALIENS_HEIGHT; y++){
-                SpaceInvadersAlien alien = aliens.getAlien(x,y); //alien at x,y in the group
+    /**
+     * Checks if the spaceship's laser has collided with an alien, if so
+     * delete that alien.
+     *
+     * @param laser a reference to the laser the ship fired
+     * @param stage a reference to the main stage
+     * @param aliens a reference to the aliens attacking the ship
+     * @param moveLaser a reference to the animation timer in charge of moving the ship's laser
+     */
+    public static void alienCollision(Rectangle laser, SpaceStage stage, AlienGroup aliens, AnimationTimer moveLaser){ //goes over
+        for(int x = 0; x < AlienGroup.ALIENS_WIDTH; x++){
+            for(int y = 0; y < AlienGroup.ALIENS_HEIGHT; y++){
+                Alien alien = aliens.getAlien(x,y); //alien at x,y in the group
                 if(alien != null){
                     if(((Path)Shape.intersect(laser, alien)).getElements().size() > 0){
                         stage.getMain().getChildren().remove(laser);

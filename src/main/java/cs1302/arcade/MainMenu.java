@@ -75,7 +75,7 @@ public class MainMenu extends VBox{
                     "-fx-focus-color: transparent;\n" + 
                     "-fx-faint-focus-color: transparent;\n");
         b1.setOnAction(e -> {
-                SpaceInvadersStage si = new SpaceInvadersStage();
+               SpaceStage si = new SpaceStage();
                 si.showAndWait();
                     });
         iv1.setTranslateX(345);
