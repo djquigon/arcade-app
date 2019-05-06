@@ -51,13 +51,8 @@ public class SpaceInvadersAlienGroup extends Group{
         stage.getMain().getChildren().add(this); //add the group to main
         this.setTranslateX(MAX_X_LEFT); //set the initial x position
         this.setTranslateY(MAX_Y_UP); //set the initial y position
-        //Runnable r = () -> {
-            moveAliens(this); //start moving the aliens
-            alienAttack(stage, ship);
-            //};
-            //Thread moveAliens = new Thread(r);
-            //moveAliens.setDaemon(true);
-            // moveAliens.start();
+        moveAliens(this); //start moving the aliens
+        alienAttack(stage, ship, this);
     }
 
     /**
@@ -132,25 +127,25 @@ public class SpaceInvadersAlienGroup extends Group{
         aliens[x][y] = null;
     }
 
-    public void alienAttack(SpaceInvadersStage stage, SpaceInvadersShip ship){
+    public void alienAttack(SpaceInvadersStage stage, SpaceInvadersShip ship, SpaceInvadersAlienGroup aliens){
         EventHandler<ActionEvent> handler = event -> {
             Runnable r = () -> {
                 Platform.runLater(()-> {
                         //timer
                         int x = (int)(Math.random()*8);
                         int y = (int)(Math.random()*5);
-                        SpaceInvadersAlien alien = getAlien(x,y);
-                        if(alien == null){
+                        //SpaceInvadersAlien alien = getAlien(x,y);
+                        if(getAlien(x,y) == null){
                             x = (int)(Math.random()*8);
                             y = (int)(Math.random()*5);
-                            alien = getAlien(x,y);
+                            //alien = getAlien(x,y);
                         }
                         //alien.getTranslateX(),alien.getTranslateY()
                         Rectangle laser = new Rectangle(5, 10);
-                        laser.xProperty().bind(this.translateXProperty().add(alien.xProperty()));
-                        laser.yProperty().bind(this.translateYProperty().add(alien.yProperty()));
-                        laser.setTranslateX(alien.getTranslateX());
-                        laser.setTranslateY(alien.getTranslateY());
+                        laser.setTranslateX((aliens.getTranslateX()-175) + (x * ALIENS_HORZ_SPACING));
+                        System.out.println("x "+ x);
+                        laser.setTranslateY((aliens.getTranslateY()-100) + (y * ALIENS_VERT_SPACING));
+                        System.out.println("y " + y);
                         laser.setFill(Color.RED);
                         stage.getMain().getChildren().add(laser); //add to stackpane
                         AnimationTimer moveLaser = moveLaser(stage, ship, laser);
