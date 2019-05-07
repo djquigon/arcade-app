@@ -129,7 +129,7 @@ public class User{
                 public void handle(long now){
                     if(laser.getTranslateY() > SpaceStage.MAX_Y_UP){ //while still on screen
                         laser.setTranslateY(laser.getTranslateY() - Ship.LASER_SPEED);
-                        alienCollision(laser,stage,aliens,this);       
+                        impact(laser,stage,aliens,this);       
                     }//if
                     else{ //when off screen
                         stage.getMain().getChildren().remove(laser);
@@ -150,7 +150,7 @@ public class User{
      * @param aliens a reference to the aliens attacking the ship
      * @param moveLaser a reference to the animation timer in charge of moving the ship's laser
      */
-    public void alienCollision(Rectangle laser,SpaceStage stage,AlienGroup aliens,AnimationTimer moveLaser){
+    public void impact(Rectangle laser,SpaceStage stage,AlienGroup aliens,AnimationTimer moveLaser){
         for(int x = 0; x < AlienGroup.ALIENS_WIDTH; x++){
             for(int y = 0; y < AlienGroup.ALIENS_HEIGHT; y++){
                 Alien alien = aliens.getAlien(x,y); //alien at x,y in the group

@@ -191,7 +191,7 @@ public class AlienGroup extends Group{
                 @Override
                 public void handle(long now){
                     //Checks if laser is on screen
-                    if(laser.getTranslateY() < SpaceStage.MAX_Y_DOWN){ /
+                    if(laser.getTranslateY() < SpaceStage.MAX_Y_DOWN){
                         laser.setTranslateY(laser.getTranslateY() + Ship.LASER_SPEED);
                         shipCollision(stage,ship,laser,this);                        
                     }//if
@@ -251,6 +251,7 @@ public class AlienGroup extends Group{
             }//for
         }//for
     }//ShipCollision
+    
     /**
      * Sets the x and y to the location of a random existing alien.
      * Then fires a laser towards the user.

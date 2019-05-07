@@ -49,13 +49,12 @@ public class SpaceStage extends Stage{
     private VBox window; //contains main and menubar
     private MenuBar menuBar; //menubar
     private StackPane main; //contains the ship and aliens
-    private int score;
+    private int score; //user score
     private Text tScore;
-    private int lives;
+    private int lives; //user lives
     private Text tLives;
-    private int level;
+    private int level; //game level
     private Text tLevel;
-    private boolean startGame;
 
     /**
      * Creates the main Stage for the a Space Invaders game.
@@ -96,50 +95,12 @@ public class SpaceStage extends Stage{
                 aliens.getMoveAliens().stop(); 
             });
     }//SpaceStage Constructor
-/*
-  public void displayHelp(){
-        VBox container = new VBox();
-        Image background = new Image("background_spaceinvaders.png",800,680,false,true);
-        BackgroundImage bi= new BackgroundImage(background,
-        BackgroundRepeat.NO_REPEAT,
-                                                BackgroundRepeat.NO_REPEAT,
-                                                BackgroundPosition.DEFAULT,
-                                                BackgroundSize.DEFAULT);
-        container.setBackground(new Background(bi)); //creates background
-        Text helpText = new Text(" How to Play:\n " +
-                                 "You are earth's last hope against the invading aliens! " +
-                                 "Clear all three levels to claim victory" +  
-                                 "and restore peace once again, but be careful you " +
-                                 "only have 300 health!\n" +
-                                 "\nControls:\n" +
-                                 "Left Arrow Key = moves ship to the left\n" +
-                                 "Right Arrow Key = moves ship to the right\n" +
-                                 "SpaceBar = Shoot lasers\n" +
-                                 "\nTips:\n" +
-                                 "1) Each level becomes a bit harder so be vigilant\n" +
-                                 "2) Don't get hit by an alien's projectiles \n" +
-                                 "3) Each hit from an alien laser lowers your health 100 points\n" + 
-                                 "4) Don't make direct contact  with an alien spacecraft\n" +
-                                 "\nPress the SpaceBar to start!");
-        helpText.setFill(Color.LAWNGREEN);
-        container.getChildren().add(helpText);
-        Scene help = new Scene(container, 800, 680);
-        this.setScene(help);
-        startGame = false;
-        while(startGame == false){
-            help.setOnKeyPressed(event-> {
-                    if(event.getCode() == KeyCode.SPACE){ //if spacebar clicked
-                        startGame = true;
-                        this.setScene(scene);
-                        }
-                });
-                }
-    }
-*/
+    
     /**
      * Sets the text objects of the stage.
      */
     public void setTexts(){
+        //adds the text to the display
         tLevel = new Text("Level: " + level);
         tLevel.setFill(Color.LAWNGREEN);
         tScore = new Text("Score: " + score);
@@ -169,10 +130,7 @@ public class SpaceStage extends Stage{
                 this.close();
             });//SetOnAction
         file.getItems().add(exit);
-        Menu help = new Menu("Help");
-        MenuItem about = new MenuItem("How to Play");
-        help.getItems().add(about);
-        menuBar.getMenus().addAll(file, help);
+        menuBar.getMenus().addAll(file);
         menuBar.prefWidthProperty().bind(this.widthProperty());
     }//SetMenuBar
 
@@ -195,6 +153,7 @@ public class SpaceStage extends Stage{
      * again once he/she wins.
      */
     public void victory(){
+        //pop up for when user wins
         Runnable r = () -> {
             ButtonType playAgain = new ButtonType("Play Again");
             ButtonType exitToMenu = new ButtonType("Exit to menu");
@@ -221,6 +180,7 @@ public class SpaceStage extends Stage{
      * again once he/she loses.
      */
     public void lose(){
+        //pop up for when user loses
         Runnable r = () -> {
             ButtonType playAgain = new ButtonType("Play Again");
             ButtonType exitToMenu = new ButtonType("Exit to menu");

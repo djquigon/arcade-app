@@ -36,3 +36,12 @@
 
 3. **PROB:** We've decided to scrap tetris due to difficulties with the board, we've agreed on
     replacing it with space invaders. Other than that, checkers was much easier.
+    
+## FINAL SUBMISSION // TUE 2019-05-07 @ 3:30 PM EST
+
+1. **DONE:** Both games completed and functioning.    
+
+2. **TODO:** Nothing, we are finished.
+
+3. **PROB:** We came across some problems with space invaders, specifically with collisions, however
+    we've solved all those problems now.
