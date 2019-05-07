@@ -44,7 +44,7 @@ public class User{
                     this.moveLeft(scene, ship);
                 }
                 if(event.getCode() == KeyCode.SPACE){ //if spacebar clicked
-                    if(numFires < 3){
+                    if(numFires < 10){
                         this.fireLaser(stage, ship, aliens);
                     }
                 }

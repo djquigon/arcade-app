@@ -137,6 +137,8 @@ public class AlienGroup extends Group{
     public void removeAlien(int x, int y){
         aliens[x][y] = null;
         aliensLeft--;
+        stage.setScore(stage.getScore() + (10 * stage.getLevel()));
+        stage.setScoreText(stage.getScore());
         if(aliensLeft == 0){
             moveAliens.stop();
             alienAttack.stop();
@@ -208,6 +210,7 @@ public class AlienGroup extends Group{
             laser = null;
             moveLaser.stop();
             stage.setLives(stage.getLives() -1);
+            stage.setLivesText(stage.getLives());
             if(stage.getLives() == 0){
                 stage.getMain().getChildren().remove(ship);
                 ship = null;
@@ -284,4 +287,23 @@ public class AlienGroup extends Group{
     public Timeline getAlienAttack(){
         return alienAttack;
     }
+
+    public void repopulate(SpaceStage stage, Ship ship){
+        aliensLeft = 40;
+        aliensSpeed = (5 * stage.getLevel());
+        iteration = 0;
+        for(int x = 0; x < ALIENS_WIDTH; x++){ //create row of aliens
+            for(int y = 0; y < ALIENS_HEIGHT; y++){ //creare columns of aliens
+                aliens[x][y] = new Alien(); //create new alien
+                aliens[x][y].relocate(x * ALIENS_HORZ_SPACING, y * ALIENS_VERT_SPACING); //spacing
+                this.getChildren().add(aliens[x][y]); //add to group
+            }
+        }
+        this.setTranslateX(MAX_X_LEFT); //set the initial x position
+        this.setTranslateY(MAX_Y_UP); //set the initial y position
+        moveAliens = moveAliens(this); //start moving the aliens
+        moveAliens.start();
+        alienAttack(stage, ship, this);
+    }
+    
 }

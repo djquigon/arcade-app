@@ -23,6 +23,10 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.WindowEvent;
+import javafx.scene.text.Text;
+import javafx.geometry.Pos;
+import javafx.scene.paint.Color;
+import javafx.geometry.Insets;
 
 /**
  * Represents a stage object for a space invaders game.
@@ -42,8 +46,11 @@ public class SpaceStage extends Stage{
     private MenuBar menuBar; //menubar
     private StackPane main; //contains the ship and aliens
     private int score;
+    private Text tScore;
     private int lives;
+    private Text tLives;
     private int level;
+    private Text tLevel;
 
     /**
      * Creates the main Stage for the a Space Invaders game.
@@ -63,6 +70,7 @@ public class SpaceStage extends Stage{
         level = 1;
         score = 0;
         lives = 3;
+        this.setTexts();
         ship = new Ship(this);
         aliens = new AlienGroup(this, ship);
         window.getChildren().addAll(menuBar, main);
@@ -80,6 +88,25 @@ public class SpaceStage extends Stage{
                 aliens.getAlienAttack().stop();
                 aliens.getMoveAliens().stop(); 
             });
+    }
+
+    /**
+     * Sets the text objects of the stage.
+     */
+    public void setTexts(){
+        tLevel = new Text("Level: " + level);
+        tLevel.setFill(Color.LAWNGREEN);
+        tScore = new Text("Score: " + score);
+        tScore.setFill(Color.LAWNGREEN);
+        tLives = new Text("Lives: " + lives);
+        tLives.setFill(Color.LAWNGREEN);
+        main.getChildren().addAll(tLevel, tScore, tLives);
+        main.setAlignment(tLevel, Pos.BOTTOM_RIGHT);
+        main.setAlignment(tScore, Pos.BOTTOM_RIGHT);
+        main.setAlignment(tLives, Pos.BOTTOM_RIGHT);
+        main.setMargin(tLives, new Insets(0, 15, 20, 0));
+        main.setMargin(tLevel, new Insets(0, 15, 40, 0));
+        main.setMargin(tScore, new Insets(0, 15, 60, 0));
     }
 
     /**
@@ -107,11 +134,20 @@ public class SpaceStage extends Stage{
      */
     public void levelUp(){
         level++;
+        tLevel.setText("Level: " + level);
         if(level == 4){
             this.victory();
             return;
         }
+        aliens.repopulate(this, ship);
+        /*
+        this.getMain().getChildren().remove(aliens);
+        this.getMain().getChildren().remove(ship);
+        ship = null;
+        ship = new Ship(this);
+        aliens = null;
         aliens = new AlienGroup(this, ship);
+        */
     }
 
     /**
@@ -236,5 +272,23 @@ public class SpaceStage extends Stage{
      */
     public void setLevel(int level){
         this.level = level;
+    }
+
+    /**
+     * Sets the text object for lives.
+     *
+     * @param lives the number of lives
+     */
+    public void setLivesText(int lives){
+        tLives.setText("Lives: " + lives);
+    }
+
+    /**
+     * Sets the text object for score.
+     *
+     * @param score the total score
+     */
+    public void setScoreText(int score){
+        tScore.setText("Score: " + score);
     }
 }
