@@ -5,6 +5,9 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import cs1302.arcade.*;
 
+/**
+ * Represents an arcade app for cs1302.
+ */
 public class ArcadeApp extends Application {
     
     MainMenu mainMenu;
