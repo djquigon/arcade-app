@@ -24,8 +24,9 @@ public class User{
      * Constructs an instance of the user.
      */
     public User(){
+        //Constructs new usesr
         numFires = 0;
-    }
+    }//User Constructor
     
     /**
      * Checks for user actions and carries them out.
@@ -39,17 +40,17 @@ public class User{
         scene.setOnKeyPressed(event-> {
                 if(event.getCode() == KeyCode.RIGHT){ //if right arrow clicked
                     this.moveRight(scene, ship);
-                }
+                }//if
                 if(event.getCode() == KeyCode.LEFT){ //if left arrow clicked
                     this.moveLeft(scene, ship);
-                }
+                }//if
                 if(event.getCode() == KeyCode.SPACE){ //if spacebar clicked
                     if(numFires < 3){
                         this.fireLaser(stage, ship, aliens);
-                    }
-                }
-            });
-    }
+                    }//if
+                }//if
+            });//SetOnKeyPressed
+    }//CheckEvents
 
     /**
      * Moves the users ship to the right.
@@ -61,12 +62,13 @@ public class User{
         if(ship.getCurrentX() != SpaceStage.MAX_X_RIGHT){//if not at right end
             ship.setMovingRight(true);
             ship.update();
-        }
+        }//if
+        //If user releases key, then stops moving ship
         scene.setOnKeyReleased(e-> {
-                ship.setMovingRight(false); //had to set both b/c of movement error
+                ship.setMovingRight(false); 
                 ship.setMovingLeft(false);
-            });
-    }
+            });//SetOnKeyReleased
+    }//MoveRight
     
     /**
      * Moves the users ship to the left.
@@ -78,12 +80,13 @@ public class User{
         if(ship.getCurrentX() != SpaceStage.MAX_X_LEFT){//if not at left end
             ship.setMovingLeft(true);
             ship.update();
-        }
+        }//if
+        //If user releases key, the stops moving ship
         scene.setOnKeyReleased(e-> {
                 ship.setMovingRight(false); //had to set both b/c of movement error
                 ship.setMovingLeft(false);
-            });
-    }
+            });//SetOnKeyReleased
+    }//MoveLeft
     
     /**
      * Fires a laser from the ship towards the aliens.
@@ -92,10 +95,12 @@ public class User{
      * @param ship a reference to the main ship
      * @param aliens a reference to the alien group that is attacking the ship
      */
-    private void fireLaser(SpaceStage stage, Ship ship, AlienGroup aliens){ //goes over
+    private void fireLaser(SpaceStage stage, Ship ship, AlienGroup aliens){
+        //Launches laser from ship
         Runnable r = () -> {
             Platform.runLater(()-> {
-                    Rectangle laser = new Rectangle(ship.getCurrentX(), SpaceStage.MAX_Y_DOWN, 3, 10);
+                    Rectangle laser = new Rectangle
+                        (ship.getCurrentX(), SpaceStage.MAX_Y_DOWN, 3, 10);
                     laser.setFill(Color.LIME);
                     laser.setTranslateX(ship.getCurrentX());
                     laser.setTranslateY(SpaceStage.MAX_Y_DOWN);
@@ -108,8 +113,8 @@ public class User{
         Thread t = new Thread(r);
         t.setDaemon(true);
         t.start();
-    }
-
+    }//FireLaser
+    
     /**
      * Provides the {@code AnimationTimer} for the firing the laser.
      *
@@ -118,23 +123,24 @@ public class User{
      * @param aliens reference to the alien group attacking the ship
      */
     private AnimationTimer moveLaser(SpaceStage stage, Rectangle laser, AlienGroup aliens){
+        //Animation for moving laser
         AnimationTimer moveLaser = new AnimationTimer(){
                 @Override
                 public void handle(long now){
                     if(laser.getTranslateY() > SpaceStage.MAX_Y_UP){ //while still on screen
                         laser.setTranslateY(laser.getTranslateY() - Ship.LASER_SPEED);
                         alienCollision(laser,stage,aliens,this);       
-                    }
+                    }//if
                     else{ //when off screen
                         stage.getMain().getChildren().remove(laser);
                         removeLaser(laser);
                         this.stop();
-                    }
-                }
-            };
+                    }//else
+                }//handle
+            };//AnimationTimer
         return moveLaser;
-    } //moveLaser
-
+    }//MoveLaser
+    
     /**
      * Checks if the spaceship's laser has collided with an alien, if so
      * delete that alien.
@@ -144,7 +150,7 @@ public class User{
      * @param aliens a reference to the aliens attacking the ship
      * @param moveLaser a reference to the animation timer in charge of moving the ship's laser
      */
-    public void alienCollision(Rectangle laser,SpaceStage stage,AlienGroup aliens,AnimationTimer moveLaser){///
+    public void alienCollision(Rectangle laser,SpaceStage stage,AlienGroup aliens,AnimationTimer moveLaser){
         for(int x = 0; x < AlienGroup.ALIENS_WIDTH; x++){
             for(int y = 0; y < AlienGroup.ALIENS_HEIGHT; y++){
                 Alien alien = aliens.getAlien(x,y); //alien at x,y in the group
@@ -156,12 +162,12 @@ public class User{
                         aliens.removeAlien(x,y);
                         moveLaser.stop();
                         return;
-                    }
-                }
-            }
-        }
-    }
-
+                    }//if
+                }//if
+            }//for
+        }//for
+    }//AlienCollision
+    
     /**
      * Removes existing laser projectile.
      *
@@ -170,6 +176,5 @@ public class User{
     public void removeLaser(Rectangle laser){
         laser = null;
         numFires--;
-    }
-    
-}
+    }//RemoveLaser
+}//Class

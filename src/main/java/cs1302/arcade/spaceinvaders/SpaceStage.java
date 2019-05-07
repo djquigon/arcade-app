@@ -33,12 +33,14 @@ import javafx.scene.input.KeyCode;
  * Represents a stage object for a space invaders game.
  */
 public class SpaceStage extends Stage{
-    
+
+    //Constants
     public static final int MAX_X_RIGHT = 375; //right limit
     public static final int MAX_X_LEFT = -375; //left limit
     public static final int MAX_Y_UP = -320; //top limit
     public static final int MAX_Y_DOWN = 280; //where ship starts
 
+    //Instance Variables
     private User user;
     private Ship ship; //the user's ship
     private AlienGroup aliens; //the group of aliens
@@ -59,16 +61,18 @@ public class SpaceStage extends Stage{
      * Creates the main Stage for the a Space Invaders game.
      */
     public SpaceStage(){
+        //Constructs stage
         super();
         this.setMenuBar(); //initializes menuBar
         window = new VBox();
         main = new StackPane();
         main.setPrefSize(800,680);
-        BackgroundImage bi= new BackgroundImage(new Image("background_spaceinvaders.png",800,680,false,true),
-                                                BackgroundRepeat.NO_REPEAT,
-                                                BackgroundRepeat.NO_REPEAT,
-                                                BackgroundPosition.DEFAULT,
-                                                BackgroundSize.DEFAULT);
+        BackgroundImage bi= new BackgroundImage
+            (new Image("background_spaceinvaders.png",800,680,false,true),
+             BackgroundRepeat.NO_REPEAT,
+             BackgroundRepeat.NO_REPEAT,
+             BackgroundPosition.DEFAULT,
+             BackgroundSize.DEFAULT);
         main.setBackground(new Background(bi)); //creates background
         level = 1;
         score = 0;
@@ -84,8 +88,6 @@ public class SpaceStage extends Stage{
         this.setMinHeight(680);
         this.setResizable(false);
         this.sizeToScene();
-        //make help scene
-        //this.displayHelp();
         this.setScene(scene);
         user = new User();
         user.checkEvents(this, ship, aliens);
@@ -93,13 +95,13 @@ public class SpaceStage extends Stage{
                 aliens.getAlienAttack().stop();
                 aliens.getMoveAliens().stop(); 
             });
-    }
+    }//SpaceStage Constructor
 /*
-    public void displayHelp(){
+  public void displayHelp(){
         VBox container = new VBox();
         Image background = new Image("background_spaceinvaders.png",800,680,false,true);
         BackgroundImage bi= new BackgroundImage(background,
-                                                BackgroundRepeat.NO_REPEAT,
+        BackgroundRepeat.NO_REPEAT,
                                                 BackgroundRepeat.NO_REPEAT,
                                                 BackgroundPosition.DEFAULT,
                                                 BackgroundSize.DEFAULT);
@@ -129,9 +131,9 @@ public class SpaceStage extends Stage{
                     if(event.getCode() == KeyCode.SPACE){ //if spacebar clicked
                         startGame = true;
                         this.setScene(scene);
-                    }
+                        }
                 });
-        }
+                }
     }
 */
     /**
@@ -151,12 +153,13 @@ public class SpaceStage extends Stage{
         main.setMargin(tLives, new Insets(0, 15, 20, 0));
         main.setMargin(tLevel, new Insets(0, 15, 40, 0));
         main.setMargin(tScore, new Insets(0, 15, 60, 0));
-    }
-
+    }//SetText
+    
     /**
      * Sets the contents of the {@code MenuBar}.
      */
     public void setMenuBar(){
+        //Sets menu bar for space invaders stage
         menuBar = new MenuBar();
         Menu file = new Menu("File");
         MenuItem exit = new MenuItem("Exit to Main Menu");
@@ -164,14 +167,14 @@ public class SpaceStage extends Stage{
                 aliens.getAlienAttack().stop();
                 aliens.getMoveAliens().stop();
                 this.close();
-            });
+            });//SetOnAction
         file.getItems().add(exit);
         Menu help = new Menu("Help");
         MenuItem about = new MenuItem("How to Play");
         help.getItems().add(about);
         menuBar.getMenus().addAll(file, help);
         menuBar.prefWidthProperty().bind(this.widthProperty());
-    }
+    }//SetMenuBar
 
     /**
      * Levels up user to new difficulty and checks win condition.
@@ -179,21 +182,14 @@ public class SpaceStage extends Stage{
     public void levelUp(){
         level++;
         tLevel.setText("Level: " + level);
+        //If user has finished level 3, then victory
         if(level == 4){
             this.victory();
             return;
-        }
+        }//if
         aliens.repopulate(this, ship);
-        /*
-        this.getMain().getChildren().remove(aliens);
-        this.getMain().getChildren().remove(ship);
-        ship = null;
-        ship = new Ship(this);
-        aliens = null;
-        aliens = new AlienGroup(this, ship);
-        */
-    }
-
+    }//LevelUp
+    
     /**
      * A message pops up that prompts the user to exit or play
      * again once he/she wins.
@@ -211,15 +207,14 @@ public class SpaceStage extends Stage{
                         this.close();
                         SpaceStage newGame = new SpaceStage();
                         newGame.show();
-                    }
+                    }//if
                     if(response == exitToMenu){ //if they want to exit
                         this.close();
-                    }
+                    }//if
                 });
         };
         Platform.runLater(r);
-    }
-
+    }//Victory
     
     /**
      * A message pops up that prompts the user to exit or play
@@ -238,14 +233,14 @@ public class SpaceStage extends Stage{
                         this.close();
                         SpaceStage newGame = new SpaceStage();
                         newGame.show();
-                    }
+                    }//if
                     if(response == exitToMenu){ //if they want to exit
                         this.close();
-                    }
+                    }//if
                 });
         };
         Platform.runLater(r);
-    }
+    }//Lose
     
     /**
      * Returns the main {@code StackPane}.
@@ -254,7 +249,7 @@ public class SpaceStage extends Stage{
      */
     public StackPane getMain(){
         return main;
-    }
+    }//GetMain
 
     /**
      * Returns the alien {@code Group} attacking the users ship.
@@ -263,8 +258,8 @@ public class SpaceStage extends Stage{
      */
     public AlienGroup getAlienGroup(){
         return aliens;
-    }
-
+    }//GetAlienGroup
+    
     /**
      * Returns the user's score.
      *
@@ -272,7 +267,7 @@ public class SpaceStage extends Stage{
      */
     public int getScore(){
         return score;
-    }
+    }//GetScore
     
     /**
      * Sets the user's score.
@@ -281,7 +276,8 @@ public class SpaceStage extends Stage{
      */
     public void setScore(int score){
         this.score = score;
-    }
+    }//SetScore
+    
     /**
      * Returns the user's lives.
      *
@@ -289,7 +285,7 @@ public class SpaceStage extends Stage{
      */
     public int getLives(){
         return lives;
-    }
+    }//GetLives
     
     /**
      * Sets the user's lives.
@@ -298,8 +294,8 @@ public class SpaceStage extends Stage{
      */
     public void setLives(int lives){
         this.lives = lives;
-    }
-
+    }//SetLives
+    
     /**
      * Returns the current level.
      *
@@ -307,8 +303,8 @@ public class SpaceStage extends Stage{
      */
     public int getLevel(){
         return level;
-    }
-
+    }//GetLevel
+    
     /**
      * Sets the level of the game.
      *
@@ -316,8 +312,8 @@ public class SpaceStage extends Stage{
      */
     public void setLevel(int level){
         this.level = level;
-    }
-
+    }//SetLevel
+    
     /**
      * Sets the text object for lives.
      *
@@ -325,8 +321,8 @@ public class SpaceStage extends Stage{
      */
     public void setLivesText(int lives){
         tLives.setText("HP: " + (lives * 100));
-    }
-
+    }//SetLivesText
+    
     /**
      * Sets the text object for score.
      *
@@ -334,5 +330,5 @@ public class SpaceStage extends Stage{
      */
     public void setScoreText(int score){
         tScore.setText("Score: " + score);
-    }
-}
+    }//SetScoreText
+}//Class

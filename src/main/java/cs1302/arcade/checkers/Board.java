@@ -18,6 +18,7 @@ import javafx.application.Platform;
  */
 public class Board extends VBox{
 
+    //Constants
     public static final int BOARD_WIDTH = 8;
     public static final int BOARD_HEIGHT = 8;
 
@@ -39,6 +40,7 @@ public class Board extends VBox{
      * @param ref a reference to the main {@code CheckersStage}
      */
     public Board(CheckersStage ref){
+        //Board constructor
         super();
         stage = ref;
         container = new Group();
@@ -71,9 +73,11 @@ public class Board extends VBox{
                 board[x][y] = tile;
                 tiles.getChildren().add(tile);
                 Piece piece = null;
+                //Sets the correct positioning for blue pieces
                 if(y<=2 && (x+y)%2 != 0){
                     piece = new Piece(this, PieceType.BLUE, x, y);
                 }//if
+                //Sets the correct positioning for red pieces
                 if(y>=5 && (x+y)%2 != 0){
                     piece = new Piece(this, PieceType.RED, x, y);
                 }//if
@@ -84,7 +88,7 @@ public class Board extends VBox{
             }//for
         }//for
     }//CreatePieces
-
+    
     /**
      * Returns the tile at a given index in the board.
      *
@@ -115,7 +119,7 @@ public class Board extends VBox{
     }//IsBlueTurn
     
     /**
-     * Sets wheter it is red's turn to true or false
+     * Sets whether it is red's turn to true or false.
      *
      * @param b true or false whether it should be red's turn
      */
@@ -126,7 +130,7 @@ public class Board extends VBox{
             stage.getTurnText().setFill(Color.ROYALBLUE);
         }//if
     }//SetIsRedTurn
-
+    
     /**
      * Sets whether it is blue's turn to true or false
      *
@@ -144,6 +148,7 @@ public class Board extends VBox{
      * Sets the stroke of every tile on the board to 0.
      */
     public void clearHighlights(){
+        //Clears the stroke on all tiles
         for(int x = 0; x < BOARD_WIDTH; x++){
             for(int y = 0; y < BOARD_HEIGHT; y++){
                 Tile tile = board[x][y];
@@ -163,14 +168,15 @@ public class Board extends VBox{
      */
     public void setRPiecesLeft(int rPiecesLeft){
         this.rPiecesLeft = rPiecesLeft;
-        stage.getPiecesTaken().setText("Blue Pieces Taken: " + (12 - this.getBPiecesLeft()) + "\n"
-                               + "Red Pieces Taken: " + (12 - this.getRPiecesLeft()));
+        stage.getPiecesTaken().setText
+            ("Blue Pieces Taken: " + (12 - this.getBPiecesLeft()) + "\n"
+             + "Red Pieces Taken: " + (12 - this.getRPiecesLeft()));
         if(this.rPiecesLeft == 0){ //if blue has won
             this.clearHighlights();
             ButtonType playAgain = new ButtonType("Play Again");
             ButtonType exitToMenu = new ButtonType("Exit to menu");
             Alert blueWins = new Alert(AlertType.CONFIRMATION, "Blue has won! " +
-                                       "Would you like to play again?",
+                                       "Play again?",
                                        playAgain, exitToMenu);
             blueWins.setTitle("GAME OVER");
             blueWins.showAndWait().ifPresent(response -> {                                
@@ -178,10 +184,10 @@ public class Board extends VBox{
                         stage.close();
                         CheckersStage newGame = new CheckersStage();
                         newGame.show();
-                    }
+                    }//if
                     if(response == exitToMenu){ //if they want to exit
                         stage.close();
-                    }
+                    }//if
                 });
         }
     }//SetRPiecesLeft
@@ -193,27 +199,28 @@ public class Board extends VBox{
      */
     public void setBPiecesLeft(int bPiecesLeft){
         this.bPiecesLeft = bPiecesLeft;
-        stage.getPiecesTaken().setText("Blue Pieces Taken: " + (12 - this.getBPiecesLeft()) + "\n"
-                               + "Red Pieces Taken: " + (12 - this.getRPiecesLeft()));
+        stage.getPiecesTaken().setText
+            ("Blue Pieces Taken: " + (12 - this.getBPiecesLeft()) + "\n"
+             + "Red Pieces Taken: " + (12 - this.getRPiecesLeft()));
         if(this.bPiecesLeft == 0){ //if red has won
             this.clearHighlights();
             ButtonType playAgain = new ButtonType("Play Again");
             ButtonType exitToMenu = new ButtonType("Exit to menu");
             Alert redWins = new Alert(AlertType.CONFIRMATION, "Red has won! " +
-                                       "Would you like to play again?",
-                                       playAgain, exitToMenu);
+                                      "Play again?",
+                                      playAgain, exitToMenu);
             redWins.setTitle("GAME OVER");
             redWins.showAndWait().ifPresent(response -> {                                
                     if(response == playAgain){ //if they want to play again
                         stage.close();
                         CheckersStage newGame = new CheckersStage();
                         newGame.show();
-                    }
+                    }//if
                     if(response == exitToMenu){ //if they want to exit
                         stage.close();
-                    }
+                    }//of
                 });
-        }
+        }//if
     }//SetBPiecesLeft
     
     /**

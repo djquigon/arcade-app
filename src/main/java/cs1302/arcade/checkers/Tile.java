@@ -10,9 +10,11 @@ import javafx.scene.paint.Color;
  */
 public class Tile extends Rectangle{
 
+    //Constants
     public static final int TILE_WIDTH = 78; //width of a tile
     public static final int TILE_HEIGHT = 78; //height of a tile
 
+    //Instance variables
     private Board board; //main board reference
     private Piece piece; //piece in tile
 
@@ -25,6 +27,7 @@ public class Tile extends Rectangle{
      * @param y the y index of the tile
      */
     public Tile(Board board, boolean isWhite, int x, int y){
+        //Tile Constructor
         super();
         this.board = board;
         this.setWidth(TILE_WIDTH);

@@ -67,6 +67,7 @@ public class CheckersStage extends Stage{
      * Creates a stage for a checkers game with all properties set.
      */
     public CheckersStage(){
+        //Stage constructor
         super();
         window = new VBox();
         menuBar = new MenuBar();
@@ -76,11 +77,12 @@ public class CheckersStage extends Stage{
         this.setInfo();
         main.getChildren().addAll(board, info);
         window.getChildren().addAll(menuBar, main);
-        BackgroundImage bi= new BackgroundImage(new Image("background_checkers.png",800,680,false,true),
-                                                BackgroundRepeat.NO_REPEAT,
-                                                BackgroundRepeat.NO_REPEAT,
-                                                BackgroundPosition.DEFAULT,
-                                                BackgroundSize.DEFAULT);
+        BackgroundImage bi= new BackgroundImage
+            (new Image("background_checkers.png",800,680,false,true),
+             BackgroundRepeat.NO_REPEAT,
+             BackgroundRepeat.NO_REPEAT,
+             BackgroundPosition.DEFAULT,
+             BackgroundSize.DEFAULT);
         window.setBackground(new Background(bi)); //creates background
         scene = new Scene(window, 800, 680);
         this.initModality(Modality.APPLICATION_MODAL);
@@ -91,11 +93,12 @@ public class CheckersStage extends Stage{
         this.sizeToScene();
         this.setScene(scene);
     }//Constructor
-
+    
     /**
      * Sets the properties of the {@code menuBar}.
      */
     public void setMenuBar(){
+        //Sets Menu bar for checkers
         Menu file = new Menu("File");
         MenuItem exit = new MenuItem("Exit to Main Menu");
         exit.setOnAction(e -> this.close());
@@ -111,7 +114,7 @@ public class CheckersStage extends Stage{
         turn = new Text("Red's Turn"); //red's turn at start
         turn.setFont(new Font(20));
         turn.setFill(Color.RED);
-        piecesTaken = new Text("Blue Pieces Taken: " + 0 + "\n" //0 pieces taken at start
+        piecesTaken = new Text("Blue Pieces Taken: " + 0 + "\n"
                                + "Red Pieces Taken: " + 0);
         piecesTaken.setFill(Color.WHITE);
         piecesTaken.setTextAlignment(TextAlignment.CENTER);
@@ -123,12 +126,11 @@ public class CheckersStage extends Stage{
         forfeit.setOnAction(e-> {
                 if(board.isRedTurn()){
                     board.setRPiecesLeft(0); //0 pieces causes the game to end
-                }
+                }//if
                 else{
                     board.setBPiecesLeft(0);
-                }
-            });
-        
+                }//else
+            });        
         forfeit.setStyle("-fx-background-color: black;\n" +
                          "-fx-text-fill: white;");
         info = new VBox(25);
@@ -137,9 +139,10 @@ public class CheckersStage extends Stage{
         info.setMargin(howTo, new Insets(10, 0, 0, 3));
         info.setMargin(forfeit, new Insets(50, 50, 20, 40));
         info.getChildren().addAll(turn, piecesTaken, howTo, forfeit);
-        info.setBackground(new Background(new BackgroundFill(Paint.valueOf("#1a1a1a"), null, null)));
+        info.setBackground(new Background
+                           (new BackgroundFill(Paint.valueOf("#1a1a1a"), null, null)));
     }//SetInfo
-
+    
     /**
      * Returns the {@code turn} instance variable.
      *
@@ -148,7 +151,7 @@ public class CheckersStage extends Stage{
     public Text getTurnText(){
         return turn;
     }//GetTurnText
-
+    
     /**
      * Returns the {@code piecesTaken} instance variable.
      *
@@ -157,5 +160,5 @@ public class CheckersStage extends Stage{
     public Text getPiecesTaken(){
         return piecesTaken;
     }//getPiecesTaken
-
+    
 }//Class

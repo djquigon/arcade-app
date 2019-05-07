@@ -70,8 +70,8 @@ public class Piece extends StackPane{
         this.getChildren().addAll(bottom, top);
         this.findOptions();
     }//Piece Constructor
-
-     /**
+    
+    /**
      * Returns the color for checkers piece.
      *
      * @return reference to what color the piece is
@@ -371,7 +371,7 @@ public class Piece extends StackPane{
                 }//if
             });//MouseEvent   
     }//TopLeft
-
+    
     /**
      * Highlights option for piece in bottom left corner, and if user
      * selects option, it then updates board.
@@ -386,7 +386,7 @@ public class Piece extends StackPane{
                     currentY--;
                     this.kingCheckRed();
                     this.relocate((currentX) *  Tile.TILE_WIDTH,
-                                      (currentY) *  Tile.TILE_HEIGHT);
+                                  (currentY) *  Tile.TILE_HEIGHT);
                     //Update board
                     board.getIndex(currentX, currentY).setPiece(this);
                     board.getIndex(currentX-1, currentY+1).setPiece(null);
@@ -521,7 +521,7 @@ public class Piece extends StackPane{
                 }//if
             });//MouseEvent    
     }//GenMoveUp
-
+    
     /**
      * Creates option for an attack when a piece is moving upwards. 
      */
@@ -583,7 +583,7 @@ public class Piece extends StackPane{
                 }//if
             });//MouseEvent
     }//GenMoveUp2
-
+    
     /**
      * Creates secondary option for an attack when a piece is moving upwards. 
      */
@@ -616,7 +616,7 @@ public class Piece extends StackPane{
                 }//if
             });//MouseEvent
     }//AttackUp2
-
+    
     /**
      * Checks for valid movements when piece is moving downwards and if an
      * attack is possible.
@@ -712,7 +712,7 @@ public class Piece extends StackPane{
                 }//if
             });//MouseEvent
     }//AttackDown
-
+    
     /**
      * Creates secondary option for when piece is moving downwards and it is 
      * not on x = 0 or x = 7.
@@ -741,7 +741,7 @@ public class Piece extends StackPane{
                 }//if
             });//MouseEvent
     }//GenMoveDown2
-
+    
     /**
      * Creates secondary option for an attack when a piece is moving downwards. 
      */
