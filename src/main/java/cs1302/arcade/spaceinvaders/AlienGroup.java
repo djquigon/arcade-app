@@ -29,7 +29,9 @@ public class AlienGroup extends Group{
     public static final int MAX_X_RIGHT = 200;
     public static final int MAX_Y_UP = -200;
     public static final int MAX_Y_DOWN = 180;
-    
+
+    private SpaceStage stage;
+    private int aliensLeft;
     private Alien[][] aliens; //track aliens
     private int iteration; //the iteration of alien group movement
     private int aliensSpeed;
@@ -43,6 +45,7 @@ public class AlienGroup extends Group{
      * @param ship reference to the ship
      */
     public AlienGroup(SpaceStage stage, Ship ship){ //could make enum for different types of aliens
+        this.stage = stage;
         aliens = new Alien[ALIENS_WIDTH][ALIENS_HEIGHT];
         for(int x = 0; x < ALIENS_WIDTH; x++){ //create row of aliens
             for(int y = 0; y < ALIENS_HEIGHT; y++){ //creare columns of aliens
@@ -54,13 +57,14 @@ public class AlienGroup extends Group{
         stage.getMain().getChildren().add(this); //add the group to main
         this.setTranslateX(MAX_X_LEFT); //set the initial x position
         this.setTranslateY(MAX_Y_UP); //set the initial y position
+        aliensLeft = 40;
         iteration = 0;
         aliensSpeed = (5 * stage.getLevel());
         System.out.println(stage.getLevel());
         moveAliens = moveAliens(this); //start moving the aliens
         moveAliens.start();
         alienAttack(stage, ship, this);
-        checkWin(stage);
+        //checkWin(stage);
     }
 
     /**
@@ -133,6 +137,12 @@ public class AlienGroup extends Group{
      */
     public void removeAlien(int x, int y){
         aliens[x][y] = null;
+        aliensLeft--;
+        if(aliensLeft == 0){
+            moveAliens.stop();
+            alienAttack.stop();
+            stage.levelUp();
+        }
     }
 
     /**
@@ -203,9 +213,9 @@ public class AlienGroup extends Group{
             if(stage.getLives() == 0){
                 stage.getMain().getChildren().remove(ship);
                 ship = null;
-                moveLaser.stop();
                 moveAliens.stop();
                 alienAttack.stop();
+                moveLaser.stop();
                 stage.lose();
             }
             return;
@@ -216,9 +226,9 @@ public class AlienGroup extends Group{
                     if(((Path)Shape.intersect(getAlien(x,y), ship)).getElements().size() > 0){
                         stage.getMain().getChildren().remove(ship);
                         ship = null;
-                        moveLaser.stop();
                         moveAliens.stop();
                         alienAttack.stop();
+                        moveLaser.stop();
                         stage.lose();
                         return;
                     }
@@ -244,7 +254,9 @@ public class AlienGroup extends Group{
                     if(counter == 40){
                         stage.setLevel(stage.getLevel() + 1);
                         stage.levelUp();
-                        if(stage.getLevel() == 4){
+                        if(stage.getLevel() == 2){
+                            moveAliens.stop();
+                            alienAttack.stop();
                             stage.victory();
                         }
                     }
@@ -263,8 +275,8 @@ public class AlienGroup extends Group{
      * @param aliens the group of aliens
      */
     public void randomAlienFire(SpaceStage stage, Ship ship, AlienGroup aliens){
-       int x = (int)(Math.random()*8);
-       int y = (int)(Math.random()*5);
+        int x = (int)(Math.random()*8);
+        int y = (int)(Math.random()*5);
         if(getAlien(x,y) == null){
             while(true){
                 x = (int)(Math.random()*8);

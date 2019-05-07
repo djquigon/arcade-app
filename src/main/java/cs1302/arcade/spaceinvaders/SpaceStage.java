@@ -90,6 +90,8 @@ public class SpaceStage extends Stage{
         Menu file = new Menu("File");
         MenuItem exit = new MenuItem("Exit to Main Menu");
         exit.setOnAction(e -> {
+                aliens.getAlienAttack().stop();
+                aliens.getMoveAliens().stop();
                 this.close();
             });
         file.getItems().add(exit);
@@ -101,26 +103,37 @@ public class SpaceStage extends Stage{
     }
 
     public void levelUp(){
+        level++;
+        if(level == 2){
+            this.victory();
+            return;
+        }
         aliens = new AlienGroup(this, ship);
     }
 
     public void victory(){
-        ButtonType playAgain = new ButtonType("Play Again");
-        ButtonType exitToMenu = new ButtonType("Exit to menu");
-        Alert win = new Alert(AlertType.CONFIRMATION, "You won! " +
-                               "Would you like to play again?",
-                               playAgain, exitToMenu);
-        win.setTitle("VICTORY");
-        win.showAndWait().ifPresent(response -> {                                
-                if(response == playAgain){ //if they want to play again
-                    this.close();
-                    SpaceStage newGame = new SpaceStage();
-                    newGame.show();
-                }
-                if(response == exitToMenu){ //if they want to exit
-                    this.close();
-                }
-            });
+        Runnable r = () -> {
+            ButtonType playAgain = new ButtonType("Play Again");
+            ButtonType exitToMenu = new ButtonType("Exit to menu");
+            Alert win = new Alert(AlertType.CONFIRMATION, "You won! " +
+                                  "Would you like to play again?",
+                                  playAgain, exitToMenu);
+            win.setTitle("VICTORY");
+            win.showAndWait().ifPresent(response -> {                                
+                    if(response == playAgain){ //if they want to play again
+                        this.close();
+                        SpaceStage newGame = new SpaceStage();
+                        newGame.show();
+                    }
+                    if(response == exitToMenu){ //if they want to exit
+                        this.close();
+                    }
+                });
+        };
+        Platform.runLater(r);
+        System.out.println("end victory");
+        //aliens.getAlienAttack().stop();
+        //aliens.getMoveAliens().stop();
     }
 
     public void lose(){
@@ -143,6 +156,8 @@ public class SpaceStage extends Stage{
                 });
         };
         Platform.runLater(r);
+        //aliens.getAlienAttack().stop();
+        //aliens.getMoveAliens().stop();
     }
     
     /**
