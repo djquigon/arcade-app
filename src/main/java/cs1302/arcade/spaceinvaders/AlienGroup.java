@@ -22,7 +22,7 @@ public class AlienGroup extends Group{
     
     public static final int ALIENS_WIDTH = 8;
     public static final int ALIENS_HEIGHT = 5;
-    public static final int ALIENS_HORZ_SPACING = 50;
+    public static final int ALIENS_HORZ_SPACING = 55;
     public static final int ALIENS_VERT_SPACING = 50;
     public static final int ALIENS_SPEED_DOWN = 20;
     public static final int MAX_X_LEFT = -200;
@@ -159,7 +159,7 @@ public class AlienGroup extends Group{
                     EventHandler<ActionEvent> handler = event -> {
                         randomAlienFire(stage, ship, aliens);
                     };
-                    KeyFrame keyFrame = new KeyFrame(Duration.seconds(5), handler);
+                    KeyFrame keyFrame = new KeyFrame(Duration.seconds(3), handler);
                     alienAttack = new Timeline();
                     alienAttack.setCycleCount(Timeline.INDEFINITE);
                     alienAttack.getKeyFrames().add(keyFrame);
@@ -261,7 +261,7 @@ public class AlienGroup extends Group{
                 }
             }
         }
-        Rectangle laser = new Rectangle(5, 10);
+        Rectangle laser = new Rectangle(5, 12);
         laser.setTranslateX((aliens.getTranslateX()-175) + (x * ALIENS_HORZ_SPACING));
         laser.setTranslateY((aliens.getTranslateY()-100) + (y * ALIENS_VERT_SPACING));
         laser.setFill(Color.RED);

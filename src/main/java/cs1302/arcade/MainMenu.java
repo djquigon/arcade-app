@@ -69,7 +69,7 @@ public class MainMenu extends VBox{
      *
      */
     public void setGames(){
-        iv1 = new ImageView(new Image("checkers_img.png", 115, 115, false, true)); //spaceinvaders
+        iv1 = new ImageView(new Image("spaceinvaders.png", 115, 115, false, true)); //spaceinvaders
         b1 = new Button("Space Invaders");
         b1.setStyle("-fx-background-color: #ff0000;\n" + 
                     "-fx-focus-color: transparent;\n" + 

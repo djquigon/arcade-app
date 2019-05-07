@@ -44,7 +44,7 @@ public class User{
                     this.moveLeft(scene, ship);
                 }
                 if(event.getCode() == KeyCode.SPACE){ //if spacebar clicked
-                    if(numFires < 10){
+                    if(numFires < 3){
                         this.fireLaser(stage, ship, aliens);
                     }
                 }
@@ -95,7 +95,7 @@ public class User{
     private void fireLaser(SpaceStage stage, Ship ship, AlienGroup aliens){ //goes over
         Runnable r = () -> {
             Platform.runLater(()-> {
-                    Rectangle laser = new Rectangle(ship.getCurrentX(), SpaceStage.MAX_Y_DOWN, 5, 7);
+                    Rectangle laser = new Rectangle(ship.getCurrentX(), SpaceStage.MAX_Y_DOWN, 3, 10);
                     laser.setFill(Color.LIME);
                     laser.setTranslateX(ship.getCurrentX());
                     laser.setTranslateY(SpaceStage.MAX_Y_DOWN);
