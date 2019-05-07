@@ -11,7 +11,7 @@ import javafx.scene.image.Image;
 /**
  * Represents the two different team colors.
  */
-enum Piece{
+enum PieceType{
     //Color name being associated with movement
     BLUE(1), //1 represents moving down
     RED(-1); //-1 represents moving up
@@ -23,7 +23,7 @@ enum Piece{
      *
      *@param pieceDirection value that corresponds to either blue or red
      */
-    Piece(int pieceDirection){
+    PieceType(int pieceDirection){
         this.pieceDirection = pieceDirection;
     }//PieceDirection
     
@@ -33,21 +33,21 @@ enum Piece{
  * This class creates the checkers piece for both teams with corresponding 
  * functionality for each.
  */
-public class CheckersPiece extends StackPane{
+public class Piece extends StackPane{
     
     //Instance variables
-    private CheckersBoard board; //the board
-    private Piece type; //the type of piece
+    private Board board; //the board
+    private PieceType type; //the type of piece
     private Ellipse bottom; //adds 3d effect
     private Ellipse top; //top ellipse of piece
     private Ellipse king; //king symbol
     private Boolean isKing;
     private int currentX; //current x position
     private int currentY; //current y position
-    private CheckersTile option1;
-    private CheckersTile option2;
-    private CheckersTile option3;
-    private CheckersTile option4;
+    private Tile option1;
+    private Tile option2;
+    private Tile option3;
+    private Tile option4;
 
     /**
      * Constructs a checkers piece with the neccesary variables to keep track of it.
@@ -57,14 +57,14 @@ public class CheckersPiece extends StackPane{
      *@param x the corresponding x coordinate of where the piece is
      *@param y the corresponding y coordinate of where the piece is
      */
-    public CheckersPiece(CheckersBoard board, Piece type, int x, int y){
+    public Piece(Board board, PieceType type, int x, int y){
         //Intializes pieces and sets them on board at proper points
         this.board = board; 
         this.type = type; 
         this.isKing = false; 
         currentX = x;
         currentY = y;
-        this.relocate(x * CheckersTile.TILE_WIDTH, y * CheckersTile.TILE_HEIGHT); 
+        this.relocate(x * Tile.TILE_WIDTH, y * Tile.TILE_HEIGHT); 
         this.setTop();
         this.setBottom();
         this.getChildren().addAll(bottom, top);
@@ -76,7 +76,7 @@ public class CheckersPiece extends StackPane{
      *
      * @return reference to what color the piece is
      */
-    public Piece getType(){
+    public PieceType getType(){
         return type;
     }//GetType
     
@@ -105,18 +105,18 @@ public class CheckersPiece extends StackPane{
      */
     public void setBottom(){
         //Creates bottom portion of piece based on color
-        bottom = new Ellipse(CheckersTile.TILE_WIDTH * .3, CheckersTile.TILE_HEIGHT * .2);
-        if(type == Piece.RED){
+        bottom = new Ellipse(Tile.TILE_WIDTH * .3, Tile.TILE_HEIGHT * .2);
+        if(type == PieceType.RED){
             bottom.setFill(Color.RED);
             bottom.setStroke(Color.DARKRED);
         }//if
-        if(type == Piece.BLUE){
+        if(type == PieceType.BLUE){
             bottom.setFill(Color.ROYALBLUE);
             bottom.setStroke(Color.MEDIUMBLUE);
         }//if
-        bottom.setStrokeWidth(CheckersTile.TILE_WIDTH * .03);
-        bottom.setTranslateX((CheckersTile.TILE_WIDTH - CheckersTile.TILE_WIDTH * .3 * 2) / 2);
-        bottom.setTranslateY((CheckersTile.TILE_HEIGHT - CheckersTile.TILE_HEIGHT * .2 * 2) / 1.5);
+        bottom.setStrokeWidth(Tile.TILE_WIDTH * .03);
+        bottom.setTranslateX((Tile.TILE_WIDTH - Tile.TILE_WIDTH * .3 * 2) / 2);
+        bottom.setTranslateY((Tile.TILE_HEIGHT - Tile.TILE_HEIGHT * .2 * 2) / 1.5);
     }//SetBottom
     
     /**
@@ -124,8 +124,8 @@ public class CheckersPiece extends StackPane{
      */
     public void setTop(){
         //Creates top portion of piece based on color
-        top = new Ellipse(CheckersTile.TILE_WIDTH * .3, CheckersTile.TILE_HEIGHT * .2);
-        if(type == Piece.BLUE){
+        top = new Ellipse(Tile.TILE_WIDTH * .3, Tile.TILE_HEIGHT * .2);
+        if(type == PieceType.BLUE){
             top.setFill(Color.ROYALBLUE);
             top.setStroke(Color.MEDIUMBLUE);
         }//if
@@ -133,9 +133,9 @@ public class CheckersPiece extends StackPane{
             top.setFill(Color.RED);
             top.setStroke(Color.DARKRED);
         }//else
-        top.setStrokeWidth(CheckersTile.TILE_WIDTH * .03);
-        top.setTranslateX((CheckersTile.TILE_WIDTH - CheckersTile.TILE_WIDTH * .3 * 2) / 2);
-        top.setTranslateY((CheckersTile.TILE_HEIGHT - CheckersTile.TILE_HEIGHT * .2 * 2) / 2);
+        top.setStrokeWidth(Tile.TILE_WIDTH * .03);
+        top.setTranslateX((Tile.TILE_WIDTH - Tile.TILE_WIDTH * .3 * 2) / 2);
+        top.setTranslateY((Tile.TILE_HEIGHT - Tile.TILE_HEIGHT * .2 * 2) / 2);
     }//SetTop
     
     /**
@@ -145,11 +145,11 @@ public class CheckersPiece extends StackPane{
         //Changes piece to a king
         this.isKing = true;
         //Adding king symbol to piece
-        king = new Ellipse(CheckersTile.TILE_WIDTH * .15, CheckersTile.TILE_HEIGHT * .1);
+        king = new Ellipse(Tile.TILE_WIDTH * .15, Tile.TILE_HEIGHT * .1);
         Image kingImg = new Image("checkers_king.jpg", 75, 75, true, false);
         king.setFill(new ImagePattern(kingImg));
-        king.setTranslateX((CheckersTile.TILE_WIDTH - CheckersTile.TILE_WIDTH * .3 * 2) / 2);
-        king.setTranslateY((CheckersTile.TILE_HEIGHT - CheckersTile.TILE_HEIGHT * .2 * 2) / 2);
+        king.setTranslateX((Tile.TILE_WIDTH - Tile.TILE_WIDTH * .3 * 2) / 2);
+        king.setTranslateY((Tile.TILE_HEIGHT - Tile.TILE_HEIGHT * .2 * 2) / 2);
         this.getChildren().add(king);
     }//SetToKing
 
@@ -159,12 +159,12 @@ public class CheckersPiece extends StackPane{
     public void findOptions(){
         this.setOnMousePressed(e-> {
                 //Shows options for red piece user clicked
-                if(type == Piece.RED && board.isRedTurn()){
+                if(type == PieceType.RED && board.isRedTurn()){
                     board.clearHighlights();
                     this.moveRed();
                 }//if
                 //Shows options for blue piece user clicked
-                if(type == Piece.BLUE && board.isBlueTurn()){
+                if(type == PieceType.BLUE && board.isBlueTurn()){
                     board.clearHighlights();
                     this.moveBlue();
                 }//if
@@ -356,13 +356,13 @@ public class CheckersPiece extends StackPane{
                     currentX++;
                     currentY++;
                     this.kingCheckBlue();
-                    this.relocate((currentX) *  CheckersTile.TILE_WIDTH,
-                                  (currentY) *  CheckersTile.TILE_HEIGHT);
+                    this.relocate((currentX) *  Tile.TILE_WIDTH,
+                                  (currentY) *  Tile.TILE_HEIGHT);
                     //Update board
                     board.getIndex(currentX, currentY).setPiece(this);
                     board.getIndex(currentX-1, currentY-1).setPiece(null);
                     //End turn
-                    if(option1.getPiece().getType() == Piece.BLUE){
+                    if(option1.getPiece().getType() == PieceType.BLUE){
                         this.endBlueTurn();
                     }//if
                     else{
@@ -385,13 +385,13 @@ public class CheckersPiece extends StackPane{
                     currentX++;
                     currentY--;
                     this.kingCheckRed();
-                    this.relocate((currentX) *  CheckersTile.TILE_WIDTH,
-                                      (currentY) *  CheckersTile.TILE_HEIGHT);
+                    this.relocate((currentX) *  Tile.TILE_WIDTH,
+                                      (currentY) *  Tile.TILE_HEIGHT);
                     //Update board
                     board.getIndex(currentX, currentY).setPiece(this);
                     board.getIndex(currentX-1, currentY+1).setPiece(null);
                     //End turn
-                    if(option3.getPiece().getType() == Piece.BLUE){
+                    if(option3.getPiece().getType() == PieceType.BLUE){
                         this.endBlueTurn();
                     }//if
                     else{
@@ -414,13 +414,13 @@ public class CheckersPiece extends StackPane{
                     currentX--;
                     currentY++;
                     this.kingCheckBlue();
-                    this.relocate((currentX) *  CheckersTile.TILE_WIDTH,
-                                  (currentY) *  CheckersTile.TILE_HEIGHT);
+                    this.relocate((currentX) *  Tile.TILE_WIDTH,
+                                  (currentY) *  Tile.TILE_HEIGHT);
                     //Updates board
                     board.getIndex(currentX, currentY).setPiece(this);
                     board.getIndex(currentX+1, currentY-1).setPiece(null);
                     //End turn
-                    if(option2.getPiece().getType() == Piece.BLUE){
+                    if(option2.getPiece().getType() == PieceType.BLUE){
                         this.endBlueTurn();
                     }//if
                     else{
@@ -443,13 +443,13 @@ public class CheckersPiece extends StackPane{
                     currentX--;
                     currentY--;
                     this.kingCheckRed();
-                    this.relocate((currentX) *  CheckersTile.TILE_WIDTH,
-                                  (currentY) *  CheckersTile.TILE_HEIGHT);
+                    this.relocate((currentX) *  Tile.TILE_WIDTH,
+                                  (currentY) *  Tile.TILE_HEIGHT);
                     //Updates board
                     board.getIndex(currentX, currentY).setPiece(this);
                     board.getIndex(currentX+1, currentY+1).setPiece(null);
                     //End turn
-                    if(option4.getPiece().getType() == Piece.BLUE){
+                    if(option4.getPiece().getType() == PieceType.BLUE){
                         this.endBlueTurn();
                     }//if
                     else{
@@ -506,13 +506,13 @@ public class CheckersPiece extends StackPane{
                     currentX++;
                     currentY--;
                     this.kingCheckRed();
-                    this.relocate((currentX) *  CheckersTile.TILE_WIDTH,
-                                  (currentY) *  CheckersTile.TILE_HEIGHT);
+                    this.relocate((currentX) *  Tile.TILE_WIDTH,
+                                  (currentY) *  Tile.TILE_HEIGHT);
                     //Updates board
                     board.getIndex(currentX, currentY).setPiece(this);
                     board.getIndex(currentX-1, currentY+1).setPiece(null);
                     //End turn
-                    if(option3.getPiece().getType() == Piece.BLUE){
+                    if(option3.getPiece().getType() == PieceType.BLUE){
                         this.endBlueTurn();
                     }//if
                     else{
@@ -535,15 +535,15 @@ public class CheckersPiece extends StackPane{
                     currentX = currentX+2;
                     currentY = currentY-2;
                     this.kingCheckRed();
-                    this.relocate((currentX) *  CheckersTile.TILE_WIDTH,
-                                  (currentY) *  CheckersTile.TILE_HEIGHT);
+                    this.relocate((currentX) *  Tile.TILE_WIDTH,
+                                  (currentY) *  Tile.TILE_HEIGHT);
                     //Updates board
                     board.getIndex(currentX, currentY).setPiece(this);
                     board.getIndex(currentX-1, currentY+1).getPiece().getChildren().clear();
                     board.getIndex(currentX-1, currentY+1).setPiece(null);
                     board.getIndex(currentX-2, currentY+2).setPiece(null);
                     //End turn
-                    if(option3.getPiece().getType() == Piece.BLUE){
+                    if(option3.getPiece().getType() == PieceType.BLUE){
                         board.setRPiecesLeft(board.getRPiecesLeft()-1);
                         this.endBlueTurn();
                     }//if
@@ -568,13 +568,13 @@ public class CheckersPiece extends StackPane{
                     currentX--;
                     currentY--;
                     this.kingCheckRed();
-                    this.relocate((currentX) *  CheckersTile.TILE_WIDTH,
-                                  (currentY) *  CheckersTile.TILE_HEIGHT);
+                    this.relocate((currentX) *  Tile.TILE_WIDTH,
+                                  (currentY) *  Tile.TILE_HEIGHT);
                     //Updates board
                     board.getIndex(currentX, currentY).setPiece(this);
                     board.getIndex(currentX+1, currentY+1).setPiece(null);
                     //End turn
-                    if(option4.getPiece().getType() == Piece.BLUE){
+                    if(option4.getPiece().getType() == PieceType.BLUE){
                         this.endBlueTurn();
                     }//if
                     else{
@@ -597,15 +597,15 @@ public class CheckersPiece extends StackPane{
                     currentX = currentX-2;
                     currentY = currentY-2;
                     this.kingCheckRed();
-                    this.relocate((currentX) *  CheckersTile.TILE_WIDTH,
-                                  (currentY) *  CheckersTile.TILE_HEIGHT);
+                    this.relocate((currentX) *  Tile.TILE_WIDTH,
+                                  (currentY) *  Tile.TILE_HEIGHT);
                     //Update board
                     board.getIndex(currentX, currentY).setPiece(this);
                     board.getIndex(currentX+1, currentY+1).getPiece().getChildren().clear();
                     board.getIndex(currentX+1, currentY+1).setPiece(null);
                     board.getIndex(currentX+2, currentY+2).setPiece(null);
                     //End turn
-                    if(option4.getPiece().getType() == Piece.BLUE){
+                    if(option4.getPiece().getType() == PieceType.BLUE){
                         board.setRPiecesLeft(board.getRPiecesLeft()-1);
                         this.endBlueTurn();
                     }//if
@@ -664,13 +664,13 @@ public class CheckersPiece extends StackPane{
                     currentX++;
                     currentY++;
                     this.kingCheckBlue();
-                    this.relocate((currentX) *  CheckersTile.TILE_WIDTH,
-                                  (currentY) *  CheckersTile.TILE_HEIGHT);
+                    this.relocate((currentX) *  Tile.TILE_WIDTH,
+                                  (currentY) *  Tile.TILE_HEIGHT);
                     //Updates board
                     board.getIndex(currentX, currentY).setPiece(this);
                     board.getIndex(currentX-1, currentY-1).setPiece(null);
                     //End turn
-                    if(option1.getPiece().getType() == Piece.BLUE){
+                    if(option1.getPiece().getType() == PieceType.BLUE){
                         this.endBlueTurn();
                     }//if
                     else{
@@ -693,15 +693,15 @@ public class CheckersPiece extends StackPane{
                     currentX = currentX+2;
                     currentY = currentY+2;
                     this.kingCheckBlue();
-                    this.relocate((currentX) *  CheckersTile.TILE_WIDTH,
-                                  (currentY) *  CheckersTile.TILE_HEIGHT);
+                    this.relocate((currentX) *  Tile.TILE_WIDTH,
+                                  (currentY) *  Tile.TILE_HEIGHT);
                     //Update board
                     board.getIndex(currentX, currentY).setPiece(this);
                     board.getIndex(currentX-1, currentY-1).getPiece().getChildren().clear();
                     board.getIndex(currentX-1, currentY-1).setPiece(null);
                     board.getIndex(currentX-2, currentY-2).setPiece(null);
                     //End Turn
-                    if(option1.getPiece().getType() == Piece.BLUE){
+                    if(option1.getPiece().getType() == PieceType.BLUE){
                         board.setRPiecesLeft(board.getRPiecesLeft()-1);
                         this.endBlueTurn();
                     }//if
@@ -726,13 +726,13 @@ public class CheckersPiece extends StackPane{
                     currentX--;
                     currentY++;
                     this.kingCheckBlue();
-                    this.relocate((currentX) *  CheckersTile.TILE_WIDTH,
-                                  (currentY) *  CheckersTile.TILE_HEIGHT);
+                    this.relocate((currentX) *  Tile.TILE_WIDTH,
+                                  (currentY) *  Tile.TILE_HEIGHT);
                     //Update board
                     board.getIndex(currentX, currentY).setPiece(this);
                     board.getIndex(currentX+1, currentY-1).setPiece(null);
                     //End turn
-                    if(option2.getPiece().getType() == Piece.BLUE){
+                    if(option2.getPiece().getType() == PieceType.BLUE){
                         this.endBlueTurn();
                     }//if
                     else{
@@ -755,15 +755,15 @@ public class CheckersPiece extends StackPane{
                     currentX = currentX-2;
                     currentY = currentY+2;
                     this.kingCheckBlue();
-                    this.relocate((currentX) *  CheckersTile.TILE_WIDTH,
-                                  (currentY) *  CheckersTile.TILE_HEIGHT);
+                    this.relocate((currentX) *  Tile.TILE_WIDTH,
+                                  (currentY) *  Tile.TILE_HEIGHT);
                     //Update board
                     board.getIndex(currentX, currentY).setPiece(this);
                     board.getIndex(currentX+1, currentY-1).getPiece().getChildren().clear();
                     board.getIndex(currentX+1, currentY-1).setPiece(null);
                     board.getIndex(currentX+2, currentY-2).setPiece(null);
                     //End turn
-                    if(option2.getPiece().getType() == Piece.BLUE){
+                    if(option2.getPiece().getType() == PieceType.BLUE){
                         board.setRPiecesLeft(board.getRPiecesLeft()-1);
                         this.endBlueTurn();
                     }//if

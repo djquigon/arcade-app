@@ -33,7 +33,8 @@ public class SpaceStage extends Stage{
     public static final int MAX_X_LEFT = -375; //left limit
     public static final int MAX_Y_UP = -320; //top limit
     public static final int MAX_Y_DOWN = 280; //where ship starts
-    
+
+    private User user;
     private Ship ship; //the user's ship
     private AlienGroup aliens; //the group of aliens
     private Scene scene; //the main scene
@@ -73,7 +74,8 @@ public class SpaceStage extends Stage{
         this.setResizable(false);
         this.sizeToScene();
         this.setScene(scene);
-        UserFunctions.checkEvents(this, ship, aliens);
+        user = new User();
+        user.checkEvents(this, ship, aliens);
         this.setOnCloseRequest((WindowEvent event) -> {
                 aliens.getAlienAttack().stop();
                 aliens.getMoveAliens().stop(); 

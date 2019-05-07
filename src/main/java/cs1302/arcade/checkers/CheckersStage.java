@@ -57,7 +57,7 @@ public class CheckersStage extends Stage{
     private VBox window; //window to contain main
     private HBox main; //container for the main displayed objects
     private MenuBar menuBar; //menus
-    private CheckersBoard board; //the board
+    private Board board; //the board
     private VBox info; //contains info about the game
     private Text turn; //whose turn it is
     private Text piecesTaken; //num pieces taken for both teams
@@ -72,7 +72,7 @@ public class CheckersStage extends Stage{
         menuBar = new MenuBar();
         this.setMenuBar();
         main = new HBox();
-        board = new CheckersBoard(this);
+        board = new Board(this);
         this.setInfo();
         main.getChildren().addAll(board, info);
         window.getChildren().addAll(menuBar, main);

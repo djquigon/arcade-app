@@ -16,14 +16,14 @@ import javafx.application.Platform;
  * 64 tiles, in an 8x8 format.
  *
  */
-public class CheckersBoard extends VBox{
+public class Board extends VBox{
 
     public static final int BOARD_WIDTH = 8;
     public static final int BOARD_HEIGHT = 8;
 
     //Instance variables
     private CheckersStage stage;
-    private CheckersTile[][] board = new CheckersTile[BOARD_WIDTH][BOARD_HEIGHT]; //track tiles
+    private Tile[][] board = new Tile[BOARD_WIDTH][BOARD_HEIGHT]; //track tiles
     private Group container; //container for pieces and tiles
     private Group pieces; //group for the pieces
     private Group tiles; //group for the tiles
@@ -38,7 +38,7 @@ public class CheckersBoard extends VBox{
      *
      * @param ref a reference to the main {@code CheckersStage}
      */
-    public CheckersBoard(CheckersStage ref){
+    public Board(CheckersStage ref){
         super();
         stage = ref;
         container = new Group();
@@ -65,17 +65,17 @@ public class CheckersBoard extends VBox{
     public void createPiecesAndTiles(){
         for(int x = 0; x < BOARD_WIDTH; x++){ //populate rows
             for(int y = 0; y < BOARD_HEIGHT; y++){ //populate columns
-                CheckersTile tile = new CheckersTile(this, (x+y) % 2 == 0, x, y);
+                Tile tile = new Tile(this, (x+y) % 2 == 0, x, y);
                 tile.setStroke(Color.LAWNGREEN);
                 tile.setStrokeWidth(0);
                 board[x][y] = tile;
                 tiles.getChildren().add(tile);
-                CheckersPiece piece = null;
+                Piece piece = null;
                 if(y<=2 && (x+y)%2 != 0){
-                    piece = new CheckersPiece(this, Piece.BLUE, x, y);
+                    piece = new Piece(this, PieceType.BLUE, x, y);
                 }//if
                 if(y>=5 && (x+y)%2 != 0){
-                    piece = new CheckersPiece(this, Piece.RED, x, y);
+                    piece = new Piece(this, PieceType.RED, x, y);
                 }//if
                 if(piece != null){
                     tile.setPiece(piece);
@@ -90,9 +90,9 @@ public class CheckersBoard extends VBox{
      *
      * @param x the x value in the board array
      * @param y the y value in the board array
-     * @return the {@code CheckersTile} at the given x,y position
+     * @return the {@code Tile} at the given x,y position
      */
-    public CheckersTile getIndex(int x, int y){
+    public Tile getIndex(int x, int y){
         return board[x][y];
     }//GetIndex
 
@@ -146,10 +146,10 @@ public class CheckersBoard extends VBox{
     public void clearHighlights(){
         for(int x = 0; x < BOARD_WIDTH; x++){
             for(int y = 0; y < BOARD_HEIGHT; y++){
-                CheckersTile tile = board[x][y];
+                Tile tile = board[x][y];
                 tile.setStrokeWidth(0);
                 if(tile.getPiece() != null){
-                    CheckersPiece piece = tile.getPiece();
+                    Piece piece = tile.getPiece();
                     piece.clearOptions();
                 }//if
             }//for
