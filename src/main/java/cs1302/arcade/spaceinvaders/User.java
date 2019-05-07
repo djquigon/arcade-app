@@ -5,18 +5,11 @@ import javafx.scene.shape.Shape;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.event.EventHandler;
 import javafx.scene.shape.Rectangle;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.paint.Color;
-import javafx.animation.Timeline;
-import javafx.animation.KeyFrame;
 import javafx.event.EventHandler;
 import javafx.event.ActionEvent;
-import javafx.util.Duration;
-import javafx.animation.KeyValue;
 import javafx.animation.AnimationTimer;
-import javafx.geometry.Bounds;
 import javafx.scene.shape.Path;
 import javafx.application.Platform;
 
@@ -27,6 +20,9 @@ public class User{
 
     private int numFires;
 
+    /**
+     * Constructs an instance of the user.
+     */
     public User(){
         numFires = 0;
     }
@@ -48,9 +44,8 @@ public class User{
                     this.moveLeft(scene, ship);
                 }
                 if(event.getCode() == KeyCode.SPACE){ //if spacebar clicked
-                    if(numFires < 10){
+                    if(numFires < 3){
                         this.fireLaser(stage, ship, aliens);
-                        //System.out.println(numFires);
                     }
                 }
             });
@@ -122,7 +117,7 @@ public class User{
      * @param laser reference to the laser being fired
      * @param aliens reference to the alien group attacking the ship
      */
-    private AnimationTimer moveLaser(SpaceStage stage, Rectangle laser, AlienGroup aliens){ //goes over
+    private AnimationTimer moveLaser(SpaceStage stage, Rectangle laser, AlienGroup aliens){
         AnimationTimer moveLaser = new AnimationTimer(){
                 @Override
                 public void handle(long now){
@@ -149,7 +144,7 @@ public class User{
      * @param aliens a reference to the aliens attacking the ship
      * @param moveLaser a reference to the animation timer in charge of moving the ship's laser
      */
-    public void alienCollision(Rectangle laser, SpaceStage stage, AlienGroup aliens, AnimationTimer moveLaser){ //goes over
+    public void alienCollision(Rectangle laser,SpaceStage stage,AlienGroup aliens,AnimationTimer moveLaser){///
         for(int x = 0; x < AlienGroup.ALIENS_WIDTH; x++){
             for(int y = 0; y < AlienGroup.ALIENS_HEIGHT; y++){
                 Alien alien = aliens.getAlien(x,y); //alien at x,y in the group
@@ -167,6 +162,11 @@ public class User{
         }
     }
 
+    /**
+     * Removes existing laser projectile.
+     *
+     * @param laser projectile being referenced
+     */
     public void removeLaser(Rectangle laser){
         laser = null;
         numFires--;

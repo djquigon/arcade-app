@@ -4,8 +4,6 @@ import cs1302.arcade.*;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.image.Image;
 import javafx.scene.paint.ImagePattern;
-import javafx.geometry.Pos;
-import javafx.scene.paint.Color;
 
 /**
  * This class represents a single alien in a space invaders game.

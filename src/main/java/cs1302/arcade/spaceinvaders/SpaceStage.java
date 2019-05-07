@@ -102,21 +102,28 @@ public class SpaceStage extends Stage{
         menuBar.prefWidthProperty().bind(this.widthProperty());
     }
 
+    /**
+     * Levels up user to new difficulty and checks win condition.
+     */
     public void levelUp(){
         level++;
-        if(level == 2){
+        if(level == 4){
             this.victory();
             return;
         }
         aliens = new AlienGroup(this, ship);
     }
 
+    /**
+     * A message pops up that prompts the user to exit or play
+     * again once he/she wins.
+     */
     public void victory(){
         Runnable r = () -> {
             ButtonType playAgain = new ButtonType("Play Again");
             ButtonType exitToMenu = new ButtonType("Exit to menu");
             Alert win = new Alert(AlertType.CONFIRMATION, "You won! " +
-                                  "Would you like to play again?",
+                                  "Play again?",
                                   playAgain, exitToMenu);
             win.setTitle("VICTORY");
             win.showAndWait().ifPresent(response -> {                                
@@ -131,17 +138,19 @@ public class SpaceStage extends Stage{
                 });
         };
         Platform.runLater(r);
-        System.out.println("end victory");
-        //aliens.getAlienAttack().stop();
-        //aliens.getMoveAliens().stop();
     }
 
+    
+    /**
+     * A message pops up that prompts the user to exit or play
+     * again once he/she loses.
+     */
     public void lose(){
         Runnable r = () -> {
             ButtonType playAgain = new ButtonType("Play Again");
             ButtonType exitToMenu = new ButtonType("Exit to menu");
             Alert lose = new Alert(AlertType.CONFIRMATION, "You have been defeated!  " +
-                                   "Would you like to play again?",
+                                   "Play again?",
                                    playAgain, exitToMenu);
             lose.setTitle("GAME OVER");
             lose.showAndWait().ifPresent(response -> {                                
@@ -156,8 +165,6 @@ public class SpaceStage extends Stage{
                 });
         };
         Platform.runLater(r);
-        //aliens.getAlienAttack().stop();
-        //aliens.getMoveAliens().stop();
     }
     
     /**
